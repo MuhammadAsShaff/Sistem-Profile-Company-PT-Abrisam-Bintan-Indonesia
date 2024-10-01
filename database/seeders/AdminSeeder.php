@@ -1,0 +1,223 @@
+<?php
+
+namespace Database\Seeders;
+
+use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
+
+class AdminSeeder extends Seeder
+{
+    /**
+     * Run the database seeds.
+     *
+     * @return void
+     */
+    public function run()
+    {
+        // Menambahkan 20 data admin ke tabel admins
+        DB::table('admins')->insert([
+            [
+                'email_admin' => 'acop@gmail.com',
+                'nama_admin' => 'acop',
+                'password' => Hash::make('acop123'),
+                'posisi' => 'Manager',
+                'foto_admin' => null,
+                'status' => 'Offline',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'email_admin' => 'admin2@example.com',
+                'nama_admin' => 'Admin Two',
+                'password' => Hash::make('password2'),
+                'posisi' => 'Admin Support',
+                'foto_admin' => null,
+                'status' => 'Offline',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'email_admin' => 'admin3@example.com',
+                'nama_admin' => 'Admin Three',
+                'password' => Hash::make('password3'),
+                'posisi' => 'Designer',
+                'foto_admin' => null,
+                'status' => 'Offline',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            // Tambahkan 17 admin lainnya
+            [
+                'email_admin' => 'admin4@example.com',
+                'nama_admin' => 'Admin Four',
+                'password' => Hash::make('password4'),
+                'posisi' => 'Sales',
+                'foto_admin' => null,
+                'status' => 'Offline',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'email_admin' => 'admin5@example.com',
+                'nama_admin' => 'Admin Five',
+                'password' => Hash::make('password5'),
+                'posisi' => 'Manager',
+                'foto_admin' => null,
+                'status' => 'Offline',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'email_admin' => 'admin6@example.com',
+                'nama_admin' => 'Admin Six',
+                'password' => Hash::make('password6'),
+                'posisi' => 'Admin Support',
+                'foto_admin' => null,
+                'status' => 'Offline',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'email_admin' => 'admin7@example.com',
+                'nama_admin' => 'Admin Seven',
+                'password' => Hash::make('password7'),
+                'posisi' => 'Designer',
+                'foto_admin' => null,
+                'status' => 'Offline',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'email_admin' => 'admin8@example.com',
+                'nama_admin' => 'Admin Eight',
+                'password' => Hash::make('password8'),
+                'posisi' => 'Sales',
+                'foto_admin' => null,
+                'status' => 'Offline',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'email_admin' => 'admin9@example.com',
+                'nama_admin' => 'Admin Nine',
+                'password' => Hash::make('password9'),
+                'posisi' => 'Manager',
+                'foto_admin' => null,
+                'status' => 'Offline',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'email_admin' => 'admin10@example.com',
+                'nama_admin' => 'Admin Ten',
+                'password' => Hash::make('password10'),
+                'posisi' => 'Admin Support',
+                'foto_admin' => null,
+                'status' => 'Offline',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'email_admin' => 'admin11@example.com',
+                'nama_admin' => 'Admin Eleven',
+                'password' => Hash::make('password11'),
+                'posisi' => 'Designer',
+                'foto_admin' => null,
+                'status' => 'Offline',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'email_admin' => 'admin12@example.com',
+                'nama_admin' => 'Admin Twelve',
+                'password' => Hash::make('password12'),
+                'posisi' => 'Sales',
+                'foto_admin' => null,
+                'status' => 'Offline',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'email_admin' => 'admin13@example.com',
+                'nama_admin' => 'Admin Thirteen',
+                'password' => Hash::make('password13'),
+                'posisi' => 'Manager',
+                'foto_admin' => null,
+                'status' => 'Offline',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'email_admin' => 'admin14@example.com',
+                'nama_admin' => 'Admin Fourteen',
+                'password' => Hash::make('password14'),
+                'posisi' => 'Admin Support',
+                'foto_admin' => null,
+                'status' => 'Offline',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'email_admin' => 'admin15@example.com',
+                'nama_admin' => 'Admin Fifteen',
+                'password' => Hash::make('password15'),
+                'posisi' => 'Designer',
+                'foto_admin' => null,
+                'status' => 'Offline',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'email_admin' => 'admin16@example.com',
+                'nama_admin' => 'Admin Sixteen',
+                'password' => Hash::make('password16'),
+                'posisi' => 'Sales',
+                'foto_admin' => null,
+                'status' => 'Offline',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'email_admin' => 'admin17@example.com',
+                'nama_admin' => 'Admin Seventeen',
+                'password' => Hash::make('password17'),
+                'posisi' => 'Manager',
+                'foto_admin' => null,
+                'status' => 'Offline',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'email_admin' => 'admin18@example.com',
+                'nama_admin' => 'Admin Eighteen',
+                'password' => Hash::make('password18'),
+                'posisi' => 'Admin Support',
+                'foto_admin' => null,
+                'status' => 'Offline',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'email_admin' => 'admin19@example.com',
+                'nama_admin' => 'Admin Nineteen',
+                'password' => Hash::make('password19'),
+                'posisi' => 'Designer',
+                'foto_admin' => null,
+                'status' => 'Offline',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'email_admin' => 'admin20@example.com',
+                'nama_admin' => 'Admin Twenty',
+                'password' => Hash::make('password20'),
+                'posisi' => 'Sales',
+                'foto_admin' => null,
+                'status' => 'Offline',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+        ]);
+    }
+}
