@@ -41,11 +41,11 @@
 
               <!-- Danger Alert untuk email atau password salah -->
               @if ($errors->has('login'))
-          <div class="p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400"
-          role="alert">
-          <span class="font-medium">Email atau password yang Anda masukkan salah.</span> Silakan coba lagi.
-          </div>
-        @endif
+                <div class="p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400"
+                  role="alert">
+                  <span class="font-medium">Email atau password yang Anda masukkan salah.</span> Silakan coba lagi.
+                </div>
+              @endif
 
               <!-- Field Email -->
               <div class="mb-4">
@@ -65,12 +65,20 @@
                     @error('password') border-red-400 focus:border-red-400 focus:ring-red-300 dark:border-red-400 dark:focus:border-red-300 @enderror">
                   <button type="button" id="togglePassword"
                     class="absolute right-0 top-1/2 transform -translate-y-1/2 focus:outline-none">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
-                      class="w-6 h-6 mx-4 text-gray-400 transition-colors duration-300 dark:text-gray-500 hover:text-gray-500 dark:hover:text-gray-400">
-                      <path id="eyeIcon" d="M12 15a3 3 0 100-6 3 3 0 000 6z" />
-                      <path id="eyeSlashIcon" class="hidden" fill-rule="evenodd"
+                    <svg id="eyeIcon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
+                      class="w-6 h-6 mx-4 text-gray-400 transition-opacity duration-300">
+                      <path d="M12 15a3 3 0 100-6 3 3 0 000 6z" />
+                      <path fill-rule="evenodd"
                         d="M1.323 11.447C2.811 6.976 7.028 3.75 12.001 3.75c4.97 0 9.185 3.223 10.675 7.69.12.362.12.752 0 1.113-1.487 4.471-5.705 7.697-10.677 7.697-4.97 0-9.186-3.223-10.675-7.69a1.762 1.762 0 010-1.113zM17.25 12a5.25 5.25 0 11-10.5 0 5.25 5.25 0 0110.5 0z"
                         clip-rule="evenodd" />
+                    </svg>
+                    <svg id="eyeSlashIcon" class="hidden" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+                      fill="currentColor" class="w-6 h-6 mx-4 text-gray-400 transition-opacity duration-300">
+                      <path fill-rule="evenodd"
+                        d="M1.323 11.447C2.811 6.976 7.028 3.75 12.001 3.75c4.97 0 9.185 3.223 10.675 7.69.12.362.12.752 0 1.113-1.487 4.471-5.705 7.697-10.677 7.697-4.97 0-9.186-3.223-10.675-7.69a1.762 1.762 0 010-1.113zM17.25 12a5.25 5.25 0 11-10.5 0 5.25 5.25 0 0110.5 0z"
+                        clip-rule="evenodd" />
+                      <path
+                        d="M6 18L18 6M6 6l12 12" />
                     </svg>
                   </button>
                 </div>
@@ -130,7 +138,7 @@
       </svg>
       </button>
     </div>
-  @endif
+    @endif
 
     <!-- JavaScript untuk Toggle Password -->
     <script>
@@ -143,8 +151,16 @@
         password.setAttribute("type", type);
 
         // Toggle the eye icon
-        this.querySelector("#eyeIcon").classList.toggle("hidden");
-        this.querySelector("#eyeSlashIcon").classList.toggle("hidden");
+        const eyeIcon = this.querySelector("#eyeIcon");
+        const eyeSlashIcon = this.querySelector("#eyeSlashIcon");
+        
+        if (type === "text") {
+          eyeIcon.classList.add("opacity-50");
+          eyeSlashIcon.classList.remove("opacity-50");
+        } else {
+          eyeIcon.classList.remove("opacity-50");
+          eyeSlashIcon.classList.add("opacity-50");
+        }
       });
     </script>
   </div>

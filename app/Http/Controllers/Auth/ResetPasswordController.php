@@ -93,14 +93,8 @@ class ResetPasswordController extends Controller
         // Hapus entri reset password dari database (agar tidak bisa digunakan lagi)
         DB::table('password_reset_tokens')->where('email', $request->email_admin)->delete();
 
-        // Periksa apakah pengguna sudah login
-        if (Auth::guard('admin')->check()) {
-            // Jika pengguna sudah login, arahkan ke halaman dashboard
-            return redirect()->route('dashboard.dashboard.index')->with('status', 'Password berhasil direset dan Anda sudah login.');
-        } else {
-            // Jika pengguna belum login, arahkan ke halaman login
-            return redirect()->route('admin.login')->with('status', 'Password berhasil direset. Silakan login dengan password baru Anda.');
-        }
+        // Arahkan ke halaman sukses reset password
+        return redirect()->route('password.success')->with('status', 'Password berhasil direset.');
     }
 
     public function showSuccessPage()

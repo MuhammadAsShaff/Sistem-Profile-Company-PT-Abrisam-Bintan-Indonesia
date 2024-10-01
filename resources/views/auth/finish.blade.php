@@ -20,7 +20,7 @@
           <span
             class="flex items-center justify-center w-8 h-8 border border-gray-500 rounded-full shrink-0 dark:border-gray-400">1</span>
           <span>
-            <h3 class="font-medium leading-tight text-gray-500 dark:text-gray-400">Masukkan Email</h3>
+            <h3 class="font-medium leading-tight">Masukkan Email</h3>
             <p class="text-sm text-gray-500 dark:text-gray-400">Masukkan email yang terdaftar</p>
           </span>
         </li>
@@ -58,9 +58,16 @@
           Berhasil!</h1>
         <p class="mt-4 text-lg text-gray-500 dark:text-gray-400 max-w-xl mx-auto">Password Anda telah berhasil direset.
           Anda sekarang dapat menggunakan password baru untuk login.</p>
-        <a href="{{ route('admin.login') }}"
-          class="inline-flex items-center px-6 py-3 mt-6 text-sm font-medium tracking-wide text-white capitalize transition-colors duration-300 transform bg-red-500 rounded-lg hover:bg-red-400 focus:outline-none focus:ring focus:ring-red-300 focus:ring-opacity-50">Kembali
-          ke Login</a>
+
+        @if (Auth::guard('admin')->check())
+      <a href="{{ route('dashboard.dashboard.index') }}"
+        class="inline-flex items-center px-6 py-3 mt-6 text-sm font-medium tracking-wide text-white capitalize transition-colors duration-300 transform bg-green-500 rounded-lg hover:bg-green-400 focus:outline-none focus:ring focus:ring-green-300 focus:ring-opacity-50">Kembali
+        ke Dashboard Admin</a>
+    @else
+    <a href="{{ route('admin.login') }}"
+      class="inline-flex items-center px-6 py-3 mt-6 text-sm font-medium tracking-wide text-white capitalize transition-colors duration-300 transform bg-red-500 rounded-lg hover:bg-red-400 focus:outline-none focus:ring focus:ring-red-300 focus:ring-opacity-50">Kembali
+      ke Login</a>
+  @endif
       </div>
     </div>
   </section>
