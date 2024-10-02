@@ -9,9 +9,17 @@ use App\Http\Controllers\Pelanggan;
 use App\Http\Controllers\ProdukController;
 use App\Http\Controllers\PromoController;
 use App\Http\Controllers\Auth\ResetPasswordController;
+use App\Http\Controllers\LandingPageController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Middleware\SavePreviousUrl;
 use App\Http\Middleware\PreventBackHistory; // Middleware untuk mencegah back
+
+
+// Route untuk Landing Page
+Route::prefix('/')->group(function () {
+    Route::get('/', [LandingPageController::class, 'index'])
+        ->name('landingPage.layoutLandingPage');
+});
 
 // Route untuk login dan logout admin
 Route::prefix('admin')->group(function () {

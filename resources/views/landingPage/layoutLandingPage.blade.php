@@ -10,6 +10,7 @@
   @vite('resources/js/app.js')
 </head>
 <body>
-  
+  @include('ladingPage.content.slider')
+  @include('landingPage.footer')
 </body>
 </html>
