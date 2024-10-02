@@ -96,9 +96,6 @@
                 ingin melakukan reset password, silakan klik tombol di bawah ini:</p>
             <a href="{{ url('reset-password/' . $token) }}" class="btn">Reset Password Anda</a>
 
-            <p>Jika tombol di atas tidak berfungsi, Anda juga dapat menyalin dan menempelkan tautan berikut ke peramban
-                Anda:</p>
-
             <p>Terima kasih,<br>Tim PT Abrisam Bintan Indonesia</p>
         </div>
 
@@ -106,9 +103,8 @@
         <div class="footer">
             <p>
                 Email ini dikirim ke <a href="mailto:{{ $admin->email_admin }}">{{ $admin->email_admin }}</a>.
-                Jika Anda tidak ingin menerima email seperti ini lagi, Anda dapat menghapus akun Anda.
             </p>
-            <p>© 2024 PT Abrisam Bintan Indonesia. All Rights Reserved.</p>
+            <p>© 2024 PT Abrisam Bintan Indonesia.</p>
         </div>
     </div>
 </body>
