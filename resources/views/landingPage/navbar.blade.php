@@ -1,5 +1,5 @@
 <!-- Navbar -->
-<nav id="navbar" class="fixed w-full z-10 top-0 bg-transparent">
+<nav id="navbar" class="fixed w-full z-10 top-0 bg-transparent shadow-md">
   <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
     <!-- Logo & Brand -->
     <a href="#" class="flex items-center space-x-3 rtl:space-x-reverse">

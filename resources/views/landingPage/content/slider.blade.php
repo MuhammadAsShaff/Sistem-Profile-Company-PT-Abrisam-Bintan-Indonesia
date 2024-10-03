@@ -1,6 +1,6 @@
   <!-- Carousel Container -->
   <div id="default-carousel"
-    class="relative w-screen max-w-8xl mx-auto py-4 px-80 bg-white rounded-lg overflow-hidden h-[552px]"
+    class="relative w-screen max-w-8xl mx-auto py-4 px-60 bg-white rounded-lg overflow-hidden h-[590px]"
     data-carousel="slide">
 
     <!-- Carousel Wrapper -->
@@ -9,22 +9,22 @@
       style="transform: translateX(0);">
 
       <!-- Duplicate Last Slide at the Beginning for Infinite Loop Effect -->
-      <div class="min-w-full flex-shrink-0 h-[580px] w-full overflow-hidden rounded-lg p-3">
+      <div class="min-w-full flex-shrink-0 h-[620px] w-full overflow-hidden rounded-lg p-3">
         <img src="{{ asset('uploads/promos/' . $promos[count($promos) - 1]->gambar_promo) }}"
-          class="w-[2000px] h-[500px] object-cover rounded-lg" alt="Duplicate Last Slide">
+          class="w-[6000px] h-[540px] object-cover rounded-lg" alt="Duplicate Last Slide">
       </div>
 
       <!-- Original Slides -->
       @foreach($promos as $key => $promo)
-      <div class="min-w-full flex-shrink-0 h-[580px] w-full overflow-hidden rounded-lg p-3">
-        <img src="{{ asset('uploads/promos/' . $promo->gambar_promo) }}" class="w-[2000px] h-[500px] object-cover rounded-lg"
+      <div class="min-w-full flex-shrink-0 h-[620px] w-full overflow-hidden rounded-lg p-3">
+        <img src="{{ asset('uploads/promos/' . $promo->gambar_promo) }}" class="w-[6000px] h-[540px] object-cover rounded-lg"
           alt="{{ $promo->nama_promo }}">
       </div>
       @endforeach
 
       <!-- Duplicate First Slide at the End for Infinite Loop Effect -->
-      <div class="min-w-full flex-shrink-0 h-[580px] w-full overflow-hidden rounded-lg p-3">
-        <img src="{{ asset('uploads/promos/' . $promos[0]->gambar_promo) }}" class="w-[2000px] h-[500px] object-cover rounded-lg"
+      <div class="min-w-full flex-shrink-0 h-[620px] w-full overflow-hidden rounded-lg p-3">
+        <img src="{{ asset('uploads/promos/' . $promos[0]->gambar_promo) }}" class="w-[6000px] h-[540px] object-cover rounded-lg"
           alt="Duplicate First Slide">
       </div>
     </div>
@@ -41,14 +41,14 @@
 
     <!-- Slider Controls -->
     <button type="button"
-      class="absolute top-1/2 left-[310px] transform -translate-y-1/2 z-30 text-black bg-white rounded-full w-10 h-10 flex items-center justify-center focus:outline-none hover:bg-gray transition duration-300 shadow-xl"
+      class="absolute top-1/2 left-[230px] transform -translate-y-1/2 z-30 text-black bg-white rounded-full w-10 h-10 flex items-center justify-center focus:outline-none hover:bg-gray transition duration-300 shadow-xl"
       id="prev-btn">
       <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="4" d="M15 19l-7-7 7-7"></path>
       </svg>
     </button>
     <button type="button"
-      class="absolute top-1/2 right-[310px] transform -translate-y-1/2 z-30 text-black bg-white rounded-full w-10 h-10 flex items-center justify-center focus:outline-none hover:bg-gray transition duration-300 shadow-xl"
+      class="absolute top-1/2 right-[230px] transform -translate-y-1/2 z-30 text-black bg-white rounded-full w-10 h-10 flex items-center justify-center focus:outline-none hover:bg-gray transition duration-300 shadow-xl"
       id="next-btn">
       <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="4" d="M9 5l7 7-7 7"></path>

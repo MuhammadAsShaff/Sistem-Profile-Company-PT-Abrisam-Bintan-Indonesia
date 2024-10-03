@@ -12,20 +12,23 @@
   <!-- Vite Tailwind CSS -->
   @vite('resources/css/app.css')
 </head>
-<body class="font-poppins bg-white text-gray-900 overflow-x-hidden"> <!-- Tambahkan overflow-x-hidden untuk mencegah scroll horizontal -->
+<body class="font-poppins bg-white text-gray-900 overflow-x-hidden">
+  <!-- Navbar -->
   @include('landingPage.navbar')
+
   <!-- Main Container -->
-  <div class="w-screen mx-0"> <!-- Menggunakan w-screen untuk lebar penuh dan mx-0 untuk margin 0 -->
+  <div class="w-screen mx-0">
     <!-- Main Content Area -->
     <div class="py-12">
-      <div class="w-screen"> <!-- Container slider dengan lebar penuh -->
+      <div class="w-screen mt-[40px]">
+        <!-- Slider Content -->
         @include('landingPage.content.slider')
       </div>
     </div>
 
     <!-- Footer Section -->
     <footer class="bg-gray-800 text-white py-6">
-      <div class="text-center">
+      <div class="container mx-auto text-center">
         @include('landingPage.footer')
       </div>
     </footer>
@@ -34,4 +37,5 @@
   <!-- Vite JS -->
   @vite('resources/js/app.js')
 </body>
+
 </html>
