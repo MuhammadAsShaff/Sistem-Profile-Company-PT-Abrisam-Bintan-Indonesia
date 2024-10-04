@@ -104,7 +104,7 @@
             <p>
                 Email ini dikirim ke <a href="mailto:{{ $admin->email_admin }}">{{ $admin->email_admin }}</a>.
             </p>
-            <p>© 2024 PT Abrisam Bintan Indonesia.</p>
+            <p>© <?php echo date("Y"); ?> PT Abrisam Bintan Indonesia.</p>
         </div>
     </div>
 </body>

@@ -44,7 +44,7 @@ class ProdukController extends Controller
             'benefit' => 'required|string',
             'kecepatan' => 'required|integer',
             'deskripsi' => 'required|string',
-            'diskon' => 'nullable|numeric|min:0|max:100000',
+            'diskon' => 'nullable|numeric|min:0|max:100',
             'id_kategori' => 'required|exists:kategori,id_kategori',
             'id_paket' => 'required|exists:paket,id_paket',
             'gambar_produk' => 'nullable|mimes:jpg,jpeg,png|max:2048',

@@ -1,23 +1,28 @@
 <!-- Navbar -->
 <nav id="navbar" class="fixed w-full z-10 top-0 bg-transparent shadow-md">
-  <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
+  <div class="max-w-screen-xl flex items-center justify-between mx-auto p-4">
+
     <!-- Logo & Brand -->
-    <a href="#" class="flex items-center space-x-3 rtl:space-x-reverse">
-      <img class="w-auto h-10" src="{{ asset('images/logoAbi.png') }}" alt="Logo Abi">
-      <span class="self-center text-2xl font-semibold text-black dark:text-white">PT Abrisam Bintan Indonesia</span>
-    </a>
+    <div class="flex items-center space-x-3">
+      <!-- Mobile Menu Button -->
+      <button id="mobile-menu-button" type="button"
+        class="inline-flex items-center p-2 w-10 h-10 justify-center text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
+        aria-controls="navbar-default" aria-expanded="false">
+        <span class="sr-only">Open main menu</span>
+        <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 17 14">
+          <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M1 1h15M1 7h15M1 13h15" />
+        </svg>
+      </button>
 
-    <!-- Mobile Menu Button -->
-    <button data-collapse-toggle="navbar-default" type="button"
-      class="inline-flex items-center p-2 w-10 h-10 justify-center text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
-      aria-controls="navbar-default" aria-expanded="false">
-      <span class="sr-only">Open main menu</span>
-      <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 17 14">
-        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-          d="M1 1h15M1 7h15M1 13h15" />
-      </svg>
-    </button>
+      <a href="{{ route('landingPage.layoutLandingPage') }}" class="flex items-center space-x-2">
+        <img class="w-auto h-10" src="{{ asset('images/logoAbi.png') }}" alt="Logo Abi">
+        <span class="self-center text-xl sm:text-2xl font-semibold text-black dark:text-white">PT Abrisam Bintan
+          Indonesia</span>
+      </a>
+    </div>
 
+    <!-- Navbar Links (Hidden on mobile, shown on larger screens) -->
     <!-- Navbar Links -->
     <div class="hidden w-full md:block md:w-auto" id="navbar-default">
       <ul
@@ -51,11 +56,21 @@
             Jawab</a>
         </li>
       </ul>
-    </div>
+    </div>  
+  </div>
+
+  <!-- Mobile Dropdown Menu -->
+  <div id="mobile-menu" class="hidden md:hidden flex flex-col space-y-4 bg-gray-100 p-4">
+    <a href="#" class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-200">Beranda</a>
+    <a href="#" class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-200">Paket Indihome</a>
+    <a href="#" class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-200">Blog</a>
+    <a href="#" class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-200">Kontak</a>
+    <a href="#" class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-200">Tentang Kami</a>
+    <a href="#" class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-200">Tanya Jawab</a>
   </div>
 </nav>
 
-<!-- Scroll effect script -->
+<!-- Scroll effect and toggle script -->
 <script>
   // Change navbar background on scroll
   window.addEventListener("scroll", function () {
@@ -66,12 +81,37 @@
       navbar.classList.remove("color-active");
     }
   });
+
+  // Toggle mobile menu
+  const mobileMenuButton = document.getElementById("mobile-menu-button");
+  const mobileMenu = document.getElementById("mobile-menu");
+
+  mobileMenuButton.addEventListener("click", () => {
+    mobileMenu.classList.toggle("hidden");
+  });
 </script>
 
+<!-- Styles for Navbar -->
 <style>
   .color-active {
     background-color: rgba(255, 255, 255, 0.9);
-    /* Warna putih dengan sedikit transparansi ketika di-scroll */
     transition: background-color 0.3s ease-in-out;
+  }
+
+  .space-x-8>*:not(:last-child) {
+    margin-right: 2rem;
+  }
+
+  @media (min-width: 1024px) {
+    .md\:space-x-8>*:not(:last-child) {
+      margin-right: 2rem;
+    }
+  }
+
+  @media (max-width: 768px) {
+    #navbar-default {
+      display: none;
+      /* Menyembunyikan navbar default di layar kecil */
+    }
   }
 </style>

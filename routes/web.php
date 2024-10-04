@@ -19,6 +19,7 @@ use App\Http\Middleware\PreventBackHistory; // Middleware untuk mencegah back
 Route::prefix('/')->group(function () {
     Route::get('/', [LandingPageController::class, 'index'])
         ->name('landingPage.layoutLandingPage');
+        
 });
 
 // Route untuk login dan logout admin
@@ -38,6 +39,7 @@ Route::post('forgot-password', [ResetPasswordController::class, 'sendResetLinkEm
 Route::get('reset-password/{token}', [ResetPasswordController::class, 'showResetForm'])->name('password.reset');
 Route::post('reset-password', [ResetPasswordController::class, 'reset'])->name('password.update');
 Route::get('reset-password-success', [ResetPasswordController::class, 'showSuccessPage'])->name('password.success');
+
 
 // Route untuk dashboard admin (dilindungi oleh middleware auth:admin)
 Route::prefix('dashboard')->middleware(['auth:admin', PreventBackHistory::class])->group(function () {

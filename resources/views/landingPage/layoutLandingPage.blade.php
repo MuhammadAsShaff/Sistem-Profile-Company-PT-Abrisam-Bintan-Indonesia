@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="icon" href="{{ asset('images/logoAbi.png') }}" type="image/x-icon" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <title>PT Abrisam Bintan Indonesia</title>
 
   <!-- Font Poppins -->
@@ -23,19 +24,23 @@
       <div class="w-screen mt-[40px]">
         <!-- Slider Content -->
         @include('landingPage.content.slider')
+        @include('landingPage.content.transisi')
+        @include('landingPage.content.paketInternet')
       </div>
     </div>
 
     <!-- Footer Section -->
-    <footer class="bg-gray-800 text-white py-6">
-      <div class="container mx-auto text-center">
+    <footer class="text-white py-6">
+      <a class="container text-center">
         @include('landingPage.footer')
-      </div>
+        
+      </a>
     </footer>
   </div>
 
   <!-- Vite JS -->
   @vite('resources/js/app.js')
+  <script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.js"></script>
 </body>
 
 </html>

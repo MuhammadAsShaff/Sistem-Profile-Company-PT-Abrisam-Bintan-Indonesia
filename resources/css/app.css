@@ -50,3 +50,6 @@ body {
 }
 
 
+.text-3xl {
+    font-size: 1.5rem; /* Ukuran yang lebih kecil dari yang lainnya */
+}
