@@ -1,6 +1,6 @@
 <!-- Carousel Container -->
 <div id="default-carousel"
-  class="relative w-full max-w-full mx-auto py-10 px-4 sm:px-8 md:px-16 lg:px-60 bg-white rounded-lg overflow-hidden h-[40vh] md:h-[50vh] lg:h-[60vh]"
+  class="relative w-full max-w-full mx-auto py-5 px-4 sm:px-8 md:px-16 lg:px-60 bg-white rounded-lg overflow-hidden h-auto md:h-[50vh] lg:h-[66vh]"
   data-carousel="slide">
 
   <!-- Carousel Wrapper -->
@@ -10,40 +10,40 @@
 
     @if (count($promos) > 0)
     <!-- Duplicate Last Slide at the Beginning for Infinite Loop Effect -->
-    <div class="min-w-full flex-shrink-0 h-[38vh] md:h-[50vh] lg:h-[60vh] w-full overflow-hidden rounded-lg p-3">
+    <div class="min-w-full flex-shrink-0 h-[20vh] md:h-[50vh] lg:h-[60vh] w-full overflow-hidden rounded-lg p-3">
       <img src="{{ asset('uploads/promos/' . $promos[count($promos) - 1]->gambar_promo) }}"
-        class="w-full h-full object-cover rounded-lg" alt="Duplicate Last Slide">
+      class="w-full h-full object-cover rounded-lg" alt="Duplicate Last Slide">
     </div>
 
     <!-- Original Slides -->
     @foreach($promos as $key => $promo)
-    <div class="min-w-full flex-shrink-0 h-[40vh] md:h-[50vh] lg:h-[60vh] w-full overflow-hidden rounded-lg p-3">
+    <div class="min-w-full flex-shrink-0 h-[20vh] md:h-[50vh] lg:h-[60vh] w-full overflow-hidden rounded-lg p-3">
       <img src="{{ asset('uploads/promos/' . $promo->gambar_promo) }}" class="w-full h-full object-cover rounded-lg"
-        alt="{{ $promo->nama_promo }}">
+      alt="{{ $promo->nama_promo }}">
     </div>
     @endforeach
 
     <!-- Duplicate First Slide at the End for Infinite Loop Effect -->
-    <div class="min-w-full flex-shrink-0 h-[40vh] md:h-[50vh] lg:h-[60vh] w-full overflow-hidden rounded-lg p-3">
+    <div class="min-w-full flex-shrink-0 h-[20vh] md:h-[50vh] lg:h-[60vh] w-full overflow-hidden rounded-lg p-3">
       <img src="{{ asset('uploads/promos/' . $promos[0]->gambar_promo) }}" class="w-full h-full object-cover rounded-lg"
-        alt="Duplicate First Slide">
+      alt="Duplicate First Slide">
     </div>
     @endif
   </div>
 
   <!-- Slider Indicators -->
-  <div class="absolute z-40 -translate-x-1/2 bottom-[20px] lg:bottom-[10px] left-1/2 space-x-2">
+  <div class="absolute z-40 -translate-x-1/2 bottom-5 lg:bottom-3 left-1/2 flex space-x-2">
     @foreach($promos as $key => $promo)
     <button type="button"
-      class="w-10 h-2 md:w-10 md:h-1 rounded-full bg-gray-300 hover:bg-black transition duration-300 indicator"
-      data-slide-to="{{ $key }}" aria-current="{{ $key == 0 ? 'true' : 'false' }}" aria-label="Slide {{ $key + 1 }}">
-    </button>
-    @endforeach
+      class="w-10 h-1 lg:h-[1vh] md:w-10 md:h-1 rounded-full bg-gray-300 hover:bg-black transition duration-300 indicator"
+      data-slide-to="{{ $key }}" aria-current="{{ $key == 0 ? 'true' : 'false' }}"
+      aria-label="Slide {{ $key + 1 }}"></button>
+  @endforeach
   </div>
 
   <!-- Tombol Previous -->
   <button type="button"
-    class="absolute top-1/2 left-4 lg:left-12 transform -translate-y-1/2 z-30 text-black bg-white rounded-full w-8 h-8 md:w-10 md:h-10 flex items-center justify-center focus:outline-none hover:bg-gray-200 transition duration-300 shadow-xl"
+    class="absolute top-1/2 left-[5%] lg:left-[12%] transform -translate-y-1/2 z-30 text-black bg-white rounded-full w-8 h-8 md:w-10 md:h-10 flex items-center justify-center focus:outline-none hover:bg-gray-200 transition duration-300 shadow-xl"
     id="prev-btn">
     <svg class="w-4 h-4 md:w-5 md:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"
       xmlns="http://www.w3.org/2000/svg">
@@ -53,7 +53,7 @@
 
   <!-- Tombol Next -->
   <button type="button"
-    class="absolute top-1/2 right-4 lg:right-12 transform -translate-y-1/2 z-30 text-black bg-white rounded-full w-8 h-8 md:w-10 md:h-10 flex items-center justify-center focus:outline-none hover:bg-gray-200 transition duration-300 shadow-xl"
+    class="absolute top-1/2 right-[5%] lg:right-[12%] transform -translate-y-1/2 z-30 text-black bg-white rounded-full w-8 h-8 md:w-10 md:h-10 flex items-center justify-center focus:outline-none hover:bg-gray-200 transition duration-300 shadow-xl"
     id="next-btn">
     <svg class="w-4 h-4 md:w-5 md:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"
       xmlns="http://www.w3.org/2000/svg">
@@ -150,123 +150,3 @@
     updateCarousel(currentIndex);
   });
 </script>
-<style>
-  /* Custom Scrollbar Hiding */
-.hide-scrollbar::-webkit-scrollbar {
-  display: none;
-}
-
-.hide-scrollbar {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
-}
-
-/* Menambahkan media query untuk tampilan responsif */
-@media (max-width: 768px) {
-  #default-carousel {
-    width: 100%;
-    /* Membuat carousel sesuai lebar layar */
-    height: auto;
-    /* Membuat tinggi otomatis sesuai konten */
-  }
-
-  #carousel-inner {
-    flex-wrap: nowrap;
-    /* Mencegah konten keluar dari layar */
-  }
-
-  #carousel-inner img {
-    width: 100%;
-    /* Gambar sesuai lebar layar */
-    height: auto;
-    /* Sesuaikan tinggi gambar */
-  }
-
-  /* Adjusting height for mobile view */
-  .min-w-full {
-    height: 28vh;
-    /* Mengatur tinggi menjadi lebih kecil di tampilan mobile */
-  }
-
-  /* Adjusting the position of slider controls */
-  #prev-btn,
-  #next-btn {
-    top: 50%;
-    /* Naikkan sedikit posisi kontrol navigasi */
-  }
-
-  /* Adjusting the position of indicators */
-  .absolute.z-40 {
-    bottom: 10px;
-    /* Naikkan sedikit posisi indicator di mobile */
-  }
-}
-
-/* Menambahkan media query untuk tampilan responsif */
-@media (max-width: 768px) {
-  #default-carousel {
-    width: 100%;
-    height: auto;
-  }
-
-  #carousel-inner {
-    flex-wrap: nowrap;
-  }
-
-  #carousel-inner img {
-    width: 100%;
-    height: auto;
-  }
-
-  .min-w-full {
-    height: 28vh;
-  }
-
-  #prev-btn,
-  #next-btn {
-    top: 50%;
-  }
-
-  .absolute.z-40 {
-    bottom: 10px;
-  }
-}
-
-/* Untuk tampilan tablet */
-@media (min-width: 768px) and (max-width: 1024px) {
-  #default-carousel {
-    padding: 0 32px;
-  }
-
-  .min-w-full {
-    height: 50vh;
-  }
-}
-
-/* Untuk tampilan desktop */
-@media (min-width: 1024px) {
-  #default-carousel {
-    padding: 10px 160px;
-  }
-
-  .min-w-full {
-    height: 58vh;
-  }
-
-  /* Mengatur posisi button arrow pada desktop */
-  #prev-btn {
-    left: 158px; /* Sesuaikan posisi tombol prev */
-  }
-
-  #next-btn {
-    right: 150px; /* Sesuaikan posisi tombol next */
-  }
-
-  /* Mengatur posisi indikator slider pada desktop */
-  .absolute.z-40 {
-    bottom: 0px; /* Sesuaikan jarak indikator dari bawah */
-  }
-}
-
-
-</style>
