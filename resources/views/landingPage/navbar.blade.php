@@ -34,8 +34,7 @@
         </li>
         <li>
           <a href="#"
-            class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-red-700 md:p-0 dark:text-white md:dark:hover:text-red-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">Paket
-            Indihome</a>
+            class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-red-700 md:p-0 dark:text-white md:dark:hover:text-red-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">Produk</a>
         </li>
         <li>
           <a href="#"
@@ -62,7 +61,7 @@
   <!-- Mobile Dropdown Menu -->
   <div id="mobile-menu" class="hidden md:hidden flex flex-col space-y-4 bg-gray-100 p-4">
     <a href="#" class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-200">Beranda</a>
-    <a href="#" class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-200">Paket Indihome</a>
+    <a href="#" class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-200">Produk</a>
     <a href="#" class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-200">Blog</a>
     <a href="#" class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-200">Kontak</a>
     <a href="#" class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-200">Tentang Kami</a>
