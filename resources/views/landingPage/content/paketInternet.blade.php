@@ -15,10 +15,10 @@
         <select id="kategori-filter" name="kategori" class="border border-gray-300 rounded-lg px-4 py-2">
           <option value="">Semua Kategori</option>
           @foreach($kategori as $kat)
-        <option value="{{ $kat->id_kategori }}" {{ request('kategori') == $kat->id_kategori ? 'selected' : '' }}>
-        {{ $kat->nama_kategori }}
-        </option>
-      @endforeach
+          <option value="{{ $kat->id_kategori }}" {{ request('kategori') == $kat->id_kategori ? 'selected' : '' }}>
+            {{ $kat->nama_kategori }}
+          </option>
+          @endforeach
         </select>
       </div>
     </div>
@@ -32,7 +32,7 @@
       data-id-paket="{{ $pk->id_paket }}">
       {{ $pk->nama_paket }}
     </button>
-  @endforeach
+    @endforeach
   </div>
 
   <!-- Cards Section -->
@@ -52,41 +52,40 @@
       <!-- Harga Produk -->
       @if($prod->diskon > 0)
       <p class="text-gray-500 text-lg line-through">Rp{{ number_format($prod->harga_produk, 0, ',', '.') }}</p>
-      <p class="text-2xl lg:text-4xl font-bold mb-2 text-red-600">
-      Rp{{ number_format($prod->harga_produk - ($prod->harga_produk * $prod->diskon / 100), 0, ',', '.') }}/Bulan
+      <p class="text-2xl lg:text-3xl font-bold mb-2 text-red-600">
+        Rp{{ substr(number_format($prod->harga_produk - ($prod->harga_produk * $prod->diskon / 100), 0, ',', '.'), 0, 3) }}<span class="text-sm">{{ substr(number_format($prod->harga_produk - ($prod->diskon / 100 * $prod->harga_produk), 0, ',', '.'), 3) }}/Bulan</span>
       </p>
-
     @else
-      <p class="text-2xl lg:text-4xl font-bold mb-2 text-gray-900">
-      Rp{{ number_format($prod->harga_produk, 0, ',', '.') }}
-      <span class="text-sm">/Bulan</span>
+      <p class="text-4xl font-bold text-red-600">
+        Rp{{ substr(number_format($prod->harga_produk, 0, ',', '.'), 0, 3) }}
+        <span class="text-md">{{ substr(number_format($prod->harga_produk, 0, ',', '.'), 3) }}/Bulan</span>
       </p>
     @endif
 
       <!-- Features List -->
       <ul class="mb-4 text-gray-700 space-y-2">
-      <li>
-        <i class="fas fa-tachometer-alt text-black-500"></i>
-        Kecepatan Internet Up to <b>{{ $prod->kecepatan }}</b> Mbps
-      </li>
+        <li>
+          <i class="fas fa-tachometer-alt text-black-500"></i>
+          Kecepatan Internet Up to <b>{{ $prod->kecepatan }}</b> Mbps
+        </li>
 
-      <li class="flex items-center">
-        <i class="fas fa-gift text-black-500"></i>
-        <span class="ml-2">{{ $prod->benefit }}</span>
-      </li>
+        <li class="flex items-center">
+          <i class="fas fa-gift text-black-500"></i>
+          <span class="ml-2">{{ $prod->benefit }}</span>
+        </li>
 
-      @if($prod->paket)
-      <li class="flex items-center">
-      <i class="fas fa-tag text-black-500"></i>
-      <span class="ml-2">{{ $prod->paket->nama_paket }}</span>
-      </li>
-    @endif
+        @if($prod->paket)
+        <li class="flex items-center">
+          <i class="fas fa-tag text-black-500"></i>
+          <span class="ml-2">{{ $prod->paket->nama_paket }}</span>
+        </li>
+        @endif
       </ul>
 
       <!-- Button -->
       <button class="bg-red-600 text-white py-2 px-4 rounded-lg w-full">Pilih Paket</button>
     </div>
-  @endforeach
+    @endforeach
   </div>
 
   <!-- View All Button -->
@@ -149,31 +148,40 @@
     });
 
     // Function to update the produk container
-    function updateProduk(produk) {
+  function updateProduk(produk) {
       var produkContainer = $('#produk-container');
       produkContainer.empty(); // Clear the existing products
 
       // Append the new products
       $.each(produk, function (index, prod) {
+        var hargaDiskon = (prod.harga_produk - (prod.harga_produk * prod.diskon / 100));
+        var hargaFormatted = new Intl.NumberFormat('id-ID').format(hargaDiskon);
+        var hargaAsli = new Intl.NumberFormat('id-ID').format(prod.harga_produk);
+
         var html = `
-        <div class="max-w-sm bg-white shadow-2xl shadow-gray-400 rounded-lg p-6 relative">
-          ${prod.diskon ? `<div class="absolute top-0 right-0 bg-red-600 text-white text-sm px-3 py-1 rounded-tr-lg rounded-bl-lg">Diskon ${prod.diskon}%</div>` : ''}
-          <h3 class="font-bold text-xl md:text-2xl lg:text-4xl mb-2">${prod.nama_produk}</h3>
-          ${prod.diskon > 0 ? `<p class="text-gray-500 text-lg line-through">Rp${new Intl.NumberFormat('id-ID').format(prod.harga_produk)}</p>
-          <p class="text-2xl lg:text-4xl font-bold mb-2 text-red-600">
-            Rp${new Intl.NumberFormat('id-ID').format(prod.harga_produk - (prod.harga_produk * prod.diskon / 100))}
-          </p>` : `<p class="text-2xl lg:text-4xl font-bold mb-2 text-gray-900">Rp${new Intl.NumberFormat('id-ID').format(prod.harga_produk)}</p>`}
-          <ul class="mb-4 text-gray-700 space-y-2">
-            <li><i class="fas fa-tachometer-alt text-black-500"></i> Kecepatan Internet Up to <b>${prod.kecepatan}</b> Mbps</li>
-            <li class="flex items-center"><i class="fas fa-gift text-black-500"></i> <span class="ml-2">${prod.benefit}</span></li>
-            ${prod.paket ? `<li class="flex items-center"><i class="fas fa-tag text-black-500"></i> <span class="ml-2">${prod.paket.nama_paket}</span></li>` : ''}
-          </ul>
-          <button class="bg-red-600 text-white py-2 px-4 rounded-lg w-full">Pilih Paket</button>
-        </div>
-      `;
+    <div class="max-w-sm bg-white shadow-2xl shadow-gray-400 rounded-lg p-6 relative">
+      ${prod.diskon ? `<div class="absolute top-0 right-0 bg-red-600 text-white text-sm px-3 py-1 rounded-tr-lg rounded-bl-lg">Diskon ${prod.diskon}%</div>` : ''}
+      <h3 class="font-bold text-xl md:text-2xl lg:text-4xl mb-2">${prod.nama_produk}</h3>
+      ${prod.diskon > 0 ? `
+      <p class="text-gray-500 text-lg line-through">Rp${hargaAsli}</p>
+      <p class="text-2xl lg:text-3xl font-bold mb-2 text-red-600">
+        Rp${hargaFormatted.slice(0, 3)}<span class="text-sm">${hargaFormatted.slice(3)}/Bulan</span>
+      </p>` : `
+      <p class="text-3xl font-bold text-red-600">
+        Rp${hargaAsli.slice(0, 3)}<span class="text-sm">${hargaAsli.slice(3)}/Bulan</span>
+      </p>`}
+      <ul class="mb-4 text-gray-700 space-y-2">
+        <li><i class="fas fa-tachometer-alt text-black-500"></i> Kecepatan Internet Up to <b>${prod.kecepatan}</b> Mbps</li>
+        <li class="flex items-center"><i class="fas fa-gift text-black-500"></i> <span class="ml-2">${prod.benefit}</span></li>
+        ${prod.paket ? `<li class="flex items-center"><i class="fas fa-tag text-black-500"></i> <span class="ml-2">${prod.paket.nama_paket}</span></li>` : ''}
+      </ul>
+      <button class="bg-red-600 text-white py-2 px-4 rounded-lg w-full">Pilih Paket</button>
+    </div>
+    `;
         produkContainer.append(html);
       });
     }
+
 
     // Function to update the paket buttons
     function updatePaket(pakets, kategori) {
