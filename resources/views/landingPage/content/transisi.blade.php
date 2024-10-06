@@ -1,4 +1,4 @@
-<div class="container mx-auto px-4 sm:px-6 lg:px-14 py-4 ">
+<div class="container mx-auto px-4 sm:px-6 lg:px-14 py-4">
   <div class="bg-gradient-to-r from-white to-red-100 p-6 sm:p-8 rounded-lg shadow-lg relative">
     <!-- Quote Icon Left -->
     <div class="absolute -left-4 sm:-left-6 -top-4 sm:-top-6 bg-white p-2 sm:p-3 rounded-full shadow-2xl shadow-gray-400">
@@ -10,7 +10,7 @@
 
     <!-- Main Text -->
     <h3 class="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-800 mb-3">Ayo Berlangganan Sekarang</h3>
-    <p class="text-gray-600 leading-relaxed text-base sm:text-lg lg:text-lg">
+    <p class="text-gray-600 leading-relaxed text-base">
       Bergabunglah dengan PT Abrisam Bintan Indonesia untuk solusi bisnis digital yang handal dan fleksibel. Nikmati
       berbagai
       layanan inovatif<br> yang akan membantu bisnis Anda tumbuh dan lebih eksis di era digital</p>
