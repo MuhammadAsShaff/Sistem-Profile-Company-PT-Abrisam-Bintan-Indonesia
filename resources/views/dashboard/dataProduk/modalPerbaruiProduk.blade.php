@@ -55,7 +55,8 @@
             <label for="benefit" class="block text-sm font-medium text-gray-700">Benefit Produk</label>
             <input type="text" name="benefit" id="benefit"
               class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
-              placeholder="Benefit Produk" value="{{ $produk->benefit }}" required>
+              placeholder="Benefit Produk" value="{{ $produk->benefit }}">
+              <p class="mt-2 text-xs text-red-600 mb-[-20px]">* Jika tidak ada benefit, biarkan kosong.</p>
           </div>
 
           <!-- Kecepatan Produk -->
@@ -81,6 +82,7 @@
               class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
               placeholder="Biaya Pasang" value="{{ number_format($produk->biaya_pasang, 0, ',', '.') }}"
               oninput="formatCurrency(this)">
+              <p class="mt-2 text-xs text-red-600 mb-[-20px]">* Jika tidak ada biaya pasang, biarkan kosong.</p>
           </div>
 
           <!-- Kategori Produk -->
@@ -123,6 +125,7 @@
             <input type="number" name="diskon" id="diskon" step="0.01"
               class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
               placeholder="Diskon Produk" value="{{ $produk->diskon }}">
+              <p class="mt-2 text-xs text-red-600 mb-[-20px]">* Jika tidak ada biaya pasang, biarkan kosong.</p>
           </div>
         </div>
 

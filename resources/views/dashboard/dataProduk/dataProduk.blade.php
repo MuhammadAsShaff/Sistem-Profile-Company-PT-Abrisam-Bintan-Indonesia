@@ -80,40 +80,43 @@
 
             <tbody class="bg-white divide-y divide-gray-200 dark:divide-gray-700 dark:bg-gray-900">
               @foreach ($produks as $produk)
-          <tr>
-          <td class="px-4 py-4 text-sm text-gray-500 dark:text-gray-300">
-            {{ ($produks->currentPage() - 1) * $produks->perPage() + $loop->iteration }}</td>
-          <td class="px-4 py-4 text-sm font-medium text-gray-700">{{ $produk->nama_produk }}</td>
-          <td class="px-4 py-4 text-sm font-medium text-gray-700">
-            @if($produk->diskon > 0)
-        <span class="line-through">Rp.{{ number_format($produk->harga_produk, 0, ',', '.') }}</span>
-        <br>Setelah Diskon:<br><span
-        class="text-red-500">Rp.{{ number_format($produk->harga_produk - ($produk->harga_produk * $produk->diskon / 100), 0, ',', '.') }}</span>
-      @else
-    <span>Rp.{{ number_format($produk->harga_produk, 0, ',', '.') }}</span>
-  @endif
-          </td>
-          <td class="px-4 py-4 text-sm text-gray-500 dark:text-gray-300">
-            {{ $produk->diskon > 0 ? number_format($produk->diskon, 0) . '%' : 'Tidak ada diskon' }}</td>
-          <td class="px-4 py-4 text-sm text-gray-600 dark:text-gray-400">{{ $produk->deskripsi }}</td>
-          <td class="px-4 py-4 text-sm text-gray-500 dark:text-gray-300">{{ $produk->kecepatan }} Mbps</td>
-          <td class="px-4 py-4 text-sm text-gray-500 dark:text-gray-300">{{ $produk->benefit }}</td>
-          <td class="px-4 py-4 text-sm text-gray-500 dark:text-gray-300">
-            {{ $produk->kuota !== null && $produk->kuota != 0 ? $produk->kuota . ' GB' : 'Unlimited' }}</td>
-          <td class="px-4 py-4 text-sm text-gray-500 dark:text-gray-300">
-            {{ $produk->biaya_pasang ? 'Rp. ' . number_format($produk->biaya_pasang, 0, ',', '.') : 'Gratis' }}
-          </td>
-          <td class="px-4 py-4 text-sm text-gray-500 dark:text-gray-300">{{ $produk->kategori->nama_kategori }}
-          </td>
-          <td class="px-4 py-4 text-sm text-gray-500 dark:text-gray-300">{{ $produk->paket->nama_paket }}</td>
-          <td class="px-4 py-4 text-sm whitespace-nowrap">
-            <div class="flex items-center gap-x-6">
-            @include('dashboard.dataProduk.modalPerbaruiProduk')
-            @include('dashboard.dataProduk.modalHapusProduk')
-            </div>
-          </td>
-          </tr>
-        @endforeach
+              <tr>
+              <td class="px-4 py-4 text-sm text-gray-500 dark:text-gray-300">
+              {{ ($produks->currentPage() - 1) * $produks->perPage() + $loop->iteration }}</td>
+              <td class="px-4 py-4 text-sm font-medium text-gray-700">{{ $produk->nama_produk }}</td>
+              <td class="px-4 py-4 text-sm font-medium text-gray-700">
+              @if($produk->diskon > 0)
+            <span class="line-through">Rp.{{ number_format($produk->harga_produk, 0, ',', '.') }}</span>
+            <br>Setelah Diskon:<br><span
+            class="text-red-500">Rp.{{ number_format($produk->harga_produk - ($produk->harga_produk * $produk->diskon / 100), 0, ',', '.') }}</span>
+            @else
+          <span>Rp.{{ number_format($produk->harga_produk, 0, ',', '.') }}</span>
+          @endif
+              </td>
+              <td class="px-4 py-4 text-sm text-gray-500 dark:text-gray-300">
+              {{ $produk->diskon > 0 ? number_format($produk->diskon, 0) . '%' : 'Tidak ada diskon' }}</td>
+              <td class="px-4 py-4 text-sm text-gray-600 dark:text-gray-400">{{ $produk->deskripsi }}</td>
+              <td class="px-4 py-4 text-sm text-gray-500 dark:text-gray-300">{{ $produk->kecepatan }} Mbps</td>
+              <td class="px-4 py-4 text-sm text-gray-500 dark:text-gray-300">
+              {{ $produk->benefit !== null ? $produk->benefit : 'Tidak ada benefit' }}
+              </td>
+
+              <td class="px-4 py-4 text-sm text-gray-500 dark:text-gray-300">
+              {{ $produk->kuota !== null && $produk->kuota != 0 ? $produk->kuota . ' GB' : 'Unlimited' }}</td>
+              <td class="px-4 py-4 text-sm text-gray-500 dark:text-gray-300">
+              {{ $produk->biaya_pasang ? 'Rp. ' . number_format($produk->biaya_pasang, 0, ',', '.') : 'Gratis' }}
+              </td>
+              <td class="px-4 py-4 text-sm text-gray-500 dark:text-gray-300">{{ $produk->kategori->nama_kategori }}
+              </td>
+              <td class="px-4 py-4 text-sm text-gray-500 dark:text-gray-300">{{ $produk->paket->nama_paket }}</td>
+              <td class="px-4 py-4 text-sm whitespace-nowrap">
+              <div class="flex items-center gap-x-6">
+              @include('dashboard.dataProduk.modalPerbaruiProduk')
+              @include('dashboard.dataProduk.modalHapusProduk')
+              </div>
+              </td>
+              </tr>
+      @endforeach
             </tbody>
           </table>
         </div>

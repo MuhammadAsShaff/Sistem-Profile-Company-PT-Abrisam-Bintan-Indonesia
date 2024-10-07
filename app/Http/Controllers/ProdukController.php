@@ -37,7 +37,7 @@ class ProdukController extends Controller
         $validated = $request->validate([
             'nama_produk' => 'required|string|max:255',
             'harga_produk' => 'required|numeric|min:0',
-            'benefit' => 'required|string',
+            'benefit' => 'nullable|string',
             'kecepatan' => 'required|integer',
             'deskripsi' => 'required|string',
             'diskon' => 'nullable|numeric|min:0|max:100',
@@ -84,7 +84,7 @@ class ProdukController extends Controller
         $validatedData = $request->validate([
             'nama_produk' => 'required|string|max:255',
             'harga_produk' => 'required|numeric|min:0', // Pastikan harga adalah angka setelah penghapusan titik
-            'benefit' => 'required|string',
+            'benefit' => 'nullable|string',
             'kecepatan' => 'required|integer',
             'deskripsi' => 'required|string',
             'diskon' => 'nullable|numeric|min:0|max:100000',

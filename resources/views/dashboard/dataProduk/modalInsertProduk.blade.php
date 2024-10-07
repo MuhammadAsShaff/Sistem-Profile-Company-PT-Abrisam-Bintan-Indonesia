@@ -27,130 +27,136 @@
       </div>
 
       <!-- Modal body -->
-      <form action="{{ route('produk.store') }}" method="POST">
-        @csrf
-        <div class="grid grid-cols-2 gap-6">
-          <!-- Nama Produk -->
-          <div class="col-span-1">
-            <label for="nama_produk" class="block text-sm font-medium text-gray-700">Nama Produk</label>
-            <input type="text" name="nama_produk" id="nama_produk"
-              class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
-              placeholder="Nama Produk" value="{{ old('nama_produk') }}" required>
-          </div>
+      <!-- Modal body -->
+<form action="{{ route('produk.store') }}" method="POST">
+  @csrf
+  <!-- Menggunakan 'gap-6' untuk menjaga jarak konsisten antar elemen grid -->
+  <div class="grid grid-cols-2 gap-6">
+    <!-- Nama Produk -->
+    <div class="col-span-1">
+      <label for="nama_produk" class="block text-sm font-medium text-gray-700">Nama Produk</label>
+      <input type="text" name="nama_produk" id="nama_produk"
+        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+        placeholder="Nama Produk" value="{{ old('nama_produk') }}" required>
+    </div>
 
-          <!-- Harga Produk -->
-          <div class="col-span-1">
-            <label for="harga_produk" class="block text-sm font-medium text-gray-700">Harga Produk</label>
-            <input type="text" name="harga_produk" id="harga_produk"
-              class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
-              placeholder="Harga Produk" value="{{ old('harga_produk') }}" required oninput="formatCurrency(this)">
-          </div>
+    <!-- Harga Produk -->
+    <div class="col-span-1">
+      <label for="harga_produk" class="block text-sm font-medium text-gray-700">Harga Produk</label>
+      <input type="text" name="harga_produk" id="harga_produk"
+        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+        placeholder="Harga Produk" value="{{ old('harga_produk') }}" required oninput="formatCurrency(this)">
+    </div>
 
-          <!-- Benefit Produk -->
-          <div class="col-span-1">
-            <label for="benefit" class="block text-sm font-medium text-gray-700">Benefit Produk</label>
-            <input type="text" name="benefit" id="benefit"
-              class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
-              placeholder="Benefit Produk" value="{{ old('benefit') }}" required>
-          </div>
+    <!-- Benefit Produk -->
+    <div class="col-span-1">
+      <label for="benefit" class="block text-sm font-medium text-gray-700">Benefit Produk</label>
+      <input type="text" name="benefit" id="benefit"
+        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+        placeholder="Benefit Produk" value="{{ old('benefit') }}">
+      <p class="mt-2 text-xs text-red-600 mb-[-20px]">* Jika tidak ada benefit, biarkan kosong.</p>
+    </div>
 
-          <!-- Kecepatan Produk -->
-          <div class="col-span-1">
-            <label for="kecepatan" class="block text-sm font-medium text-gray-700">Kecepatan Produk (Mbps)</label>
-            <input type="number" name="kecepatan" id="kecepatan"
-              class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
-              placeholder="Kecepatan Produk" value="{{ old('kecepatan') }}" required>
-          </div>
+    <!-- Kecepatan Produk -->
+    <div class="col-span-1">
+      <label for="kecepatan" class="block text-sm font-medium text-gray-700">Kecepatan Produk (Mbps)</label>
+      <input type="number" name="kecepatan" id="kecepatan"
+        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+        placeholder="Kecepatan Produk" value="{{ old('kecepatan') }}" required>
+    </div>
 
-          <!-- Kuota Produk -->
-          <div class="col-span-1">
-            <label for="kuota" class="block text-sm font-medium text-gray-700">Kuota Produk (GB)</label>
-            <input type="number" name="kuota" id="kuota"
-              class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
-              placeholder="Kuota Produk" value="{{ old('kuota') }}">
-          </div>
+    <!-- Kuota Produk -->
+    <div class="col-span-1">
+      <label for="kuota" class="block text-sm font-medium text-gray-700">Kuota Produk (GB)</label>
+      <input type="number" name="kuota" id="kuota"
+        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+        placeholder="Kuota Produk" value="{{ old('kuota') }}">
+    </div>
 
-          <!-- Biaya Pasang -->
-            <div class="col-span-1">
-              <label for="biaya_pasang" class="block text-sm font-medium text-gray-700">Biaya Pasang</label>
-              <input type="text" name="biaya_pasang" id="biaya_pasang"
-                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
-                placeholder="Biaya Pasang" value="{{ old('biaya_pasang') }}" oninput="formatCurrency(this)">
-            </div>
+    <!-- Biaya Pasang -->
+    <div class="col-span-1">
+      <label for="biaya_pasang" class="block text-sm font-medium text-gray-700">Biaya Pasang</label>
+      <input type="text" name="biaya_pasang" id="biaya_pasang"
+        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+        placeholder="Biaya Pasang" value="{{ old('biaya_pasang') }}" oninput="formatCurrency(this)">
+      <p class="mt-2 text-xs text-red-600 mb-[-20px]">* Jika tidak ada biaya pasang, biarkan kosong.</p>
+    </div>
 
-            <!-- Kategori Produk -->
-            <div class="col-span-1">
-              <label for="id_kategori" class="block text-sm font-medium text-gray-700">Kategori Produk</label>
-              @if(isset($kategoris) && count($kategoris) > 0)
-          <select name="id_kategori" id="id_kategori" required
-          class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm">
-          <option value="">Pilih Kategori</option>
-          @foreach($kategoris as $kategori)
+    <!-- Kategori Produk -->
+    <div class="col-span-1">
+      <label for="id_kategori" class="block text-sm font-medium text-gray-700">Kategori Produk</label>
+      @if(isset($kategoris) && count($kategoris) > 0)
+      <select name="id_kategori" id="id_kategori" required
+        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm">
+        <option value="">Pilih Kategori</option>
+        @foreach($kategoris as $kategori)
         <option value="{{ $kategori->id_kategori }}" {{ old('id_kategori') == $kategori->id_kategori ? 'selected' : '' }}>
-        {{ $kategori->nama_kategori }}
+          {{ $kategori->nama_kategori }}
         </option>
-      @endforeach
-          </select>
-        @else
-        <p class="text-red-500">Kategori tidak tersedia.</p>
-      @endif
-            </div>
-
-            <!-- Paket Produk -->
-            <div class="col-span-1">
-              <label for="id_paket" class="block text-sm font-medium text-gray-700">Paket Produk</label>
-              @if(isset($pakets) && count($pakets) > 0)
-          <select name="id_paket" id="id_paket" required
-          class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm">
-          <option value="">Pilih Paket</option>
-          @foreach($pakets as $paket)
-        <option value="{{ $paket->id_paket }}" {{ old('id_paket') == $paket->id_paket ? 'selected' : '' }}>
-        {{ $paket->nama_paket }}
-        </option>
-      @endforeach
-          </select>
-        @else
-        <p class="text-red-500">Paket tidak tersedia.</p>
-      @endif
-            </div>
-
-            <!-- Deskripsi Produk -->
-            <div class="col-span-1">
-              <label for="deskripsi" class="block text-sm font-medium text-gray-700">Deskripsi Produk</label>
-              <textarea name="deskripsi" id="deskripsi" required
-                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
-                placeholder="Deskripsi Produk">{{ old('deskripsi') }}</textarea>
-            </div>
-
-            <!-- Diskon Produk -->
-            <div class="col-span-1">
-              <label for="diskon" class="block text-sm font-medium text-gray-700">Diskon (%)</label>
-              <input type="number" name="diskon" id="diskon"
-                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
-                placeholder="Diskon Produk" value="{{ old('diskon') }}">
-            </div>
-
-        </div>
-
-        <!-- Pesan Error -->
-        @if(session('error'))
-      <div class="p-4 mb-4 text-sm text-red-700 bg-red-100 rounded-lg" role="alert">
-        <span class="font-medium">Error!</span> {{ session('error') }}
-      </div>
-    @endif
-
-        <!-- Modal footer -->
-        <div class="flex justify-end p-5 border-t border-gray-200 mt-10">
-          @if(!isset($kategoris) || count($kategoris) === 0 || !isset($pakets) || count($pakets) === 0)
-        <span class="text-red-500">Silakan tambahkan terlebih dahulu kategori dan paket produk.</span>
+        @endforeach
+      </select>
       @else
-      <button type="submit"
+      <p class="text-red-500">Kategori tidak tersedia.</p>
+      @endif
+    </div>
+
+    <!-- Paket Produk -->
+    <div class="col-span-1">
+      <label for="id_paket" class="block text-sm font-medium text-gray-700">Paket Produk</label>
+      @if(isset($pakets) && count($pakets) > 0)
+      <select name="id_paket" id="id_paket" required
+        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm">
+        <option value="">Pilih Paket</option>
+        @foreach($pakets as $paket)
+        <option value="{{ $paket->id_paket }}" {{ old('id_paket') == $paket->id_paket ? 'selected' : '' }}>
+          {{ $paket->nama_paket }}
+        </option>
+        @endforeach
+      </select>
+      @else
+      <p class="text-red-500">Paket tidak tersedia.</p>
+      @endif
+    </div>
+
+    <!-- Deskripsi Produk -->
+    <div class="col-span-1">
+      <label for="deskripsi" class="block text-sm font-medium text-gray-700">Deskripsi Produk</label>
+      <textarea name="deskripsi" id="deskripsi" required
+        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+        placeholder="Deskripsi Produk">{{ old('deskripsi') }}</textarea>
+    </div>
+
+    <!-- Diskon Produk -->
+    <div class="col-span-1">
+      <label for="diskon" class="block text-sm font-medium text-gray-700">Diskon (%)</label>
+      <input type="number" name="diskon" id="diskon"
+        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+        placeholder="Diskon Produk" value="{{ old('diskon') }}">
+      <p class="mt-2 text-xs text-red-600 mb-[-20px]">* Biarkan kosong jika tidak ada diskon.</p>
+    </div>
+
+  </div>
+
+  <!-- Pesan Error -->
+  @if(session('error'))
+  <div class="p-4 mb-4 text-sm text-red-700 bg-red-100 rounded-lg" role="alert">
+    <span class="font-medium">Error!</span> {{ session('error') }}
+  </div>
+  @endif
+
+  <!-- Modal footer -->
+  <div class="flex justify-end p-5 border-t border-gray-200 mt-10">
+    @if(!isset($kategoris) || count($kategoris) === 0 || !isset($pakets) || count($pakets) === 0)
+    <span class="text-red-500">Silakan tambahkan terlebih dahulu kategori dan paket produk.</span>
+    @else
+    <button type="submit"
       class="inline-flex justify-center px-5 py-2.5 text-sm font-medium text-white bg-red-500 border border-transparent rounded-lg shadow-sm hover:bg-red-600 focus:outline-none focus:ring-4 focus:ring-red-300">
       Tambah Produk
-      </button>
+    </button>
     @endif
-        </div>
-      </form>
+  </div>
+</form>
+
     </div>
   </div>
 </dialog>

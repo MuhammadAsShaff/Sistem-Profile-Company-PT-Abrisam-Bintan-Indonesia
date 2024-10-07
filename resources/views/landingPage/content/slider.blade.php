@@ -13,7 +13,7 @@
     <div class="min-w-full flex-shrink-0 h-[20vh] md:h-[50vh] lg:h-[60vh] w-full overflow-hidden rounded-lg p-3">
       <img src="{{ asset('uploads/promos/' . $promos[count($promos) - 1]->gambar_promo) }}"
       class="w-full h-full object-cover rounded-lg" alt="Duplicate Last Slide">
-    </div>
+    </div>                                                                                                                                                                             
 
     <!-- Original Slides -->
     @foreach($promos as $key => $promo)
@@ -41,25 +41,27 @@
   @endforeach
   </div>
 
-  <!-- Tombol Previous -->
-  <button type="button"
-    class="absolute top-1/2 left-[5%] lg:left-[12%] transform -translate-y-1/2 z-30 text-black bg-white rounded-full w-8 h-8 md:w-10 md:h-10 flex items-center justify-center focus:outline-none hover:bg-gray-200 transition duration-300 shadow-xl"
-    id="prev-btn">
-    <svg class="w-4 h-4 md:w-5 md:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-      xmlns="http://www.w3.org/2000/svg">
-      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="4" d="M15 19l-7-7 7-7"></path>
-    </svg>
-  </button>
+ <!-- Tombol Prev -->
+<button type="button"
+  class="absolute top-1/2 left-[5%] lg:left-[12%] transform -translate-y-1/2 z-5 text-black bg-white rounded-full w-8 h-8 md:w-10 md:h-10 flex items-center justify-center focus:outline-none hover:bg-gray-200 transition duration-300 shadow-xl"
+  id="prev-btn">
+  <svg class="w-4 h-4 md:w-5 md:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+    xmlns="http://www.w3.org/2000/svg">
+    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="4" d="M15 19l-7-7 7-7"></path>
+  </svg>
+</button>
 
-  <!-- Tombol Next -->
-  <button type="button"
-    class="absolute top-1/2 right-[5%] lg:right-[12%] transform -translate-y-1/2 z-30 text-black bg-white rounded-full w-8 h-8 md:w-10 md:h-10 flex items-center justify-center focus:outline-none hover:bg-gray-200 transition duration-300 shadow-xl"
-    id="next-btn">
-    <svg class="w-4 h-4 md:w-5 md:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-      xmlns="http://www.w3.org/2000/svg">
-      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="4" d="M9 5l7 7-7 7"></path>
-    </svg>
-  </button>
+<!-- Tombol Next -->
+<button type="button"
+  class="absolute top-1/2 right-[5%] lg:right-[12%] transform -translate-y-1/2 z-5 text-black bg-white rounded-full w-8 h-8 md:w-10 md:h-10 flex items-center justify-center focus:outline-none hover:bg-gray-200 transition duration-300 shadow-xl"
+  id="next-btn">
+  <svg class="w-4 h-4 md:w-5 md:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+    xmlns="http://www.w3.org/2000/svg">
+    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="4" d="M9 5l7 7-7 7"></path>
+  </svg>
+</button>
+
+
 </div>
 
 <script>
