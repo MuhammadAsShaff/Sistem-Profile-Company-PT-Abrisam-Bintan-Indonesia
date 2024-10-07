@@ -30,11 +30,8 @@
     </div>
 
     <!-- Footer Section -->
-    <footer class="text-white py-6">
-      <a class="container text-center">
+    <footer class="text-white py-6 ">
         @include('landingPage.footer')
-        
-      </a>
     </footer>
   </div>
 
