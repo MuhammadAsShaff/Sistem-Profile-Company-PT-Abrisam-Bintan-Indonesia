@@ -8,7 +8,7 @@ class Produk extends Model
     protected $table = 'produk'; // Pastikan tabel benar
     protected $primaryKey = 'id_produk'; // Primary key dari tabel
     protected $fillable = [
-        'nama_produk', 'harga_produk', 'benefit', 'kecepatan', 'deskripsi', 'diskon', 'gambar_produk', 'id_kategori', 'id_paket'
+        'nama_produk', 'harga_produk', 'benefit', 'kecepatan', 'deskripsi', 'diskon', 'biaya_pasang','kuota', 'id_kategori', 'id_paket'
     ];
 
     // Relasi ke model Kategori

@@ -5,7 +5,6 @@ use App\Models\Produk;
 use App\Models\Paket;
 use App\Models\Kategori;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
 
 class ProdukController extends Controller
 {
@@ -29,13 +28,10 @@ class ProdukController extends Controller
 
     public function store(Request $request)
     {
-        // Hapus titik pemisah ribuan dari input harga
+        // Hapus titik pemisah ribuan dari input harga dan biaya pasang
         $hargaProduk = str_replace('.', '', $request->input('harga_produk'));
-        $request->merge(['harga_produk' => $hargaProduk]);
-
-        // Cek apakah ada kategori dan paket
-        $kategoris = Kategori::all(); // Ambil semua kategori
-        $pakets = Paket::all(); // Ambil semua paket
+        $biayaPasang = str_replace('.', '', $request->input('biaya_pasang'));
+        $request->merge(['harga_produk' => $hargaProduk, 'biaya_pasang' => $biayaPasang]);
 
         // Validasi data
         $validated = $request->validate([
@@ -45,40 +41,25 @@ class ProdukController extends Controller
             'kecepatan' => 'required|integer',
             'deskripsi' => 'required|string',
             'diskon' => 'nullable|numeric|min:0|max:100',
+            'biaya_pasang' => 'nullable|numeric|min:0', // Validasi biaya pasang
+            'kuota' => 'nullable|integer|min:0', // Validasi kuota, bisa diisi atau kosong
             'id_kategori' => 'required|exists:kategori,id_kategori',
             'id_paket' => 'required|exists:paket,id_paket',
-            'gambar_produk' => 'nullable|mimes:jpg,jpeg,png|max:2048',
         ]);
-
-        // Pastikan kategori dan paket tersedia
-        if ($kategoris->isEmpty() || $pakets->isEmpty()) {
-            return redirect()->back()->with('error', 'Tidak ada kategori atau paket yang tersedia. Silakan tambahkan kategori dan paket terlebih dahulu.');
-        }
 
         // Persiapan data produk baru
         $produkData = [
             'nama_produk' => $request->input('nama_produk'),
-            'harga_produk' => $validated['harga_produk'],
+            'harga_produk' => $validated['harga_produk'], // Simpan harga produk yang sudah diformat
             'benefit' => $request->input('benefit'),
             'kecepatan' => $request->input('kecepatan'),
             'deskripsi' => $request->input('deskripsi'),
             'diskon' => $request->input('diskon'),
+            'biaya_pasang' => $request->input('biaya_pasang') ?: 0, // Jika kosong, simpan 0
+            'kuota' => $request->input('kuota') ?: null, // Jika kosong, simpan null atau 0 sesuai kebutuhan
             'id_kategori' => $request->input('id_kategori'),
             'id_paket' => $request->input('id_paket'),
         ];
-
-        // Cek apakah ada file yang diupload
-        if ($request->hasFile('gambar_produk')) {
-            $file = $request->file('gambar_produk');
-            $filename = time() . '_' . $file->getClientOriginalName();
-            $destinationPath = public_path('uploads/produk');
-
-            if (!file_exists($destinationPath)) {
-                mkdir($destinationPath, 0755, true);
-            }
-            $file->move($destinationPath, $filename);
-            $produkData['gambar_produk'] = $filename; // Menyimpan nama file gambar
-        }
 
         // Insert produk ke database
         try {
@@ -90,14 +71,14 @@ class ProdukController extends Controller
     }
 
 
-
     public function update(Request $request, $id_produk)
     {
-        // Hapus titik pemisah ribuan dari input harga
+        // Hapus titik pemisah ribuan dari input harga dan biaya pasang
         $hargaProduk = str_replace('.', '', $request->input('harga_produk'));
+        $biayaPasang = str_replace('.', '', $request->input('biaya_pasang'));
 
-        // Gabungkan kembali harga produk yang sudah dihapus titiknya untuk validasi
-        $request->merge(['harga_produk' => $hargaProduk]);
+        // Gabungkan kembali harga produk dan biaya pasang untuk validasi
+        $request->merge(['harga_produk' => $hargaProduk, 'biaya_pasang' => $biayaPasang]);
 
         // Validasi input
         $validatedData = $request->validate([
@@ -107,9 +88,10 @@ class ProdukController extends Controller
             'kecepatan' => 'required|integer',
             'deskripsi' => 'required|string',
             'diskon' => 'nullable|numeric|min:0|max:100000',
+            'biaya_pasang' => 'nullable|numeric|min:0', // Validasi biaya pasang
+            'kuota' => 'nullable|integer|min:0', // Validasi kuota
             'id_kategori' => 'required|exists:kategori,id_kategori',
             'id_paket' => 'required|exists:paket,id_paket',
-            'gambar_produk' => 'nullable|image|mimes:jpg,jpeg,png|max:10000',
         ]);
 
         // Temukan produk berdasarkan ID
@@ -122,20 +104,10 @@ class ProdukController extends Controller
         $produk->kecepatan = $validatedData['kecepatan'];
         $produk->deskripsi = $validatedData['deskripsi'];
         $produk->diskon = $validatedData['diskon'];
+        $produk->biaya_pasang = $validatedData['biaya_pasang']; // Update biaya pasang
+        $produk->kuota = $validatedData['kuota']; // Update kuota
         $produk->id_kategori = $validatedData['id_kategori'];
         $produk->id_paket = $validatedData['id_paket'];
-
-        // Update gambar jika ada
-        if ($request->hasFile('gambar_produk')) {
-            if ($produk->gambar_produk && file_exists(public_path('uploads/produk/' . $produk->gambar_produk))) {
-                unlink(public_path('uploads/produk/' . $produk->gambar_produk));
-            }
-
-            $file = $request->file('gambar_produk');
-            $filename = time() . '_' . $file->getClientOriginalName();
-            $file->move(public_path('uploads/produk'), $filename);
-            $produk->gambar_produk = $filename;
-        }
 
         // Simpan perubahan ke database
         $produk->save();
@@ -147,11 +119,6 @@ class ProdukController extends Controller
     public function destroy($id)
     {
         $produk = Produk::findOrFail($id);
-
-        // Hapus file gambar jika ada
-        if ($produk->gambar_produk) {
-            Storage::delete('public/uploads/produk/' . $produk->gambar_produk);
-        }
 
         // Hapus produk
         $produk->delete();

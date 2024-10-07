@@ -14,14 +14,17 @@ class CreateProdukTable extends Migration
     public function up()
     {
         Schema::create('produk', function (Blueprint $table) {
-            $table->id('id_produk');
-            $table->string('nama_produk');
-            $table->integer('harga_produk');
-            $table->string('benefit');
-            $table->integer('kecepatan');
-            $table->string('deskripsi');
-            $table->integer('diskon')->nullable();
-            $table->string('gambar_produk')->nullable();
+            $table->id('id_produk'); // Primary key
+
+            // Kolom sesuai dengan model
+            $table->string('nama_produk'); // Nama produk
+            $table->integer('harga_produk'); // Harga produk
+            $table->string('benefit'); // Benefit produk
+            $table->integer('kecepatan'); // Kecepatan internet
+            $table->text('deskripsi'); // Deskripsi produk
+            $table->integer('diskon')->nullable(); // Diskon produk
+            $table->integer('biaya_pasang')->nullable(); // Biaya pemasangan
+            $table->integer('kuota')->nullable(); // Kuota, mungkin bergantung pada tipe produk
 
             // Foreign key ke kategori
             $table->unsignedBigInteger('id_kategori');
@@ -31,7 +34,7 @@ class CreateProdukTable extends Migration
             $table->unsignedBigInteger('id_paket');
             $table->foreign('id_paket')->references('id_paket')->on('paket')->onDelete('cascade');
 
-            $table->timestamps();
+            $table->timestamps(); // Timestamps for created_at and updated_at
         });
     }
 

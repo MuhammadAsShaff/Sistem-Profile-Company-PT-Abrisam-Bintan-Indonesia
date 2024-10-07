@@ -11,7 +11,7 @@
     <!-- Baris Kedua: Penjelasan Singkat -->
     <div class="mb-6">
       <p class="text-sm text-gray-600 dark:text-gray-300">
-        Halaman Ini Menampilkan <b>Informasi Produk</b>, Termasuk Detail Produk Dan Gambar.
+        Halaman Ini Menampilkan <b>Informasi Produk</b>, Termasuk Detail Produk dan Kuota.
         Anda Dapat Menambah, Memperbarui, Atau Menghapus Produk Melalui Halaman Ini.
       </p>
     </div>
@@ -38,98 +38,74 @@
     </div>
   </section>
 
+  <!-- Tabel Data Produk -->
   <div class="flex flex-col mt-6">
-    <div class="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
-      <div class="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
+    <div class="overflow-x-auto"> <!-- Hapus kelas yang menyebabkan overflow di luar batas layar -->
+      <div class="inline-block min-w-full py-2 align-middle">
         <div class="overflow-hidden border border-gray-200 dark:border-gray-700 md:rounded-lg">
-          <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+          <table class="min-w-full table-fixed divide-y divide-gray-200 dark:divide-gray-700">
+            <!-- Tambahkan table-fixed -->
             <thead class="bg-gray-50 dark:bg-gray-800">
               <tr>
                 <th scope="col"
-                  class="px-4 py-3.5 text-sm font-normal text-left text-gray-500 dark:text-gray-400 w-1/12">
-                  Nomor
+                  class="px-4 py-3.5 w-1/12 text-sm font-normal text-left text-gray-500 dark:text-gray-400">Nomor</th>
+                <th scope="col"
+                  class="px-4 py-3.5 w-1/12 text-sm font-normal text-left text-gray-500 dark:text-gray-400">Nama Produk
                 </th>
-                <th scope="col" class="px-6 py-3.5 text-sm font-normal text-left text-gray-500 dark:text-gray-400">
-                  Nama Produk
+                <th scope="col"
+                  class="px-4 py-3.5 w-1/12 text-sm font-normal text-left text-gray-500 dark:text-gray-400">Harga</th>
+                <th scope="col"
+                  class="px-4 py-3.5 w-1/12 text-sm font-normal text-left text-gray-500 dark:text-gray-400">Diskon</th>
+                <th scope="col"
+                  class="px-4 py-3.5 w-1/12 text-sm font-normal text-left text-gray-500 dark:text-gray-400">Deskripsi
                 </th>
-                <th scope="col" class="px-6 py-3.5 text-sm font-normal text-left text-gray-500 dark:text-gray-400">
-                  Gambar
+                <th scope="col"
+                  class="px-4 py-3.5 w-1/12 text-sm font-normal text-left text-gray-500 dark:text-gray-400">Kecepatan
                 </th>
-                <th scope="col" class="px-6 py-3.5 text-sm font-normal text-left text-gray-500 dark:text-gray-400">
-                  Harga
+                <th scope="col"
+                  class="px-4 py-3.5 w-1/12 text-sm font-normal text-left text-gray-500 dark:text-gray-400">Benefit</th>
+                <th scope="col"
+                  class="px-4 py-3.5 w-1/12 text-sm font-normal text-left text-gray-500 dark:text-gray-400">Kuota</th>
+                <th scope="col"
+                  class="px-4 py-3.5 w-1/12 text-sm font-normal text-left text-gray-500 dark:text-gray-400">Biaya Pasang
                 </th>
-                <th scope="col" class="px-6 py-3.5 text-sm font-normal text-left text-gray-500 dark:text-gray-400">
-                  Diskon
-                </th> <!-- Tambahkan kolom Diskon -->
-                <th scope="col" class="px-6 py-3.5 text-sm font-normal text-left text-gray-500 dark:text-gray-400">
-                  Deskripsi
+                <th scope="col"
+                  class="px-4 py-3.5 w-1/12 text-sm font-normal text-left text-gray-500 dark:text-gray-400">Kategori
                 </th>
-                <th scope="col" class="px-6 py-3.5 text-sm font-normal text-left text-gray-500 dark:text-gray-400">
-                  Kecepatan
-                </th>
-                <th scope="col" class="px-6 py-3.5 text-sm font-normal text-left text-gray-500 dark:text-gray-400">
-                  Benefit
-                </th>
-                <th scope="col" class="px-6 py-3.5 text-sm font-normal text-left text-gray-500 dark:text-gray-400">
-                  Kategori
-                </th>
-                <th scope="col" class="px-6 py-3.5 text-sm font-normal text-left text-gray-500 dark:text-gray-400">
-                  Paket
-                </th>
-                <th scope="col" class="relative py-3.5 px-4 w-1/12">
-                  <span class="sr-only">Edit</span>
-                </th>
+                <th scope="col"
+                  class="px-4 py-3.5 w-1/12 text-sm font-normal text-left text-gray-500 dark:text-gray-400">Paket</th>
+                <th scope="col" class="relative py-3.5 w-1/12 px-4"><span class="sr-only">Edit</span></th>
               </tr>
             </thead>
 
             <tbody class="bg-white divide-y divide-gray-200 dark:divide-gray-700 dark:bg-gray-900">
               @foreach ($produks as $produk)
           <tr>
-          <td class="px-4 py-4 text-sm text-gray-500 dark:text-gray-300 whitespace-nowrap">
-            {{ ($produks->currentPage() - 1) * $produks->perPage() + $loop->iteration }}
-          </td>
-          <td class="px-6 py-4 text-sm font-medium text-gray-700 whitespace-nowrap">
-            {{ $produk->nama_produk }}
-          </td>
-          <td class="px-6 py-4 text-sm text-gray-500 dark:text-gray-300 whitespace-nowrap">
-            @if($produk->gambar_produk)
-        <img class="object-cover w-10 h-10 rounded-full"
-        src="{{ asset('uploads/produk/' . $produk->gambar_produk) }}" alt="Gambar Produk">
-      @else
-    <span class="text-xs text-gray-400">Tidak ada gambar</span>
-  @endif
-          </td>
-          <td class="px-6 py-4 text-sm font-medium text-gray-700 whitespace-nowrap">
+          <td class="px-4 py-4 text-sm text-gray-500 dark:text-gray-300">
+            {{ ($produks->currentPage() - 1) * $produks->perPage() + $loop->iteration }}</td>
+          <td class="px-4 py-4 text-sm font-medium text-gray-700">{{ $produk->nama_produk }}</td>
+          <td class="px-4 py-4 text-sm font-medium text-gray-700">
             @if($produk->diskon > 0)
-        <!-- Harga Normal Dicoret -->
         <span class="line-through">Rp.{{ number_format($produk->harga_produk, 0, ',', '.') }}</span>
-        <!-- Harga Setelah Diskon --><br>Setelah Diskon:
-        <br>
-        <span
+        <br>Setelah Diskon:<br><span
         class="text-red-500">Rp.{{ number_format($produk->harga_produk - ($produk->harga_produk * $produk->diskon / 100), 0, ',', '.') }}</span>
       @else
-    <!-- Harga Normal Tanpa Diskon -->
     <span>Rp.{{ number_format($produk->harga_produk, 0, ',', '.') }}</span>
   @endif
           </td>
-          <td class="px-6 py-4 text-sm text-gray-500 dark:text-gray-300 whitespace-nowrap">
-            {{ $produk->diskon > 0 ? number_format($produk->diskon, 0) . '%' : 'Tidak ada diskon' }}
+          <td class="px-4 py-4 text-sm text-gray-500 dark:text-gray-300">
+            {{ $produk->diskon > 0 ? number_format($produk->diskon, 0) . '%' : 'Tidak ada diskon' }}</td>
+          <td class="px-4 py-4 text-sm text-gray-600 dark:text-gray-400">{{ $produk->deskripsi }}</td>
+          <td class="px-4 py-4 text-sm text-gray-500 dark:text-gray-300">{{ $produk->kecepatan }} Mbps</td>
+          <td class="px-4 py-4 text-sm text-gray-500 dark:text-gray-300">{{ $produk->benefit }}</td>
+          <td class="px-4 py-4 text-sm text-gray-500 dark:text-gray-300">
+            {{ $produk->kuota !== null && $produk->kuota != 0 ? $produk->kuota . ' GB' : 'Unlimited' }}</td>
+          <td class="px-4 py-4 text-sm text-gray-500 dark:text-gray-300">
+            {{ $produk->biaya_pasang ? 'Rp. ' . number_format($produk->biaya_pasang, 0, ',', '.') : 'Gratis' }}
           </td>
-          <td class="px-6 py-4 text-sm font-normal text-gray-600 dark:text-gray-400">
-            {{ $produk->deskripsi }}
+          <td class="px-4 py-4 text-sm text-gray-500 dark:text-gray-300">{{ $produk->kategori->nama_kategori }}
           </td>
-          <td class="px-6 py-4 text-sm text-gray-500 dark:text-gray-300 whitespace-nowrap">
-            {{ $produk->kecepatan }} Mbps
-          </td>
-          <td class="px-6 py-4 text-sm text-gray-500 dark:text-gray-300 whitespace-nowrap">
-            {{ $produk->benefit }}
-          </td>
-          <td class="px-6 py-4 text-sm text-gray-500 dark:text-gray-300 whitespace-nowrap">
-            {{ $produk->kategori->nama_kategori }}
-          </td>
-          <td class="px-6 py-4 text-sm text-gray-500 dark:text-gray-300 whitespace-nowrap">
-            {{ $produk->paket->nama_paket }}
-          </td>
+          <td class="px-4 py-4 text-sm text-gray-500 dark:text-gray-300">{{ $produk->paket->nama_paket }}</td>
           <td class="px-4 py-4 text-sm whitespace-nowrap">
             <div class="flex items-center gap-x-6">
             @include('dashboard.dataProduk.modalPerbaruiProduk')
@@ -139,13 +115,12 @@
           </tr>
         @endforeach
             </tbody>
-
-
           </table>
         </div>
       </div>
     </div>
   </div>
+
   @include('dashboard.dataProduk.pagination')
 </section>
 @endsection

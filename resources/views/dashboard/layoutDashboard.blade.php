@@ -71,27 +71,32 @@
       }, 300); // Sesuaikan durasi dengan durasi animasi (300ms)
     }
 
+    // Fungsi untuk format angka ke dalam format ribuan dengan titik
     function formatCurrency(input) {
-      // Hapus karakter selain angka
-      let inputVal = input.value.replace(/[^0-9]/g, '');
+        // Hapus karakter selain angka
+        let inputVal = input.value.replace(/[^0-9]/g, '');
 
-      if (inputVal === '') {
-        input.value = '';
-        return;
+        if (inputVal === '') {
+          input.value = '';
+          return;
+        }
+
+        // Format angka dengan pemisah ribuan
+        input.value = new Intl.NumberFormat('id-ID').format(inputVal);
       }
 
-      // Format angka dengan pemisah ribuan
-      input.value = new Intl.NumberFormat('id-ID').format(inputVal);
-    }
+      // Saat submit, hapus titik sebelum dikirim ke server
+      const form = document.querySelector('form');
+      form.addEventListener('submit', function () {
+        const hargaInput = document.getElementById('harga_produk');
+        const biayaPasangInput = document.getElementById('biaya_pasang');
 
-    // Saat submit, hapus titik sebelum dikirim ke server
-    const form = document.querySelector('form');
-    form.addEventListener('submit', function () {
-      const hargaInput = document.getElementById('harga_produk');
-      // Menghapus semua titik dari input sebelum mengirim ke server
-      hargaInput.value = hargaInput.value.replace(/\./g, '');
-    });
+        // Menghapus semua titik dari input sebelum mengirim ke server
+        hargaInput.value = hargaInput.value.replace(/\./g, '');
+        biayaPasangInput.value = biayaPasangInput.value.replace(/\./g, '');
+      });
   </script>
+
   @if ($errors->any())
     <script>
     document.addEventListener('DOMContentLoaded', function () {

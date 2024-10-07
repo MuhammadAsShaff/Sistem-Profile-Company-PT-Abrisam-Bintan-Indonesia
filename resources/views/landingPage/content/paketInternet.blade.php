@@ -37,66 +37,76 @@
 
   <!-- Cards Section -->
   <div id="produk-container" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-6 py-6">
-    @foreach($produk as $prod)
-    <div class="max-w-sm bg-white shadow-2xl shadow-gray-400 rounded-lg p-6 relative">
-      <!-- Promo Badge -->
-      @if($prod->diskon)
-      <div class="absolute top-0 right-0 bg-red-600 text-white text-sm px-3 py-1 rounded-tr-lg rounded-bl-lg">
-      Diskon {{ $prod->diskon }}%
-      </div>
-    @endif
-
-      <!-- Card Content -->
-      <h3 class="font-bold text-xl md:text-2xl lg:text-4xl mb-2">{{ $prod->nama_produk }}</h3>
-
-      <!-- Harga Produk -->
-      @if($prod->diskon > 0)
-      <p class="text-gray-500 text-lg line-through">Rp{{ number_format($prod->harga_produk, 0, ',', '.') }}</p>
-      <p class="text-2xl lg:text-3xl font-bold mb-2 text-red-600">
-        Rp{{ substr(number_format($prod->harga_produk - ($prod->harga_produk * $prod->diskon / 100), 0, ',', '.'), 0, 3) }}<span class="text-sm">{{ substr(number_format($prod->harga_produk - ($prod->diskon / 100 * $prod->harga_produk), 0, ',', '.'), 3) }}/Bulan</span>
-      </p>
-    @else
-      <p class="text-4xl font-bold text-red-600">
-        Rp{{ substr(number_format($prod->harga_produk, 0, ',', '.'), 0, 3) }}
-        <span class="text-md">{{ substr(number_format($prod->harga_produk, 0, ',', '.'), 3) }}/Bulan</span>
-      </p>
-    @endif
-
-      <!-- Features List -->
-      <ul class="mb-4 text-gray-700 space-y-2">
-        <li>
-          <i class="fas fa-tachometer-alt text-black-500"></i>
-          Kecepatan Internet Up to <b>{{ $prod->kecepatan }}</b> Mbps
-        </li>
-
-        <li class="flex items-center">
-          <i class="fas fa-gift text-black-500"></i>
-          <span class="ml-2">{{ $prod->benefit }}</span>
-        </li>
-
-        @if($prod->paket)
-        <li class="flex items-center">
-          <i class="fas fa-tag text-black-500"></i>
-          <span class="ml-2">{{ $prod->paket->nama_paket }}</span>
-        </li>
-        @endif
-      </ul>
-
-      <!-- Button -->
-      <button class="bg-red-600 text-white py-2 px-4 rounded-lg w-full">Pilih Paket</button>
-    </div>
-    @endforeach
+    <!-- Produk akan dimuat secara dinamis -->
   </div>
 
   <!-- View All Button -->
   <div class="text-center mt-6">
-    <a href="#" class="text-blue-600">Tampilkan Semua Produk</a>
+    <button id="toggle-produk-button" class="text-blue-600" style="display: none;">Tampilkan Semua Produk</button>
   </div>
 </div>
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
   $(document).ready(function () {
+    var produk = @json($produk); // Produk data dari backend
+    var tampilkanSemua = false; // Status untuk tombol tampilkan semua atau lebih sedikit
+
+    // Fungsi untuk menampilkan produk
+    function updateProduk() {
+      var produkContainer = $('#produk-container');
+      produkContainer.empty(); // Hapus produk yang ada
+
+      var produkToShow = tampilkanSemua ? produk : produk.slice(0, 3); // Tampilkan semua atau hanya 3
+
+      $.each(produkToShow, function (index, prod) {
+        var hargaDiskon = (prod.harga_produk - (prod.harga_produk * prod.diskon / 100));
+        var hargaFormatted = new Intl.NumberFormat('id-ID').format(hargaDiskon);
+        var hargaAsli = new Intl.NumberFormat('id-ID').format(prod.harga_produk);
+
+        var html = `
+          <div class="max-w-sm bg-white shadow-2xl shadow-gray-400 rounded-lg p-6 relative">
+            ${prod.diskon ? `<div class="absolute top-0 right-0 bg-red-600 text-white text-sm px-3 py-1 rounded-tr-lg rounded-bl-lg">Diskon ${prod.diskon}%</div>` : ''}
+            <h3 class="font-bold text-xl md:text-2xl lg:text-4xl mb-2">${prod.nama_produk}</h3>
+            ${prod.diskon > 0 ? `
+            <p class="text-gray-500 text-lg line-through">Rp${hargaAsli}</p>
+            <p class="text-2xl lg:text-3xl font-bold mb-2 text-red-600">
+              Rp${hargaFormatted.slice(0, 3)}<span class="text-sm">${hargaFormatted.slice(3)}/Bulan</span>
+            </p>` : `
+            <p class="text-3xl font-bold text-red-600">
+              Rp${hargaAsli.slice(0, 3)}<span class="text-sm">${hargaAsli.slice(3)}/Bulan</span>
+            </p>`}
+            <ul class="mb-4 text-gray-700 space-y-2">
+              <li><i class="fas fa-tachometer-alt text-black-500"></i> Kecepatan Internet Up to <b>${prod.kecepatan}</b> Mbps</li>
+              <li class="flex items-center"><i class="fas fa-gift text-black-500"></i> <span class="ml-2">${prod.benefit}</span></li>
+              ${prod.paket ? `<li class="flex items-center"><i class="fas fa-tag text-black-500"></i> <span class="ml-2">${prod.paket.nama_paket}</span></li>` : ''}
+            </ul>
+            <button class="bg-red-600 text-white py-2 px-4 rounded-lg w-full">Pilih Paket</button>
+          </div>
+        `;
+        produkContainer.append(html);
+      });
+
+      // Tampilkan atau sembunyikan tombol 'Tampilkan Semua Produk'
+      if (produk.length > 3) {
+        $('#toggle-produk-button').show(); // Jika produk lebih dari 3, tampilkan tombol
+      } else {
+        $('#toggle-produk-button').hide(); // Jika produk 3 atau kurang, sembunyikan tombol
+      }
+    }
+
+    // Update produk saat halaman pertama kali dimuat
+    updateProduk();
+
+    // Fungsi toggle untuk tombol tampilkan semua atau lebih sedikit
+    $('#toggle-produk-button').click(function () {
+      tampilkanSemua = !tampilkanSemua;
+      updateProduk(); // Update produk sesuai dengan status tampilkanSemua
+
+      // Ubah teks tombol
+      $(this).text(tampilkanSemua ? 'Tampilkan Lebih Sedikit' : 'Tampilkan Semua Produk');
+    });
+
     // Ketika kategori dipilih
     $('#kategori-filter').change(function () {
       var kategori = $(this).val();
@@ -113,9 +123,9 @@
           paket: '' // Reset paket ke kosong agar semua paket kategori muncul
         },
         success: function (response) {
-          // Update produk dan paket
-          updateProduk(response.produk); // Produk langsung diupdate saat kategori dipilih
-          updatePaket(response.paket, kategori); // Pass kategori untuk handle semua paket jika kategori kosong
+          produk = response.produk; // Update produk berdasarkan kategori
+          updateProduk(); // Tampilkan produk sesuai kategori yang dipilih
+          updatePaket(response.paket, kategori); // Update paket sesuai kategori
         }
       });
     });
@@ -142,46 +152,11 @@
           paket: paket
         },
         success: function (response) {
-          updateProduk(response.produk);
+          produk = response.produk; // Update produk berdasarkan paket
+          updateProduk(); // Tampilkan produk sesuai paket yang dipilih
         }
       });
     });
-
-    // Function to update the produk container
-  function updateProduk(produk) {
-      var produkContainer = $('#produk-container');
-      produkContainer.empty(); // Clear the existing products
-
-      // Append the new products
-      $.each(produk, function (index, prod) {
-        var hargaDiskon = (prod.harga_produk - (prod.harga_produk * prod.diskon / 100));
-        var hargaFormatted = new Intl.NumberFormat('id-ID').format(hargaDiskon);
-        var hargaAsli = new Intl.NumberFormat('id-ID').format(prod.harga_produk);
-
-        var html = `
-    <div class="max-w-sm bg-white shadow-2xl shadow-gray-400 rounded-lg p-6 relative">
-      ${prod.diskon ? `<div class="absolute top-0 right-0 bg-red-600 text-white text-sm px-3 py-1 rounded-tr-lg rounded-bl-lg">Diskon ${prod.diskon}%</div>` : ''}
-      <h3 class="font-bold text-xl md:text-2xl lg:text-4xl mb-2">${prod.nama_produk}</h3>
-      ${prod.diskon > 0 ? `
-      <p class="text-gray-500 text-lg line-through">Rp${hargaAsli}</p>
-      <p class="text-2xl lg:text-3xl font-bold mb-2 text-red-600">
-        Rp${hargaFormatted.slice(0, 3)}<span class="text-sm">${hargaFormatted.slice(3)}/Bulan</span>
-      </p>` : `
-      <p class="text-3xl font-bold text-red-600">
-        Rp${hargaAsli.slice(0, 3)}<span class="text-sm">${hargaAsli.slice(3)}/Bulan</span>
-      </p>`}
-      <ul class="mb-4 text-gray-700 space-y-2">
-        <li><i class="fas fa-tachometer-alt text-black-500"></i> Kecepatan Internet Up to <b>${prod.kecepatan}</b> Mbps</li>
-        <li class="flex items-center"><i class="fas fa-gift text-black-500"></i> <span class="ml-2">${prod.benefit}</span></li>
-        ${prod.paket ? `<li class="flex items-center"><i class="fas fa-tag text-black-500"></i> <span class="ml-2">${prod.paket.nama_paket}</span></li>` : ''}
-      </ul>
-      <button class="bg-red-600 text-white py-2 px-4 rounded-lg w-full">Pilih Paket</button>
-    </div>
-    `;
-        produkContainer.append(html);
-      });
-    }
-
 
     // Function to update the paket buttons
     function updatePaket(pakets, kategori) {

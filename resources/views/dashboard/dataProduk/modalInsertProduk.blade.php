@@ -27,7 +27,7 @@
       </div>
 
       <!-- Modal body -->
-      <form action="{{ route('produk.store') }}" method="POST" enctype="multipart/form-data">
+      <form action="{{ route('produk.store') }}" method="POST">
         @csrf
         <div class="grid grid-cols-2 gap-6">
           <!-- Nama Produk -->
@@ -62,11 +62,27 @@
               placeholder="Kecepatan Produk" value="{{ old('kecepatan') }}" required>
           </div>
 
-          <!-- Kategori Produk -->
+          <!-- Kuota Produk -->
           <div class="col-span-1">
-            <label for="id_kategori" class="block text-sm font-medium text-gray-700">Kategori Produk</label>
-            @if(isset($kategoris) && count($kategoris) > 0)
-        <select name="id_kategori" id="id_kategori" required
+            <label for="kuota" class="block text-sm font-medium text-gray-700">Kuota Produk (GB)</label>
+            <input type="number" name="kuota" id="kuota"
+              class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+              placeholder="Kuota Produk" value="{{ old('kuota') }}">
+          </div>
+
+          <!-- Biaya Pasang -->
+            <div class="col-span-1">
+              <label for="biaya_pasang" class="block text-sm font-medium text-gray-700">Biaya Pasang</label>
+              <input type="text" name="biaya_pasang" id="biaya_pasang"
+                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+                placeholder="Biaya Pasang" value="{{ old('biaya_pasang') }}" oninput="formatCurrency(this)">
+            </div>
+
+            <!-- Kategori Produk -->
+            <div class="col-span-1">
+              <label for="id_kategori" class="block text-sm font-medium text-gray-700">Kategori Produk</label>
+              @if(isset($kategoris) && count($kategoris) > 0)
+          <select name="id_kategori" id="id_kategori" required
           class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm">
           <option value="">Pilih Kategori</option>
           @foreach($kategoris as $kategori)
@@ -74,17 +90,17 @@
         {{ $kategori->nama_kategori }}
         </option>
       @endforeach
-        </select>
-      @else
-    <p class="text-red-500">Kategori tidak tersedia.</p>
-  @endif
-          </div>
+          </select>
+        @else
+        <p class="text-red-500">Kategori tidak tersedia.</p>
+      @endif
+            </div>
 
-          <!-- Paket Produk -->
-          <div class="col-span-1">
-            <label for="id_paket" class="block text-sm font-medium text-gray-700">Paket Produk</label>
-            @if(isset($pakets) && count($pakets) > 0)
-        <select name="id_paket" id="id_paket" required
+            <!-- Paket Produk -->
+            <div class="col-span-1">
+              <label for="id_paket" class="block text-sm font-medium text-gray-700">Paket Produk</label>
+              @if(isset($pakets) && count($pakets) > 0)
+          <select name="id_paket" id="id_paket" required
           class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm">
           <option value="">Pilih Paket</option>
           @foreach($pakets as $paket)
@@ -92,43 +108,28 @@
         {{ $paket->nama_paket }}
         </option>
       @endforeach
-        </select>
-      @else
-    <p class="text-red-500">Paket tidak tersedia.</p>
-  @endif
-          </div>
-
-          <!-- Deskripsi Produk -->
-          <div class="col-span-2">
-            <label for="deskripsi" class="block text-sm font-medium text-gray-700">Deskripsi Produk</label>
-            <textarea name="deskripsi" id="deskripsi" required
-              class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
-              placeholder="Deskripsi Produk">{{ old('deskripsi') }}</textarea>
-          </div>
-
-          <!-- Diskon Produk -->
-          <div class="col-span-2">
-            <label for="diskon" class="block text-sm font-medium text-gray-700">Diskon (%)</label>
-            <input type="number" name="diskon" id="diskon"
-              class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
-              placeholder="Diskon Produk" value="{{ old('diskon') }}">
-          </div>
-
-          <!-- Foto Produk -->
-          <div class="col-span-2">
-            <label for="dropzone-file" class="block text-sm font-medium text-gray-700">Gambar Produk</label>
-            <div class="flex items-center justify-center w-full">
-              <label for="dropzone-file"
-                class="flex flex-col items-center justify-center w-full h-32 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50">
-                <svg class="w-8 h-8 mb-4 text-gray-500" xmlns="http://www.w3.org/2000/svg" fill="none"
-                  viewBox="0 0 20 16">
-                  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2" />
-                </svg>
-                <input id="dropzone-file" type="file" name="gambar_produk" />
-              </label>
+          </select>
+        @else
+        <p class="text-red-500">Paket tidak tersedia.</p>
+      @endif
             </div>
-          </div>
+
+            <!-- Deskripsi Produk -->
+            <div class="col-span-1">
+              <label for="deskripsi" class="block text-sm font-medium text-gray-700">Deskripsi Produk</label>
+              <textarea name="deskripsi" id="deskripsi" required
+                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+                placeholder="Deskripsi Produk">{{ old('deskripsi') }}</textarea>
+            </div>
+
+            <!-- Diskon Produk -->
+            <div class="col-span-1">
+              <label for="diskon" class="block text-sm font-medium text-gray-700">Diskon (%)</label>
+              <input type="number" name="diskon" id="diskon"
+                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+                placeholder="Diskon Produk" value="{{ old('diskon') }}">
+            </div>
+
         </div>
 
         <!-- Pesan Error -->
@@ -139,7 +140,7 @@
     @endif
 
         <!-- Modal footer -->
-        <div class="flex justify-end p-4 border-t border-gray-200">
+        <div class="flex justify-end p-5 border-t border-gray-200 mt-10">
           @if(!isset($kategoris) || count($kategoris) === 0 || !isset($pakets) || count($pakets) === 0)
         <span class="text-red-500">Silakan tambahkan terlebih dahulu kategori dan paket produk.</span>
       @else
@@ -150,8 +151,6 @@
     @endif
         </div>
       </form>
-
-
     </div>
   </div>
 </dialog>
