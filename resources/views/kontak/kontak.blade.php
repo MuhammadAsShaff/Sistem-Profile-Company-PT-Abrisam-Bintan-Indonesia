@@ -21,9 +21,9 @@
             </svg>
           </span>
 
-          <h2 class="mt-4 text-base font-medium text-gray-800 dark:text-white">Email</h2>
-          <p class="mt-2 text-sm text-gray-500 dark:text-gray-400">Anda Dapat Menghubungi Kami Melalui Email</p>
-          <p class="mt-2 text-sm text-red-500 dark:text-red-400">
+          <h2 class="mt-4 text-base font-medium text-gray-800 dark:text-white"><b>Email</b></h2>
+          <p class="text-sm text-gray-500 dark:text-gray-400">Anda Dapat Menghubungi Kami Melalui Email</p>
+          <p class="text-sm text-red-500 dark:text-red-400">
             <a href="mailto:Abrisambintanindonesia@gmail.com" class="hover:underline">
               Abrisambintanindonesia@gmail.com
             </a>
@@ -40,9 +40,9 @@
             </svg>
           </span>
 
-          <h2 class="mt-4 text-base font-medium text-gray-800 dark:text-white">Kantor</h2>
-          <p class="mt-2 text-sm text-gray-500 dark:text-gray-400">Anda Dapat Datang Ke Kantor Kami</p>
-          <p class="mt-2 text-sm text-red-500 dark:text-red-400">100 Smith Street Collingwood VIC 3066 AU</p>
+          <h2 class="mt-4 text-base font-medium text-gray-800 dark:text-white"><b>Kantor</b></h2>
+          <p class="text-sm text-gray-500 dark:text-gray-400">Anda Dapat Datang Ke Kantor Kami</p>
+          <p class="text-sm text-red-500 dark:text-red-400">100 Smith Street Collingwood VIC 3066 AU</p>
         </div>
 
         <div>
@@ -54,8 +54,8 @@
             </svg>
           </span>
 
-          <h2 class="mt-4 text-base font-medium text-gray-800 dark:text-white">Kontak Perusahaan</h2>
-          <p class="mt-2 text-sm text-gray-500 dark:text-gray-400">Anda Dapat Menghubungi Kami Melalui</p>
+          <h2 class="mt-4 text-base font-medium text-gray-800 dark:text-white"><b>Kontak Perusahaan</b></h2>
+          <p class="text-sm text-gray-500 dark:text-gray-400">Anda Dapat Menghubungi Kami Melalui</p>
           <div class="flex justify-start items-center space-x-4 mt-2">
             <!-- Instagram -->
             <a href="https://www.instagram.com/indihomeabrisambintanindonesia" target="_blank" rel="noopener noreferrer"
@@ -64,15 +64,21 @@
             </a>
 
             <!-- WhatsApp -->
-            <a href="https://wa.me/6285371163315" target="_blank" rel="noopener noreferrer"
+            <a href="https://wa.me/6281370304777" target="_blank" rel="noopener noreferrer"
               class="text-gray-800 dark:text-white hover:text-red-500" aria-label="WhatsApp">
               <i class="fa-brands fa-whatsapp fa-2x"></i>
             </a>
 
             <!-- Telegram -->
-            <a href="https://t.me/" target="_blank" rel="noopener noreferrer"
+            <a href="https://t.me/6281370304777" target="_blank" rel="noopener noreferrer"
               class="text-gray-800 dark:text-white hover:text-red-500" aria-label="Telegram">
               <i class="fa-brands fa-telegram fa-2x"></i>
+            </a>
+            
+            <!-- tiktok -->
+            <a href="https://www.tiktok.com/@indihomeabi?_t=8qMdOV3DiGQ&_r=1" target="_blank" rel="noopener noreferrer"
+              class="text-gray-800 dark:text-white hover:text-red-500" aria-label="Telegram">
+              <i class="fa-brands fa-tiktok fa-2x"></i>
             </a>
           </div>
         </div>

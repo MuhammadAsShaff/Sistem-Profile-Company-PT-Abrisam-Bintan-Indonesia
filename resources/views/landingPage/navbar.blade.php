@@ -26,35 +26,40 @@
     <!-- Navbar Links -->
     <div class="hidden w-full md:block md:w-auto" id="navbar-default">
       <ul
-        class="font-medium flex flex-col p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 rtl:space-x-reverse md:mt-0 md:border-0 md:bg-transparent dark:bg-gray-800 md:dark:bg-transparent dark:border-gray-700">
-        <li>
-          <a href="#"
-            class="block py-2 px-3 text-red-500 bg-red-700 rounded md:bg-transparent md:text-red-700 md:p-0 dark:text-white md:dark:text-red-500"
-            aria-current="page">Beranda</a>
-        </li>
-        <li>
-          <a href="#"
-            class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-red-700 md:p-0 dark:text-white md:dark:hover:text-red-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">Produk</a>
-        </li>
-        <li>
-          <a href="#"
-            class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-red-700 md:p-0 dark:text-white md:dark:hover:text-red-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">Blog</a>
-        </li>
-        <li>
-          <a href="{{ route('tampilKontak') }}"
-            class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-red-700 md:p-0 dark:text-white md:dark:hover:text-red-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">Kontak</a>
-        </li>
-        <li>
-          <a href="#"
-            class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-red-700 md:p-0 dark:text-white md:dark:hover:text-red-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">Tentang
-            Kami</a>
-        </li>
-        <li>
-          <a href="#"
-            class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-red-700 md:p-0 dark:text-white md:dark:hover:text-red-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">Tanya
-            Jawab</a>
-        </li>
-      </ul>
+  class="font-medium flex flex-col p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 rtl:space-x-reverse md:mt-0 md:border-0 md:bg-transparent dark:bg-gray-800 md:dark:bg-transparent dark:border-gray-700">
+  <li>
+    <a href="{{ route('landingPage.layoutLandingPage') }}"
+      class="block py-2 px-3 rounded md:p-0 
+      {{ Route::is('landingPage.layoutLandingPage') ? 'text-red-500 md:text-red-500 dark:text-red-500' : 'text-gray-900 hover:text-red-500 dark:text-white md:dark:hover:text-red-500' }}"
+      aria-current="page">Beranda</a>
+  </li>
+  <li>
+    <a href="#"
+      class="block py-2 px-3 rounded md:p-0 
+      {{ Route::is('produk') ? 'text-red-500 md:text-red-500 dark:text-red-500' : 'text-gray-900 hover:text-red-500 dark:text-white md:dark:hover:text-red-500' }}">Produk</a>
+  </li>
+  <li>
+    <a href="#"
+      class="block py-2 px-3 rounded md:p-0 
+      {{ Route::is('blog') ? 'text-red-500 md:text-red-500 dark:text-red-500' : 'text-gray-900 hover:text-red-500 dark:text-white md:dark:hover:text-red-500' }}">Blog</a>
+  </li>
+  <li>
+    <a href="{{ route('tampilKontak') }}"
+      class="block py-2 px-3 rounded md:p-0 
+      {{ Route::is('tampilKontak') ? 'text-red-500 md:text-red-500 dark:text-red-500' : 'text-gray-900 hover:text-red-500 dark:text-white md:dark:hover:text-red-500' }}">Kontak</a>
+  </li>
+  <li>
+    <a href="#"
+      class="block py-2 px-3 rounded md:p-0 
+      {{ Route::is('tentangKami') ? 'text-red-500 md:text-red-500 dark:text-red-500' : 'text-gray-900 hover:text-red-500 dark:text-white md:dark:hover:text-red-500' }}">Tentang Kami</a>
+  </li>
+  <li>
+    <a href="#"
+      class="block py-2 px-3 rounded md:p-0 
+      {{ Route::is('tanyaJawab') ? 'text-red-500 md:text-red-500 dark:text-red-500' : 'text-gray-900 hover:text-red-500 dark:text-white md:dark:hover:text-red-500' }}">Tanya Jawab</a>
+  </li>
+</ul>
+
     </div>  
   </div>
 
