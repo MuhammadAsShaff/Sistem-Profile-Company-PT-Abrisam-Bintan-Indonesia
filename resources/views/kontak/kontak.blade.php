@@ -42,7 +42,7 @@
 
           <h2 class="mt-4 text-base font-medium text-gray-800 dark:text-white"><b>Kantor</b></h2>
           <p class="text-sm text-gray-500 dark:text-gray-400">Anda Dapat Datang Ke Kantor Kami</p>
-          <p class="text-sm text-red-500 dark:text-red-400">100 Smith Street Collingwood VIC 3066 AU</p>
+          <p class="text-sm text-red-500 dark:text-red-400">JL.Lobak No.16,Pekanbaru</p>
         </div>
 
         <div>
