@@ -19,6 +19,9 @@ use App\Http\Middleware\PreventBackHistory; // Middleware untuk mencegah back
 Route::prefix('/')->group(function () {
     Route::get('/', [LandingPageController::class, 'index'])
         ->name('landingPage.layoutLandingPage');
+
+    Route::get('kontak', [LandingPageController::class, 'tampilKontak'])
+        ->name('tampilKontak');
 });
 
 

@@ -62,4 +62,10 @@ class LandingPageController extends Controller
         // Return ke view dengan data kategori, produk, promos, dan paket
         return view('landingPage.layoutLandingPage', compact('kategori', 'produk', 'promos', 'paket'));
     }
+
+    public function tampilKontak(){
+
+        return view('kontak.layoutKontak');
+
+    }
 }
