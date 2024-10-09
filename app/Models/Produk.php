@@ -5,10 +5,15 @@ use Illuminate\Database\Eloquent\Model;
 
 class Produk extends Model
 {
-    protected $table = 'produk'; // Pastikan tabel benar
-    protected $primaryKey = 'id_produk'; // Primary key dari tabel
+    protected $table = 'produk';
+    protected $primaryKey = 'id_produk';
+
     protected $fillable = [
-        'nama_produk', 'harga_produk', 'benefit', 'kecepatan', 'deskripsi', 'diskon', 'biaya_pasang','kuota', 'id_kategori', 'id_paket'
+        'nama_produk', 'harga_produk', 'benefit', 'kecepatan', 'deskripsi', 'diskon', 'biaya_pasang', 'kuota', 'id_kategori', 'id_paket',
+    ];
+
+    protected $casts = [
+        'benefit' => 'array', // Tambahkan casting ini
     ];
 
     // Relasi ke model Kategori
@@ -23,3 +28,4 @@ class Produk extends Model
         return $this->belongsTo(Paket::class, 'id_paket');
     }
 }
+

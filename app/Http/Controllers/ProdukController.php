@@ -31,37 +31,47 @@ class ProdukController extends Controller
         // Hapus titik pemisah ribuan dari input harga dan biaya pasang
         $hargaProduk = str_replace('.', '', $request->input('harga_produk'));
         $biayaPasang = str_replace('.', '', $request->input('biaya_pasang'));
+
+        // Jika biaya pasang kosong, set menjadi 0
+        if (empty($biayaPasang)) {
+            $biayaPasang = 0;
+        }
+
+        // Gabungkan kembali harga produk dan biaya pasang untuk validasi
         $request->merge(['harga_produk' => $hargaProduk, 'biaya_pasang' => $biayaPasang]);
 
         // Validasi data
         $validated = $request->validate([
             'nama_produk' => 'required|string|max:255',
             'harga_produk' => 'required|numeric|min:0',
-            'benefit' => 'nullable|string',
+            'benefit' => 'nullable|array', // Benefit harus berupa array
             'kecepatan' => 'required|integer',
             'deskripsi' => 'required|string',
             'diskon' => 'nullable|numeric|min:0|max:100',
-            'biaya_pasang' => 'nullable|numeric|min:0', // Validasi biaya pasang
-            'kuota' => 'nullable|integer|min:0', // Validasi kuota, bisa diisi atau kosong
+            'biaya_pasang' => 'nullable|numeric|min:0',
+            'kuota' => 'nullable|integer|min:0',
             'id_kategori' => 'required|exists:kategori,id_kategori',
             'id_paket' => 'required|exists:paket,id_paket',
         ]);
 
-        // Persiapan data produk baru
+        // Beri nilai default kosong untuk benefit jika tidak ada yang dipilih
+        $validated['benefit'] = $validated['benefit'] ?? [];
+
+        // Data produk yang akan disimpan
         $produkData = [
-            'nama_produk' => $request->input('nama_produk'),
-            'harga_produk' => $validated['harga_produk'], // Simpan harga produk yang sudah diformat
-            'benefit' => $request->input('benefit'),
-            'kecepatan' => $request->input('kecepatan'),
-            'deskripsi' => $request->input('deskripsi'),
-            'diskon' => $request->input('diskon'),
-            'biaya_pasang' => $request->input('biaya_pasang') ?: 0, // Jika kosong, simpan 0
-            'kuota' => $request->input('kuota') ?: null, // Jika kosong, simpan null atau 0 sesuai kebutuhan
-            'id_kategori' => $request->input('id_kategori'),
-            'id_paket' => $request->input('id_paket'),
+            'nama_produk' => $validated['nama_produk'],
+            'harga_produk' => $validated['harga_produk'],
+            'benefit' => $validated['benefit'], // Simpan sebagai JSON
+            'kecepatan' => $validated['kecepatan'],
+            'deskripsi' => $validated['deskripsi'],
+            'diskon' => $validated['diskon'] ?? 0, // Default jika null
+            'biaya_pasang' => $biayaPasang, // Sudah diatur jika kosong
+            'kuota' => $validated['kuota'] ?? null, // Bisa null
+            'id_kategori' => $validated['id_kategori'],
+            'id_paket' => $validated['id_paket'],
         ];
 
-        // Insert produk ke database
+        // Simpan produk ke database
         try {
             Produk::create($produkData);
             return redirect()->route('dashboard.dataProduk.dataProduk')->with('success', 'Produk berhasil ditambahkan');
@@ -70,51 +80,63 @@ class ProdukController extends Controller
         }
     }
 
-
     public function update(Request $request, $id_produk)
     {
-        // Hapus titik pemisah ribuan dari input harga dan biaya pasang
-        $hargaProduk = str_replace('.', '', $request->input('harga_produk'));
-        $biayaPasang = str_replace('.', '', $request->input('biaya_pasang'));
-
-        // Gabungkan kembali harga produk dan biaya pasang untuk validasi
-        $request->merge(['harga_produk' => $hargaProduk, 'biaya_pasang' => $biayaPasang]);
-
-        // Validasi input
-        $validatedData = $request->validate([
-            'nama_produk' => 'required|string|max:255',
-            'harga_produk' => 'required|numeric|min:0', // Pastikan harga adalah angka setelah penghapusan titik
-            'benefit' => 'nullable|string',
-            'kecepatan' => 'required|integer',
-            'deskripsi' => 'required|string',
-            'diskon' => 'nullable|numeric|min:0|max:100000',
-            'biaya_pasang' => 'nullable|numeric|min:0', // Validasi biaya pasang
-            'kuota' => 'nullable|integer|min:0', // Validasi kuota
-            'id_kategori' => 'required|exists:kategori,id_kategori',
-            'id_paket' => 'required|exists:paket,id_paket',
-        ]);
-
         // Temukan produk berdasarkan ID
         $produk = Produk::findOrFail($id_produk);
 
-        // Update data produk dengan data yang divalidasi
-        $produk->nama_produk = $validatedData['nama_produk'];
-        $produk->harga_produk = $validatedData['harga_produk'];
-        $produk->benefit = $validatedData['benefit'];
-        $produk->kecepatan = $validatedData['kecepatan'];
-        $produk->deskripsi = $validatedData['deskripsi'];
-        $produk->diskon = $validatedData['diskon'];
-        $produk->biaya_pasang = $validatedData['biaya_pasang']; // Update biaya pasang
-        $produk->kuota = $validatedData['kuota']; // Update kuota
-        $produk->id_kategori = $validatedData['id_kategori'];
-        $produk->id_paket = $validatedData['id_paket'];
+        // Proses update jika method POST atau PUT
+        if ($request->isMethod('post') || $request->isMethod('put')) {
+            // Hapus titik pemisah ribuan dari input harga dan biaya pasang
+            $hargaProduk = str_replace('.', '', $request->input('harga_produk'));
+            $biayaPasang = str_replace('.', '', $request->input('biaya_pasang'));
 
-        // Simpan perubahan ke database
-        $produk->save();
+            // Jika biaya pasang kosong, set sebagai 0
+            if (empty($biayaPasang)) {
+                $biayaPasang = 0;
+            }
 
-        // Redirect ke halaman produk dengan pesan sukses
-        return redirect()->route('dashboard.dataProduk.dataProduk')->with('success', 'Produk berhasil diperbarui');
+            // Gabungkan kembali harga produk dan biaya pasang untuk validasi
+            $request->merge(['harga_produk' => $hargaProduk, 'biaya_pasang' => $biayaPasang]);
+
+            // Validasi input
+            $validatedData = $request->validate([
+                'nama_produk' => 'required|string|max:255',
+                'harga_produk' => 'required|numeric|min:0',
+                'benefit' => 'nullable|array', // Benefit harus berupa array
+                'kecepatan' => 'required|integer',
+                'deskripsi' => 'required|string',
+                'diskon' => 'nullable|numeric|min:0|max:100',
+                'biaya_pasang' => 'nullable|numeric|min:0',
+                'kuota' => 'nullable|integer|min:0',
+                'id_kategori' => 'required|exists:kategori,id_kategori',
+                'id_paket' => 'required|exists:paket,id_paket',
+            ]);
+
+            // Jika benefit tidak ada, beri nilai default array kosong
+            $validatedData['benefit'] = $validatedData['benefit'] ?? [];
+
+            // Simpan perubahan ke produk
+            $produk->nama_produk = $validatedData['nama_produk'];
+            $produk->harga_produk = $validatedData['harga_produk'];
+            $produk->benefit =$validatedData['benefit']; // Simpan benefit sebagai JSON
+            $produk->biaya_pasang = $validatedData['biaya_pasang'];
+            $produk->kecepatan = $validatedData['kecepatan'];
+            $produk->deskripsi = $validatedData['deskripsi'];
+            $produk->diskon = $validatedData['diskon'];
+            $produk->kuota = $validatedData['kuota'];
+            $produk->id_kategori = $validatedData['id_kategori'];
+            $produk->id_paket = $validatedData['id_paket'];
+
+            // Simpan perubahan ke database
+            $produk->save();
+
+            // Redirect ke halaman produk dengan pesan sukses
+            return redirect()->route('dashboard.dataProduk.dataProduk')->with('success', 'Produk berhasil diperbarui');
+        }
     }
+
+
 
     public function destroy($id)
     {

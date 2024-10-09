@@ -28,26 +28,20 @@
         <thead class="bg-gray-50">
           <tr>
             <th class="w-3/12 px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Nama Produk</th>
-            <th class="w-2/12 px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Gambar Produk</th>
+
             <th class="w-2/12 px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Harga</th>
             <th class="w-1/12 px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Diskon (%)</th>
+            <th class="w-2/12 px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Biaya Pasang</th>
             <th class="w-2/12 px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Kecepatan (Mbps)</th>
+            <th class="w-1/12 px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Kuota</th>
           </tr>
         </thead>
         <tbody class="bg-white divide-y divide-gray-200">
           @if (isset($paket->produk) && count($paket->produk) > 0)
-          @foreach ($paket->produk as $produk)
-        <tr>
-        <td class="px-4 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{ $produk->nama_produk }}</td>
-        <td class="px-4 py-4 whitespace-nowrap">
-        @if ($produk->gambar_produk)
-        <img class="h-10 w-10 rounded-full object-cover"
-        src="{{ asset('uploads/produk/' . $produk->gambar_produk) }}" alt="Gambar Produk">
-      @else
-      <span class="text-xs text-gray-400">Tidak ada gambar</span>
-      @endif
-        </td>
-        <td class="px-6 py-4 text-sm font-medium text-gray-700 whitespace-nowrap">
+        @foreach ($paket->produk as $produk)
+      <tr>
+      <td class="px-4 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{ $produk->nama_produk }}</td>
+      <td class="px-6 py-4 text-sm font-medium text-gray-700 whitespace-nowrap">
         @if($produk->diskon > 0)
       <!-- Harga Normal Dicoret -->
       <span class="line-through">Rp.{{ number_format($produk->harga_produk, 0, ',', '.') }}</span>
@@ -55,21 +49,28 @@
       <br>
       <span
       class="text-red-500">Rp.{{ number_format($produk->harga_produk - ($produk->harga_produk * $produk->diskon / 100), 0, ',', '.') }}</span>
-      @else
-      <!-- Harga Normal Tanpa Diskon -->
-      <span>Rp.{{ number_format($produk->harga_produk, 0, ',', '.') }}</span>
-      @endif
-        </td>
-
-        <td class="px-6 py-4 text-sm text-gray-500 dark:text-gray-300 whitespace-nowrap">
+    @else
+    <!-- Harga Normal Tanpa Diskon -->
+    <span>Rp.{{ number_format($produk->harga_produk, 0, ',', '.') }}</span>
+  @endif
+      </td>
+      <td class="px-6 py-4 text-sm text-gray-500 dark:text-gray-300 whitespace-nowrap">
         {{ $produk->diskon > 0 ? number_format($produk->diskon, 0, ',', '.') . '%' : 'Tidak ada diskon' }}
-        </td>
+      </td>
 
-        <td class="px-6 py-4 text-sm text-gray-500 dark:text-gray-300 whitespace-nowrap">
+      <td class="px-6 py-4 text-sm text-gray-500 dark:text-gray-300 whitespace-nowrap">
+        {{ $produk->biaya_pasang ? 'Rp. ' . number_format($produk->biaya_pasang, 0, ',', '.') : 'Gratis' }}
+      </td>
+
+      <td class="px-6 py-4 text-sm text-gray-500 dark:text-gray-300 whitespace-nowrap">
         {{ $produk->kecepatan }} Mbps
-        </td>
+      </td>
 
-        </tr>
+      <td class="px-6 py-4 text-sm text-gray-500 dark:text-gray-300 whitespace-nowrap">
+        {{ $produk->kuota !== null && $produk->kuota != 0 ? $produk->kuota . ' GB' : 'Unlimited' }}
+      </td>
+      
+      </tr>
     @endforeach
       @else
       <tr>
