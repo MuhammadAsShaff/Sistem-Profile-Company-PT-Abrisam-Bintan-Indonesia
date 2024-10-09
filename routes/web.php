@@ -9,6 +9,7 @@ use App\Http\Controllers\Pelanggan;
 use App\Http\Controllers\ProdukController;
 use App\Http\Controllers\PromoController;
 use App\Http\Controllers\Auth\ResetPasswordController;
+use App\Http\Controllers\FaQController;
 use App\Http\Controllers\LandingPageController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Middleware\SavePreviousUrl;
@@ -22,6 +23,7 @@ Route::prefix('/')->group(function () {
 
     Route::get('kontak', [LandingPageController::class, 'tampilKontak'])
         ->name('tampilKontak');
+
 });
 
 
@@ -55,6 +57,17 @@ Route::prefix('dashboard')->middleware(['auth:admin', PreventBackHistory::class]
     Route::get('dataPelanggan', [Pelanggan::class, 'index'])
         ->name('dashboard.dataPelanggan.dataPelanggan')
         ->middleware(SavePreviousUrl::class);
+
+    // Route untuk FaQ
+    Route::get('FAQ', [FaQController::class, 'index'])
+        ->name('dashboard.FaQ.FaQ')
+        ->middleware(SavePreviousUrl::class);
+    Route::post('/faq/store', [FaQController::class, 'store'])->name('faq.store'); // Menyimpan FaQ baru
+    Route::put('/faq/update/{id_faq}', [FaQController::class, 'update'])->name('faq.update'); // Mengupdate FaQ berdasarkan ID
+    Route::delete('/faq/delete/{id_faq}', [FaQController::class, 'destroy'])->name('faq.delete'); // Menghapus FaQ berdasarkan ID
+    Route::get('/faq/{id_faq}', [FaQController::class, 'show'])->name('faq.show'); // Menampilkan detail FaQ
+
+
 
     // Route untuk produk
     Route::get('/produk', [ProdukController::class, 'index'])

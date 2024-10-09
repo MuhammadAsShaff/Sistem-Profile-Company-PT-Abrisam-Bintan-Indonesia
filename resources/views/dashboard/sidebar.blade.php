@@ -7,9 +7,9 @@
   <!-- Admin Profile -->
   <div class="flex flex-col items-center mt-6">
     @if ($admin)
-      @include('profile.slideProfile')
-      <h3 class="font-medium text-gray-800 mt-2"><b>{{ $admin->nama_admin }}</b></h3>
-      <p class="text-sm font-medium text-gray-600">{{ $admin->email_admin }}</p>
+    @include('profile.slideProfile')
+    <h3 class="font-medium text-gray-800 mt-2"><b>{{ $admin->nama_admin }}</b></h3>
+    <p class="text-sm font-medium text-gray-600">{{ $admin->email_admin }}</p>
   @endif
   </div>
 
@@ -75,6 +75,18 @@
         </svg>
         <span class="mx-4 font-medium">Data Kategori</span>
       </a>
+
+      <!-- Data FaQ -->
+      <a class="flex items-center px-4 py-2 mb-4 text-gray-600 rounded-lg transition-colors duration-300 {{ Request::is('dashboard.FaQ.FaQ') ? 'bg-gray-100 border-l-4 border-red-500 text-blue-600' : 'hover:bg-gray-100 hover:text-gray-700' }}"
+        href="{{ route('dashboard.FaQ.FaQ') }}">
+        <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
+          height="24" fill="none" viewBox="0 0 24 24">
+          <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M7.556 8.5h8m-8 3.5H12m7.111-7H4.89a.896.896 0 0 0-.629.256.868.868 0 0 0-.26.619v9.25c0 .232.094.455.26.619A.896.896 0 0 0 4.89 16H9l3 4 3-4h4.111a.896.896 0 0 0 .629-.256.868.868 0 0 0 .26-.619v-9.25a.868.868 0 0 0-.26-.619.896.896 0 0 0-.63-.256Z" />
+        </svg>
+        <span class="mx-4 font-medium">FaQ</span>
+      </a>
+
 
       <!-- Data Admin -->
       <a class="flex items-center px-4 py-2 mb-4 text-gray-600 rounded-lg transition-colors duration-300 {{ Request::is('dashboard/datauser') ? 'bg-gray-100 border-l-4 border-red-500 text-blue-600' : 'hover:bg-gray-100 hover:text-gray-700' }}"

@@ -27,8 +27,10 @@ class FaQController extends Controller
         // Lakukan paginasi dengan limit 5
         $faqs = $query->paginate(5);
 
+        $FaQCount = FaQ::count();
+
         // Kirim data ke view
-        return view('dashboard.dataFaQ.dataFaQ', compact('faqs', 'search'));
+        return view('dashboard.FaQ.FaQ', compact('faqs', 'FaQCount','search'));
     }
 
     // Menampilkan detail isi FAQ berdasarkan ID
@@ -59,7 +61,7 @@ class FaQController extends Controller
         FaQ::create($faqData);
 
         // Redirect dengan pesan sukses
-        return redirect()->route('dashboard.dataFaQ.dataFaQ')->with('success', 'FAQ berhasil ditambahkan.');
+        return redirect()->route('dashboard.FaQ.FaQ')->with('success', 'FAQ berhasil ditambahkan.');
     }
 
     // Menghapus FAQ berdasarkan ID
@@ -77,7 +79,7 @@ class FaQController extends Controller
         $faq->delete();
 
         // Redirect kembali ke halaman dengan pesan sukses
-        return redirect()->route('dashboard.dataFaQ.dataFaQ')->with('success', 'FAQ berhasil dihapus.');
+        return redirect()->route('dashboard.FaQ.FaQ')->with('success', 'FAQ berhasil dihapus.');
     }
 
     // Mengupdate FAQ berdasarkan ID
@@ -99,6 +101,6 @@ class FaQController extends Controller
         // Simpan perubahan
         $faq->save();
 
-        return redirect()->route('dashboard.dataFaQ.dataFaQ')->with('success', 'FAQ berhasil diupdate.');
+        return redirect()->route('dashboard.FaQ.FaQ')->with('success', 'FAQ berhasil diupdate.');
     }
 }

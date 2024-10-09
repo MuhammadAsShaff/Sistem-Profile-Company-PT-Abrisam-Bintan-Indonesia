@@ -26,6 +26,7 @@
       @yield('Promo')
       @yield('dataPelanggan')
       @yield('kategori') 
+      @yield('FaQ')
       @yield('datauser') 
     </div>
   </div>

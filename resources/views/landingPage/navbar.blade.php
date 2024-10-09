@@ -66,10 +66,10 @@
 
   <!-- Mobile Dropdown Menu -->
   <div id="mobile-menu" class="hidden md:hidden flex flex-col space-y-4 bg-gray-100 p-4">
-    <a href="#" class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-200">Beranda</a>
+    <a href="{{ route('landingPage.layoutLandingPage') }}" class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-200">Beranda</a>
     <a href="#" class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-200">Produk</a>
     <a href="#" class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-200">Blog</a>
-    <a href="#" class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-200">Kontak</a>
+    <a href="{{ route('tampilKontak') }}" class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-200">Kontak</a>
     <a href="#" class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-200">Tentang Kami</a>
     <a href="#" class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-200">Tanya Jawab</a>
   </div>
