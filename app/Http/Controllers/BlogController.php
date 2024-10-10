@@ -23,10 +23,11 @@ class BlogController extends Controller
             $query->where('judul_blog', 'like', '%' . $search . '%');
         }
 
+        $blogCount = blog::count();
         // Lakukan paginasi dengan limit 5
         $blogs = $query->paginate(5);
 
-        return view('dashboard.blog.index', compact('blogs', 'search'));
+        return view('dashboard.blog.blog', compact('blogs', 'blogCount','search'));
     }
 
     public function store(Request $request)
@@ -64,7 +65,7 @@ class BlogController extends Controller
         // Simpan data blog ke database
         Blog::create($blogData);
 
-        return redirect()->route('dashboard.blog.index')->with('success', 'Blog berhasil ditambahkan');
+        return redirect()->route('dashboard.blog.blog')->with('success', 'Blog berhasil ditambahkan');
     }
 
     public function update(Request $request, $id_blog)
@@ -130,6 +131,6 @@ class BlogController extends Controller
 
         $blog->delete();
 
-        return redirect()->route('dashboard.blog.index')->with('success', 'Blog berhasil dihapus.');
+        return redirect()->route('dashboard.blog.blog')->with('success', 'Blog berhasil dihapus.');
     }
 }

@@ -10,7 +10,7 @@ class Blog extends Model
     use HasFactory;
 
     // Define the table name (optional if the name follows Laravel's convention)
-    protected $table = 'blogs';
+    protected $table = 'blog';
 
     // Specify the primary key
     protected $primaryKey = 'id_blog';

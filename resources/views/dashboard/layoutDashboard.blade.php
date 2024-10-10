@@ -25,7 +25,8 @@
       @yield('Paket')
       @yield('Promo')
       @yield('dataPelanggan')
-      @yield('kategori') 
+      @yield('kategori')
+      @yield('blog') 
       @yield('FaQ')
       @yield('datauser') 
     </div>

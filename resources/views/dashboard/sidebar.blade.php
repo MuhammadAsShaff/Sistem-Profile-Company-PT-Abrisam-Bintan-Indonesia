@@ -79,14 +79,24 @@
       <!-- Data FaQ -->
       <a class="flex items-center px-4 py-2 mb-4 text-gray-600 rounded-lg transition-colors duration-300 {{ Request::is('dashboard.FaQ.FaQ') ? 'bg-gray-100 border-l-4 border-red-500 text-blue-600' : 'hover:bg-gray-100 hover:text-gray-700' }}"
         href="{{ route('dashboard.FaQ.FaQ') }}">
-        <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
-          height="24" fill="none" viewBox="0 0 24 24">
+        <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+          width="24" height="24" fill="none" viewBox="0 0 24 24">
           <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
             d="M7.556 8.5h8m-8 3.5H12m7.111-7H4.89a.896.896 0 0 0-.629.256.868.868 0 0 0-.26.619v9.25c0 .232.094.455.26.619A.896.896 0 0 0 4.89 16H9l3 4 3-4h4.111a.896.896 0 0 0 .629-.256.868.868 0 0 0 .26-.619v-9.25a.868.868 0 0 0-.26-.619.896.896 0 0 0-.63-.256Z" />
         </svg>
         <span class="mx-4 font-medium">FaQ</span>
       </a>
 
+      <!-- Data Blog -->
+      <a class="flex items-center px-4 py-2 mb-4 text-gray-600 rounded-lg transition-colors duration-300 {{ Request::is('dashboard.Blog.Blog') ? 'bg-gray-100 border-l-4 border-red-500 text-blue-600' : 'hover:bg-gray-100 hover:text-gray-700' }}"
+        href="{{ route('dashboard.blog.blog') }}">
+        <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+          width="24" height="24" fill="none" viewBox="0 0 24 24">
+          <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M12 6.03v13m0-13c-2.819-.831-4.715-1.076-8.029-1.023A.99.99 0 0 0 3 6v11c0 .563.466 1.014 1.03 1.007 3.122-.043 5.018.212 7.97 1.023m0-13c2.819-.831 4.715-1.076 8.029-1.023A.99.99 0 0 1 21 6v11c0 .563-.466 1.014-1.03 1.007-3.122-.043-5.018.212-7.97 1.023" />
+        </svg>
+        <span class="mx-4 font-medium">Blog</span>
+      </a>
 
       <!-- Data Admin -->
       <a class="flex items-center px-4 py-2 mb-4 text-gray-600 rounded-lg transition-colors duration-300 {{ Request::is('dashboard/datauser') ? 'bg-gray-100 border-l-4 border-red-500 text-blue-600' : 'hover:bg-gray-100 hover:text-gray-700' }}"

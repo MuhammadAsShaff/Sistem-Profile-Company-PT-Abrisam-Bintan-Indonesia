@@ -10,6 +10,7 @@ use App\Http\Controllers\ProdukController;
 use App\Http\Controllers\PromoController;
 use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Http\Controllers\FaQController;
+use App\Http\Controllers\BlogController;
 use App\Http\Controllers\LandingPageController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Middleware\SavePreviousUrl;
@@ -67,7 +68,14 @@ Route::prefix('dashboard')->middleware(['auth:admin', PreventBackHistory::class]
     Route::delete('/faq/delete/{id_faq}', [FaQController::class, 'destroy'])->name('faq.delete'); // Menghapus FaQ berdasarkan ID
     Route::get('/faq/{id_faq}', [FaQController::class, 'show'])->name('faq.show'); // Menampilkan detail FaQ
 
-
+    // Route untuk Blog
+    Route::get('blog', [BlogController::class, 'index'])
+        ->name('dashboard.blog.blog')
+        ->middleware(SavePreviousUrl::class);
+    Route::post('/blog/store', [BlogController::class, 'store'])->name('blog.store'); // Menyimpan Blog baru
+    Route::put('/blog/update/{id_blog}', [BlogController::class, 'update'])->name('blog.update'); // Mengupdate Blog berdasarkan ID
+    Route::delete('/blog/delete/{id_blog}', [BlogController::class, 'destroy'])->name('blog.delete'); // Menghapus Blog berdasarkan ID
+    Route::get('/blog/{id_blog}', [BlogController::class, 'show'])->name('blog.show'); // Menampilkan detail Blog
 
     // Route untuk produk
     Route::get('/produk', [ProdukController::class, 'index'])
