@@ -189,70 +189,52 @@
   </div>
 </dialog>
 <script>
-  document.querySelectorAll("[id^='selectedBenefitsUpdate']").forEach(function (input) {
-    input.addEventListener('click', function (event) {
-      event.stopPropagation();
-      var dropdownId = 'checkboxDropdownUpdate-' + this.getAttribute('data-id');
-      var dropdown = document.getElementById(dropdownId);
-      if (dropdown) {
-        dropdown.classList.toggle('hidden'); // Menampilkan atau menyembunyikan dropdown
-      }
-    });
+ // Event listener for toggling the dropdown
+  document.addEventListener('click', function (event) {
+    const clickedElement = event.target;
 
-    var dropdownId = 'checkboxDropdownUpdate-' + input.getAttribute('data-id');
-    var checkboxesUpdate = document.querySelectorAll(`#${dropdownId} input[type="checkbox"]`);
-    var selectedBenefitsInputUpdate = input;
+    // Check if the clicked element is the benefit input field
+    if (clickedElement.matches("[id^='selectedBenefitsUpdate']")) {
+      event.stopPropagation();  // Prevent event from bubbling up
+      const dropdownId = 'checkboxDropdownUpdate-' + clickedElement.getAttribute('data-id');
+      const dropdown = document.getElementById(dropdownId);
 
-    // Fungsi untuk memperbarui input dengan nilai pilihan
-    function updateSelectedBenefitsUpdate() {
-      var selectedBenefitsUpdate = [];
-      checkboxesUpdate.forEach(function (cb) {
-        if (cb.checked) {
-          selectedBenefitsUpdate.push(cb.value);
-        }
+      // Hide all dropdowns before showing the relevant one
+      document.querySelectorAll("[id^='checkboxDropdownUpdate']").forEach(dropdown => {
+        dropdown.classList.add('hidden');
       });
-      selectedBenefitsInputUpdate.value = selectedBenefitsUpdate.join(', ');
-      // Panggil fungsi untuk mengirim data via AJAX
-      updateBenefitOnServer(selectedBenefitsUpdate, selectedBenefitsInputUpdate.getAttribute('data-id'));
+
+      // Show the correct dropdown
+      if (dropdown) {
+        dropdown.classList.toggle('hidden');
+      }
     }
 
-    checkboxesUpdate.forEach(function (checkbox) {
-      checkbox.addEventListener('change', updateSelectedBenefitsUpdate); // Update saat checkbox berubah
-    });
-
-    // Menyembunyikan dropdown jika klik di luar elemen
-    document.addEventListener('click', function (event) {
-      var dropdown = document.getElementById(dropdownId);
-      if (!selectedBenefitsInputUpdate.contains(event.target) && dropdown && !dropdown.contains(event.target)) {
-        dropdown.classList.add('hidden'); // Menyembunyikan dropdown
-      }
-    });
+    // If the click is outside any dropdown/input, hide all dropdowns
+    if (!clickedElement.matches("[id^='selectedBenefitsUpdate']") && !clickedElement.closest("[id^='checkboxDropdownUpdate']")) {
+      document.querySelectorAll("[id^='checkboxDropdownUpdate']").forEach(dropdown => {
+        dropdown.classList.add('hidden');
+      });
+    }
   });
 
-  // Fungsi untuk mengirimkan data ke server menggunakan AJAX (fetch API)
-  function updateBenefitOnServer(benefit, id_produk) {
-    fetch('/produk/update-benefit', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content') // Pastikan token CSRF diambil
-      },
-      body: JSON.stringify({
-        id_produk: id_produk,
-        benefit: benefit
-      })
-    })
-      .then(response => response.json())
-      .then(data => {
-        if (data.success) {
-          console.log('Benefit berhasil diperbarui.');
-        } else {
-          console.error('Gagal memperbarui benefit:', data.error);
-        }
-      })
-      .catch(error => {
-        console.error('Error:', error);
+  // Event listener for checkboxes inside dropdowns
+  document.querySelectorAll("[id^='checkboxDropdownUpdate']").forEach(function (dropdown) {
+    const checkboxes = dropdown.querySelectorAll("input[type='checkbox']");
+    const dropdownId = dropdown.id.split('-')[1];  // Extract product ID from dropdown ID
+    const inputField = document.getElementById('selectedBenefitsUpdate-' + dropdownId);
+
+    // Update input field when checkbox state changes
+    checkboxes.forEach(function (checkbox) {
+      checkbox.addEventListener('change', function () {
+        const selectedBenefits = Array.from(checkboxes)
+          .filter(cb => cb.checked)
+          .map(cb => cb.value);
+
+        // Update the input field with the selected values
+        inputField.value = selectedBenefits.join(', ');
       });
-  }
+    });
+  });
 
 </script>
