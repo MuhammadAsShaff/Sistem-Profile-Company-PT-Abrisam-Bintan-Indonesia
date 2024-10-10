@@ -44,7 +44,7 @@ class ProdukController extends Controller
         $validated = $request->validate([
             'nama_produk' => 'required|string|max:255',
             'harga_produk' => 'required|numeric|min:0',
-            'benefit' => 'nullable|array', // Benefit harus berupa array
+            'benefit' => 'nullable|array', // Benefit sebagai array
             'kecepatan' => 'required|integer',
             'deskripsi' => 'required|string',
             'diskon' => 'nullable|numeric|min:0|max:100',
@@ -54,19 +54,19 @@ class ProdukController extends Controller
             'id_paket' => 'required|exists:paket,id_paket',
         ]);
 
-        // Beri nilai default kosong untuk benefit jika tidak ada yang dipilih
-        $validated['benefit'] = $validated['benefit'] ?? [];
+        // Convert benefit array to JSON format
+        $benefitJson = !empty($validated['benefit']) ? json_encode($validated['benefit']) : null;
 
         // Data produk yang akan disimpan
         $produkData = [
             'nama_produk' => $validated['nama_produk'],
             'harga_produk' => $validated['harga_produk'],
-            'benefit' => $validated['benefit'], // Simpan sebagai JSON
+            'benefit' => $benefitJson, // Simpan sebagai JSON
             'kecepatan' => $validated['kecepatan'],
             'deskripsi' => $validated['deskripsi'],
-            'diskon' => $validated['diskon'] ?? 0, // Default jika null
-            'biaya_pasang' => $biayaPasang, // Sudah diatur jika kosong
-            'kuota' => $validated['kuota'] ?? null, // Bisa null
+            'diskon' => $validated['diskon'] ?? 0,
+            'biaya_pasang' => $biayaPasang,
+            'kuota' => $validated['kuota'] ?? null,
             'id_kategori' => $validated['id_kategori'],
             'id_paket' => $validated['id_paket'],
         ];
@@ -79,6 +79,7 @@ class ProdukController extends Controller
             return redirect()->back()->with('error', 'Gagal menambahkan produk: ' . $e->getMessage());
         }
     }
+
 
     public function update(Request $request, $id_produk)
     {
@@ -114,12 +115,12 @@ class ProdukController extends Controller
             ]);
 
             // Jika benefit tidak ada, beri nilai default array kosong
-            $validatedData['benefit'] = $validatedData['benefit'] ?? [];
+            $validatedData['benefit'] = json_encode($validatedData['benefit'] ?? []); // Encode as JSON
 
             // Simpan perubahan ke produk
             $produk->nama_produk = $validatedData['nama_produk'];
             $produk->harga_produk = $validatedData['harga_produk'];
-            $produk->benefit =$validatedData['benefit']; // Simpan benefit sebagai JSON
+            $produk->benefit = $validatedData['benefit']; // Simpan benefit sebagai JSON
             $produk->biaya_pasang = $validatedData['biaya_pasang'];
             $produk->kecepatan = $validatedData['kecepatan'];
             $produk->deskripsi = $validatedData['deskripsi'];
@@ -135,8 +136,6 @@ class ProdukController extends Controller
             return redirect()->route('dashboard.dataProduk.dataProduk')->with('success', 'Produk berhasil diperbarui');
         }
     }
-
-
 
     public function destroy($id)
     {

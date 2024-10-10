@@ -50,45 +50,60 @@
               oninput="formatCurrency(this)">
           </div>
 
+          <!-- Benefit Dropdown -->
           <div class="col-span-1 relative">
             <label for="benefit" class="block text-sm font-medium text-gray-700">Aplikasi Streaming</label>
 
             <!-- Input field untuk menampilkan hasil pilihan -->
-            <input type="text" id="selectedBenefitsUpdate" readonly
+            <input type="text" id="selectedBenefitsUpdate-{{ $produk->id_produk }}" data-id="{{ $produk->id_produk }}" readonly
               class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm cursor-pointer bg-white"
-              placeholder="Pilih Benefit" value="{{ isset($produk->benefit) ? implode(', ', $produk->benefit) : '' }}">
+              placeholder="Pilih Benefit"
+              value="{{ isset($produk->benefit) ? implode(', ', json_decode($produk->benefit, true)) : '' }}">
 
             <p class="mt-2 text-xs text-red-600 mb-[-20px]">* Biarkan kosong jika tidak ada Aplikasi Streaming.</p>
+
             <!-- Dropdown checkbox -->
-            <div id="checkboxDropdownUpdate" class="absolute z-10 mt-1 w-full bg-white rounded-md shadow-lg hidden">
+            <div id="checkboxDropdownUpdate-{{ $produk->id_produk }}" class="absolute z-10 mt-1 w-full bg-white rounded-md shadow-lg hidden">
               <ul class="py-1 text-sm text-gray-700 max-h-48 overflow-y-auto">
                 <li class="flex items-center px-4 py-2 hover:bg-gray-100">
-                  <input id="disney" name="benefit[]" type="checkbox" value="Disney+"
-                    class="mr-2 focus:ring-blue-500 h-4 w-4 text-blue-600 border-gray-300 rounded" {{ in_array('Disney+', $produk->benefit ?? []) ? 'checked' : '' }}>
-                  <label for="disney" class="cursor-pointer">Disney+</label>
+                  <input id="disney-{{ $produk->id_produk }}" name="benefit[]" type="checkbox" value="Disney+"
+                    class="mr-2 focus:ring-blue-500 h-4 w-4 text-blue-600 border-gray-300 rounded" 
+                    {{ in_array('Disney+', json_decode($produk->benefit, true) ?? []) ? 'checked' : '' }}>
+                  <label for="disney-{{ $produk->id_produk }}" class="cursor-pointer">Disney+</label>
                 </li>
                 <li class="flex items-center px-4 py-2 hover:bg-gray-100">
-                  <input id="netflix" name="benefit[]" type="checkbox" value="Netflix"
-                    class="mr-2 focus:ring-blue-500 h-4 w-4 text-blue-600 border-gray-300 rounded" {{ in_array('Netflix', $produk->benefit ?? []) ? 'checked' : '' }}>
-                  <label for="netflix" class="cursor-pointer">Netflix</label>
+                  <input id="netflix-{{ $produk->id_produk }}" name="benefit[]" type="checkbox" value="Netflix"
+                    class="mr-2 focus:ring-blue-500 h-4 w-4 text-blue-600 border-gray-300 rounded" 
+                    {{ in_array('Netflix', json_decode($produk->benefit, true) ?? []) ? 'checked' : '' }}>
+                  <label for="netflix-{{ $produk->id_produk }}" class="cursor-pointer">Netflix</label>
                 </li>
+
+                <!-- Amazon Prime Checkbox -->
                 <li class="flex items-center px-4 py-2 hover:bg-gray-100">
-                  <input id="amazon" name="benefit[]" type="checkbox" value="Amazon Prime"
-                    class="mr-2 focus:ring-blue-500 h-4 w-4 text-blue-600 border-gray-300 rounded" {{ in_array('Amazon Prime', $produk->benefit ?? []) ? 'checked' : '' }}>
-                  <label for="amazon" class="cursor-pointer">Amazon Prime</label>
+                  <input id="amazon-{{ $produk->id_produk }}" name="benefit[]" type="checkbox" value="Amazon Prime"
+                    class="mr-2 focus:ring-blue-500 h-4 w-4 text-blue-600 border-gray-300 rounded" 
+                    {{ in_array('Amazon Prime', json_decode($produk->benefit, true) ?? []) ? 'checked' : '' }}>
+                  <label for="amazon-{{ $produk->id_produk }}" class="cursor-pointer">Amazon Prime</label>
                 </li>
+
+                <!-- Hook Checkbox -->
                 <li class="flex items-center px-4 py-2 hover:bg-gray-100">
-                  <input id="hook" name="benefit[]" type="checkbox" value="Hook"
-                    class="mr-2 focus:ring-blue-500 h-4 w-4 text-blue-600 border-gray-300 rounded" {{ in_array('Hook', $produk->benefit ?? []) ? 'checked' : '' }}>
-                  <label for="hook" class="cursor-pointer">Hook</label>
+                  <input id="hook-{{ $produk->id_produk }}" name="benefit[]" type="checkbox" value="Hook"
+                    class="mr-2 focus:ring-blue-500 h-4 w-4 text-blue-600 border-gray-300 rounded"
+                     {{ in_array('Hook', json_decode($produk->benefit, true) ?? []) ? 'checked' : '' }}>
+                  <label for="hook-{{ $produk->id_produk }}" class="cursor-pointer">Hook</label>
                 </li>
+
+                <!-- HBO Max Checkbox -->
                 <li class="flex items-center px-4 py-2 hover:bg-gray-100">
-                  <input id="hbo" name="benefit[]" type="checkbox" value="HBO Max"
-                    class="mr-2 focus:ring-blue-500 h-4 w-4 text-blue-600 border-gray-300 rounded" {{ in_array('HBO Max', $produk->benefit ?? []) ? 'checked' : '' }}>
-                  <label for="hbo" class="cursor-pointer">HBO Max</label>
+                  <input id="hbo-{{ $produk->id_produk }}" name="benefit[]" type="checkbox" value="HBO Max"
+                    class="mr-2 focus:ring-blue-500 h-4 w-4 text-blue-600 border-gray-300 rounded" 
+                    {{ in_array('HBO Max', json_decode($produk->benefit, true) ?? []) ? 'checked' : '' }}>
+                  <label for="hbo-{{ $produk->id_produk }}" class="cursor-pointer">HBO Max</label>
                 </li>
               </ul>
             </div>
+
           </div>
 
           <!-- Kecepatan Produk -->
@@ -105,7 +120,7 @@
             <input type="number" name="kuota" id="kuota"
               class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
               placeholder="Kuota Produk" value="{{ $produk->kuota }}">
-              <p class="mt-2 text-xs text-red-600 mb-[-20px]">* Biarkan kosong jika tidak ada Kuota Unlimited.</p>
+            <p class="mt-2 text-xs text-red-600 mb-[-20px]">* Biarkan kosong jika tidak ada Kuota Unlimited.</p>
           </div>
 
           <!-- Biaya Pasang -->
@@ -174,15 +189,21 @@
   </div>
 </dialog>
 <script>
-  document.getElementById('selectedBenefitsUpdate').addEventListener('click', function (event) {
-      event.stopPropagation(); // Mencegah event bubbling
-      var dropdown = document.getElementById('checkboxDropdownUpdate');
-      dropdown.classList.toggle('hidden'); // Toggle kelas hidden untuk tampilkan atau sembunyikan dropdown
+  document.querySelectorAll("[id^='selectedBenefitsUpdate']").forEach(function (input) {
+    input.addEventListener('click', function (event) {
+      event.stopPropagation();
+      var dropdownId = 'checkboxDropdownUpdate-' + this.getAttribute('data-id');
+      var dropdown = document.getElementById(dropdownId);
+      if (dropdown) {
+        dropdown.classList.toggle('hidden'); // Menampilkan atau menyembunyikan dropdown
+      }
     });
 
-    var checkboxesUpdate = document.querySelectorAll('#checkboxDropdownUpdate input[type="checkbox"]');
-    var selectedBenefitsInputUpdate = document.getElementById('selectedBenefitsUpdate');
+    var dropdownId = 'checkboxDropdownUpdate-' + input.getAttribute('data-id');
+    var checkboxesUpdate = document.querySelectorAll(`#${dropdownId} input[type="checkbox"]`);
+    var selectedBenefitsInputUpdate = input;
 
+    // Fungsi untuk memperbarui input dengan nilai pilihan
     function updateSelectedBenefitsUpdate() {
       var selectedBenefitsUpdate = [];
       checkboxesUpdate.forEach(function (cb) {
@@ -190,25 +211,48 @@
           selectedBenefitsUpdate.push(cb.value);
         }
       });
-      selectedBenefitsInputUpdate.value = selectedBenefitsUpdate.join(', '); // Menampilkan hasil pilihan di input field
+      selectedBenefitsInputUpdate.value = selectedBenefitsUpdate.join(', ');
+      // Panggil fungsi untuk mengirim data via AJAX
+      updateBenefitOnServer(selectedBenefitsUpdate, selectedBenefitsInputUpdate.getAttribute('data-id'));
     }
 
     checkboxesUpdate.forEach(function (checkbox) {
-      checkbox.addEventListener('change', function () {
-        updateSelectedBenefitsUpdate();
-      });
+      checkbox.addEventListener('change', updateSelectedBenefitsUpdate); // Update saat checkbox berubah
     });
 
-    document.addEventListener('DOMContentLoaded', function () {
-      updateSelectedBenefitsUpdate(); // Memastikan nilai yang sudah ada ditampilkan saat halaman dimuat
-    });
-
+    // Menyembunyikan dropdown jika klik di luar elemen
     document.addEventListener('click', function (event) {
-      var dropdownUpdate = document.getElementById('checkboxDropdownUpdate');
-      var inputUpdate = document.getElementById('selectedBenefitsUpdate');
-      if (!inputUpdate.contains(event.target) && !dropdownUpdate.contains(event.target)) {
-        dropdownUpdate.classList.add('hidden'); // Menyembunyikan dropdown jika klik di luar elemen
+      var dropdown = document.getElementById(dropdownId);
+      if (!selectedBenefitsInputUpdate.contains(event.target) && dropdown && !dropdown.contains(event.target)) {
+        dropdown.classList.add('hidden'); // Menyembunyikan dropdown
       }
     });
+  });
+
+  // Fungsi untuk mengirimkan data ke server menggunakan AJAX (fetch API)
+  function updateBenefitOnServer(benefit, id_produk) {
+    fetch('/produk/update-benefit', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content') // Pastikan token CSRF diambil
+      },
+      body: JSON.stringify({
+        id_produk: id_produk,
+        benefit: benefit
+      })
+    })
+      .then(response => response.json())
+      .then(data => {
+        if (data.success) {
+          console.log('Benefit berhasil diperbarui.');
+        } else {
+          console.error('Gagal memperbarui benefit:', data.error);
+        }
+      })
+      .catch(error => {
+        console.error('Error:', error);
+      });
+  }
 
 </script>

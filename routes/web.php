@@ -83,7 +83,9 @@ Route::prefix('dashboard')->middleware(['auth:admin', PreventBackHistory::class]
         ->middleware(SavePreviousUrl::class);
     Route::post('/produk/store', [ProdukController::class, 'store'])->name('produk.store');
     Route::put('/produk/update/{id_produk}', [ProdukController::class, 'update'])->name('produk.update');
+    Route::post('/produk/update-benefit', [ProdukController::class, 'updateBenefit']);
     Route::delete('/produk/delete/{id_produk}', [ProdukController::class, 'destroy'])->name('produk.delete');
+
 
     // Route untuk promo
     Route::get('promo', [PromoController::class, 'index'])
