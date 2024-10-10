@@ -52,6 +52,9 @@
                   class="w-2/12 px-4 py-3.5 text-sm font-normal text-left text-gray-500 dark:text-gray-400">
                   Gambar Cover
                 </th>
+                <th scope="col" class="w-2/12 px-4 py-3.5 text-sm font-normal text-left text-gray-500 dark:text-gray-400">
+                  Gambar Ilustrasi
+                </th>
                 <th scope="col"
                   class="w-4/12 px-4 py-3.5 text-sm font-normal text-left text-gray-500 dark:text-gray-400">
                   Isi Blog
@@ -68,46 +71,55 @@
             </thead>
             <tbody class="bg-white divide-y divide-gray-200 dark:divide-gray-700 dark:bg-gray-900">
               @foreach ($blogs as $blog)
-          <tr>
-          <!-- Nomor Urutan -->
-          <td class="w-1/12 px-4 py-4 text-sm font-medium text-gray-700 dark:text-white">
-            {{ ($blogs->currentPage() - 1) * $blogs->perPage() + $loop->iteration }}
-          </td>
+              <tr>
+              <!-- Nomor Urutan -->
+              <td class="w-1/12 px-4 py-4 text-sm font-medium text-gray-700 dark:text-white">
+              {{ ($blogs->currentPage() - 1) * $blogs->perPage() + $loop->iteration }}
+              </td>
 
-          <!-- Judul Blog -->
-          <td class="w-2/12 px-12 py-4 text-sm font-medium text-gray-700 dark:text-white whitespace-nowrap">
-            {{ $blog->judul_blog }}
-          </td>
+              <!-- Judul Blog -->
+              <td class="w-2/12 px-12 py-4 text-sm font-medium text-gray-700 dark:text-white whitespace-nowrap">
+              {{ $blog->judul_blog }}
+              </td>
 
-          <!-- Gambar Blog -->
-          <td class="w-2/12 px-4 py-4 text-sm text-gray-500 dark:text-gray-300 whitespace-nowrap">
-            @if($blog->gambar_cover)
-        <img class="object-cover w-16 h-16 rounded-lg"
-        src="{{ asset('uploads/blog/' . $blog->gambar_cover) }}" alt="Gambar Blog">
-      @else
-    <span class="text-xs text-gray-400">Tidak ada gambar</span>
-  @endif
-          </td>
+              <!-- Gambar Blog -->
+              <td class="w-2/12 px-4 py-4 text-sm text-gray-500 dark:text-gray-300 whitespace-nowrap">
+              @if($blog->gambar_cover)
+            <img class="object-cover w-16 h-16 rounded-lg"
+            src="{{ asset('uploads/blogs/' . $blog->gambar_cover) }}" alt="Gambar Blog">
+            @else
+          <span class="text-xs text-gray-400">Tidak ada gambar</span>
+          @endif
+              </td>
 
-          <!-- Isi Blog -->
-          <td class="w-4/12 px-4 py-4 text-sm text-gray-500 dark:text-gray-300 whitespace-nowrap">
-            {{ \Illuminate\Support\Str::limit($blog->isi_blog, 100) ?? 'Tidak ada isi' }}
-          </td>
+              <td class="w-2/12 px-4 py-4 text-sm text-gray-500 dark:text-gray-300 whitespace-nowrap">
+              @if($blog->gambar_ilustrasi)
+          <img class="object-cover w-16 h-16 rounded-lg" src="{{ asset('uploads/blogs/' . $blog->gambar_ilustrasi) }}"
+          alt="Gambar Blog">
+        @else
+        <span class="text-xs text-gray-400">Tidak ada gambar</span>
+      @endif
+              </td>
 
-          <!-- Tanggal Penulisan -->
-          <td class="w-2/12 px-4 py-4 text-sm text-gray-500 dark:text-gray-300 whitespace-nowrap">
-            {{ $blog->tanggal_penulisan }}
-          </td>
+              <!-- Isi Blog -->
+              <td class="w-4/12 px-4 py-4 text-sm text-gray-500 dark:text-gray-300 whitespace-nowrap">
+              {{ \Illuminate\Support\Str::limit($blog->isi_blog, 100) ?? 'Tidak ada isi' }}
+              </td>
 
-          <!-- Aksi -->
-          <td class="px-4 py-4 text-sm whitespace-nowrap">
-            <div class="flex items-center gap-x-6">
-            @include('dashboard.blog.modalPerbaruiBlog', ['blog' => $blog])
-            @include('dashboard.blog.modalHapusBlog', ['blog' => $blog])
-            </div>
-          </td>
-          </tr>
-        @endforeach
+              <!-- Tanggal Penulisan -->
+              <td class="w-2/12 px-4 py-4 text-sm text-gray-500 dark:text-gray-300 whitespace-nowrap">
+              {{ $blog->tanggal_penulisan }}
+              </td>
+
+              <!-- Aksi -->
+              <td class="px-4 py-4 text-sm whitespace-nowrap">
+              <div class="flex items-center gap-x-6">
+              @include('dashboard.blog.modalPerbaruiBlog', ['blog' => $blog])
+              @include('dashboard.blog.modalHapusBlog', ['blog' => $blog])
+              </div>
+              </td>
+              </tr>
+      @endforeach
             </tbody>
           </table>
         </div>

@@ -9,11 +9,20 @@ class Produk extends Model
     protected $primaryKey = 'id_produk';
 
     protected $fillable = [
-        'nama_produk', 'harga_produk', 'benefit', 'kecepatan', 'deskripsi', 'diskon', 'biaya_pasang', 'kuota', 'id_kategori', 'id_paket',
+        'nama_produk',
+        'harga_produk',
+        'benefit',
+        'kecepatan',
+        'deskripsi',
+        'diskon',
+        'biaya_pasang',
+        'kuota',
+        'id_kategori',
+        'id_paket',
     ];
 
     protected $casts = [
-        'benefit' => 'array', // Tambahkan casting ini
+        'benefit' => 'string', // Ubah ke string
     ];
 
     // Relasi ke model Kategori
@@ -28,4 +37,3 @@ class Produk extends Model
         return $this->belongsTo(Paket::class, 'id_paket');
     }
 }
-

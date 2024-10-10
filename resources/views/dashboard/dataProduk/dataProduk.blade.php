@@ -98,7 +98,7 @@
           <td class="px-4 py-4 text-sm text-gray-600 dark:text-gray-400">{{ $produk->deskripsi }}</td>
           <td class="px-4 py-4 text-sm text-gray-500 dark:text-gray-300">{{ $produk->kecepatan }} Mbps</td>
           <td class="px-4 py-4 text-sm text-gray-500 dark:text-gray-300">
-          {{ is_array($produk->benefit) && count($produk->benefit) > 0 ? implode(', ', $produk->benefit) : 'Tidak ada benefit' }}
+          {{ is_array(json_decode($produk->benefit)) && count(json_decode($produk->benefit)) > 0 ? implode(', ', json_decode($produk->benefit)) : 'Tidak ada benefit' }}
           </td>
           </td>
 
@@ -117,7 +117,7 @@
           </div>
           </td>
           </tr>
-      @endforeach
+        @endforeach
             </tbody>
           </table>
         </div>
