@@ -24,7 +24,7 @@
   <div class="w-screen mx-0 flex flex-col justify-between min-h-screen">
 
     <!-- Contact Section -->
-    <div class="my-[70px]">
+    <div>
       <!-- Kontak berada di tengah -->
       @include('FaQ.FaQ')
     </div>

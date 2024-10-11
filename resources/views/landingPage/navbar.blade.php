@@ -54,10 +54,9 @@
             Kami</a>
         </li>
         <li>
-          <a href="#"
+          <a href="{{ route('tampilFaQ') }}"
             class="block py-2 px-3 rounded md:p-0 
-      {{ Route::is('tanyaJawab') ? 'text-red-500 md:text-red-500 dark:text-red-500' : 'text-gray-900 hover:text-red-500 dark:text-white md:dark:hover:text-red-500' }}">Tanya
-            Jawab</a>
+      {{ Route::is('tampilFaQ') ? 'text-red-500 md:text-red-500 dark:text-red-500' : 'text-gray-900 hover:text-red-500 dark:text-white md:dark:hover:text-red-500' }}">FaQ</a>
         </li>
       </ul>
 
@@ -71,7 +70,7 @@
     <a href="#" class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-200">Blog</a>
     <a href="{{ route('tampilKontak') }}" class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-200">Kontak</a>
     <a href="#" class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-200">Tentang Kami</a>
-    <a href="#" class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-200">Tanya Jawab</a>
+    <a href="{{ route('tampilFaQ') }}" class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-200">FaQ</a>
   </div>
 </nav>
 

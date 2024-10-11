@@ -25,6 +25,9 @@ Route::prefix('/')->group(function () {
     Route::get('kontak', [LandingPageController::class, 'tampilKontak'])
         ->name('tampilKontak');
 
+    Route::get('FaQ', [LandingPageController::class, 'tampilFaQ'])
+        ->name('tampilFaQ');
+
 });
 
 

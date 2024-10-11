@@ -2,6 +2,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Promo;
+use App\Models\FaQ;
 use App\Models\Kategori;
 use App\Models\Paket;
 use App\Models\Produk;
@@ -67,5 +68,12 @@ class LandingPageController extends Controller
 
         return view('kontak.layoutKontak');
 
+    }
+
+    public function tampilFaQ()
+    {
+        // Retrieve all FAQ data from the database
+        $faqs = FaQ::all();
+        return view('FaQ.layoutFaQ', compact('faqs'));
     }
 }
