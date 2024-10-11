@@ -7,7 +7,7 @@
   </svg>
 </button>
 
-<!-- Modal -->
+<!-- Modal Tambah Blog -->
 <dialog id="addBlogModal" class="modal rounded-lg shadow-lg w-full max-w-4xl overflow-hidden modal-hide"
   style="position: fixed; top: 0%; left: 28%; transform: translate(-50%, -50%);">
   <div class="relative bg-white rounded-lg shadow-lg p-6">
@@ -34,16 +34,16 @@
           <div class="flex flex-col items-center justify-center">
             <label for="dropzone-file" class="block text-sm font-medium text-gray-700 mt-3">Unggah Gambar Blog</label>
             <input id="dropzone-file" type="file" name="gambar_cover" accept="image/png, image/jpeg, image/jpg"
-              class="mt-32 ml-10">
-            Gambar Ilustrasi
+              class="mt-2">
+            <label for="dropzone-file" class="block text-sm font-medium text-gray-700 mt-3">Gambar Ilustrasi</label>
             <input id="dropzone-file" type="file" name="gambar_ilustrasi" accept="image/png, image/jpeg, image/jpg"
-              class="mt-32 ml-10">
+              class="mt-2">
           </div>
 
           <!-- Nama dan Isi Blog -->
           <div class="flex-1">
-            <p class="mb-4 text-sm text-gray-500" style="word-wrap: break-word; white-space: normal;">
-              Anda dapat menambahkan blog baru dengan judul, <br>isi, dan gambar. Pastikan untuk memasukkan
+            <p class="mb-4 text-sm text-gray-500">
+              Anda dapat menambahkan blog baru dengan judul, isi, dan gambar. Pastikan untuk memasukkan
               informasi terbaru agar data selalu akurat.
             </p>
 
