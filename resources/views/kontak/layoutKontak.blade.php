@@ -26,7 +26,7 @@
     <!-- Contact Section -->
     <div class="my-[70px]">
       <!-- Kontak berada di tengah -->
-      @include('FaQ.FaQ')
+      @include('kontak.kontak')
     </div>
 
     <!-- Footer Section -->
