@@ -18,6 +18,7 @@ class CreateKategoriTable extends Migration
             $table->string('nama_kategori');
             $table->string('deskripsi');
             $table->string('gambar_kategori')->nullable(); // Kolom gambar kategori, bisa null jika tidak ada gambar
+            $table->json('syarat_ketentuan')->nullable(); // Kolom syarat_ketentuan sebagai JSON, bisa null
             $table->timestamps();
         });
     }

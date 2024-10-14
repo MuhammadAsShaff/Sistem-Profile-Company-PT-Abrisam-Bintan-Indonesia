@@ -19,7 +19,7 @@ class CreateProdukTable extends Migration
             // Kolom sesuai dengan model
             $table->string('nama_produk'); // Nama produk
             $table->integer('harga_produk'); // Harga produk
-            $table->string('benefit'); // Benefit produk
+            $table->json('benefit'); // Benefit produk
             $table->integer('kecepatan'); // Kecepatan internet
             $table->text('deskripsi'); // Deskripsi produk
             $table->integer('diskon')->nullable(); // Diskon produk

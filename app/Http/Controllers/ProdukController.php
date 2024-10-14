@@ -28,55 +28,38 @@ class ProdukController extends Controller
 
     public function store(Request $request)
     {
-        // Hapus titik pemisah ribuan dari input harga dan biaya pasang
-        $hargaProduk = str_replace('.', '', $request->input('harga_produk'));
-        $biayaPasang = str_replace('.', '', $request->input('biaya_pasang'));
-
-        // Jika biaya pasang kosong, set menjadi 0
-        if (empty($biayaPasang)) {
-            $biayaPasang = 0;
-        }
-
-        // Gabungkan kembali harga produk dan biaya pasang untuk validasi
-        $request->merge(['harga_produk' => $hargaProduk, 'biaya_pasang' => $biayaPasang]);
-
-        // Validasi data
+        // Validasi input termasuk syarat_ketentuan sebagai array
         $validated = $request->validate([
-            'nama_produk' => 'required|string|max:255',
-            'harga_produk' => 'required|numeric|min:0',
-            'benefit' => 'nullable|array', // Benefit sebagai array
-            'kecepatan' => 'required|integer',
-            'deskripsi' => 'required|string',
-            'diskon' => 'nullable|numeric|min:0|max:100',
-            'biaya_pasang' => 'nullable|numeric|min:0',
-            'kuota' => 'nullable|integer|min:0',
-            'id_kategori' => 'required|exists:kategori,id_kategori',
-            'id_paket' => 'required|exists:paket,id_paket',
+            'nama_kategori' => 'required|string|max:255',
+            'deskripsi' => 'nullable|string',
+            'gambar_kategori' => 'nullable|mimes:jpg,jpeg,png|max:10000',
+            'syarat_ketentuan' => 'nullable|array', // syarat_ketentuan sebagai array
         ]);
 
-        // Convert benefit array to JSON format
-        $benefitJson = !empty($validated['benefit']) ? json_encode($validated['benefit']) : null;
+        // Konversi syarat_ketentuan array menjadi format JSON untuk penyimpanan
+        $syaratKetentuanJson = !empty($validated['syarat_ketentuan']) ? json_encode($validated['syarat_ketentuan']) : null;
 
-        // Data produk yang akan disimpan
-        $produkData = [
-            'nama_produk' => $validated['nama_produk'],
-            'harga_produk' => $validated['harga_produk'],
-            'benefit' => $benefitJson, // Simpan sebagai JSON
-            'kecepatan' => $validated['kecepatan'],
+        // Persiapan data kategori yang akan disimpan
+        $kategoriData = [
+            'nama_kategori' => $validated['nama_kategori'],
             'deskripsi' => $validated['deskripsi'],
-            'diskon' => $validated['diskon'] ?? 0,
-            'biaya_pasang' => $biayaPasang,
-            'kuota' => $validated['kuota'] ?? null,
-            'id_kategori' => $validated['id_kategori'],
-            'id_paket' => $validated['id_paket'],
+            'syarat_ketentuan' => $syaratKetentuanJson, // Simpan syarat ketentuan sebagai JSON
         ];
 
-        // Simpan produk ke database
+        // Simpan gambar jika ada
+        if ($request->hasFile('gambar_kategori')) {
+            $file = $request->file('gambar_kategori');
+            $filename = time() . '_' . $file->getClientOriginalName();
+            $file->move(public_path('uploads/kategori'), $filename);
+            $kategoriData['gambar_kategori'] = $filename;
+        }
+
+        // Simpan kategori ke database
         try {
-            Produk::create($produkData);
-            return redirect()->route('dashboard.dataProduk.dataProduk')->with('success', 'Produk berhasil ditambahkan');
+            Kategori::create($kategoriData);
+            return redirect()->route('dashboard.dataKategori.dataKategori')->with('success', 'Kategori berhasil ditambahkan');
         } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Gagal menambahkan produk: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Gagal menambahkan kategori: ' . $e->getMessage());
         }
     }
 

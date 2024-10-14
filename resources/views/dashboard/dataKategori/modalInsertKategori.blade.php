@@ -7,7 +7,7 @@
   </svg>
 </button>
 
-<!-- Modal -->
+<!-- Modal Insert Kategori -->
 <dialog id="addCategoryModal" class="modal rounded-lg shadow-lg w-full max-w-4xl overflow-hidden modal-hide"
   style="position: fixed; top: 0%; left: 28%; transform: translate(-50%, -50%);">
   <div class="relative bg-white rounded-lg shadow-lg p-6">
@@ -27,7 +27,7 @@
       </div>
 
       <!-- Modal body -->
-      <form action="{{ route('kategori.store') }}" method="POST" enctype="multipart/form-data">
+      <form action="{{ route('kategori.store') }}" method="POST" enctype="multipart/form-data" id="kategoriForm">
         @csrf
         <div class="flex items-start gap-6">
           <!-- Foto Kategori -->
@@ -38,12 +38,11 @@
               class="mt-32 ml-10">
           </div>
 
-          <!-- Nama dan Deskripsi Kategori -->
+          <!-- Nama, Deskripsi, dan Syarat Ketentuan -->
           <div class="flex-1">
             <p class="mb-4 text-sm text-gray-500" style="word-wrap: break-word; white-space: normal;">
               Anda dapat menambahkan data kategori baru dengan nama, <br>deskripsi, dan gambar. Pastikan untuk
-              memasukkan
-              informasi <br> terbaru agar data selalu akurat.
+              memasukkan informasi <br> terbaru agar data selalu akurat.
             </p>
 
             <!-- Nama Kategori -->
@@ -62,6 +61,15 @@
                 placeholder="Deskripsi Kategori" required></textarea>
             </div>
 
+            <!-- Syarat Ketentuan (Array dengan nomor otomatis) -->
+            <div class="mb-4">
+              <label for="syarat_ketentuan" class="block mb-2 text-sm font-medium text-gray-900">Syarat dan
+                Ketentuan</label>
+              <textarea name="syarat_ketentuan" id="syarat_ketentuan" rows="3"
+                class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-[85%] p-2.5"
+                placeholder="Syarat dan Ketentuan Kategori (Pisahkan dengan enter)" oninput="insertSyaratKetentuan()"
+                required></textarea>
+            </div>
           </div>
         </div>
 
@@ -76,3 +84,41 @@
     </div>
   </div>
 </dialog>
+
+<script>
+  function insertSyaratKetentuan() {
+    const textarea = document.getElementById('syarat_ketentuan');
+    const lines = textarea.value.split('\n'); // Pisahkan setiap baris dengan enter
+
+    let numberedLines = lines.map((line, index) => {
+      // Hapus nomor yang sudah ada jika ada, lalu tambahkan nomor baru
+      const cleanLine = line.replace(/^\d+\.\s*/, '');
+
+      // Hanya tambahkan nomor jika baris tidak kosong
+      if (cleanLine.trim() !== '') {
+        return (index + 1) + '. ' + cleanLine;
+      }
+      return '';
+    });
+
+    // Update tampilan textarea dengan baris yang dinomori
+    textarea.value = numberedLines.join('\n');
+  }
+
+  // Fungsi untuk mengirim data yang benar dalam format array
+  document.getElementById('kategoriForm').addEventListener('submit', function (e) {
+    const textarea = document.getElementById('syarat_ketentuan');
+
+    // Ambil setiap baris dari textarea dan bersihkan nomor di awal
+    const lines = textarea.value.split('\n').map(line => line.replace(/^\d+\.\s*/, '').trim()).filter(line => line !== '');
+
+    // Siapkan hidden input untuk mengirimkan array
+    lines.forEach((line, index) => {
+      const hiddenInput = document.createElement('input');
+      hiddenInput.type = 'hidden';
+      hiddenInput.name = `syarat_ketentuan[${index}]`;  // Ini akan dikirim sebagai array
+      hiddenInput.value = line;  // Setiap baris sebagai nilai array
+      this.appendChild(hiddenInput);
+    });
+  });
+</script>
