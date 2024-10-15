@@ -17,7 +17,7 @@ class ProdukController extends Controller
 
         // Query dasar untuk mengambil semua produk
         $query = Produk::orderBy('updated_at', 'desc');
-        
+
         // Filter berdasarkan pencarian nama
         if (!empty($search)) {
             $query->where('nama_produk', 'like', '%' . $search . '%');
@@ -30,7 +30,7 @@ class ProdukController extends Controller
         $produkCount = Produk::count(); // Jumlah total produk
 
         // Kirim data ke view
-        return view('dashboard.dataProduk.dataProduk', compact('produks', 'produkCount','search'));
+        return view('dashboard.dataProduk.dataProduk', compact('produks', 'produkCount', 'search'));
     }
 
     public function store(Request $request)
@@ -89,4 +89,50 @@ class ProdukController extends Controller
         // Hapus produk
         $produk->delete();
 
-        // Redir
+        // Redirect kembali ke halaman dengan pesan sukses
+        return redirect()->route('dashboard.dataProduk.dataProduk')->with('success', 'Produk berhasil dihapus.');
+    }
+
+    public function update(Request $request, $id_produk)
+    {
+        // Ambil produk yang akan diupdate berdasarkan ID
+        $produk = Produk::find($id_produk);
+
+        // Cek apakah produk ditemukan
+        if (!$produk) {
+            return redirect()->back()->with('error', 'Produk tidak ditemukan.');
+        }
+
+        // Validasi data yang diinput
+        $request->validate([
+            'nama_produk' => 'required|string|max:255',
+            'deskripsi' => 'required|string|max:255', // Deskripsi juga divalidasi
+            'gambar_produk' => 'nullable|mimes:jpg,jpeg,png|max:2048',
+        ]);
+
+        // Update data produk
+        $produk->nama_produk = $request->input('nama_produk');
+        $produk->deskripsi = $request->input('deskripsi'); // Pastikan ini mengupdate deskripsi
+
+        // Jika ada file gambar diupload, simpan file baru
+        if ($request->hasFile('gambar_produk')) {
+            // Hapus file gambar lama jika ada
+            if ($produk->gambar_produk && file_exists(public_path('uploads/produk/' . $produk->gambar_produk))) {
+                unlink(public_path('uploads/produk/' . $produk->gambar_produk));
+            }
+
+            // Upload file baru
+            $file = $request->file('gambar_produk');
+            $filename = time() . '_' . $file->getClientOriginalName();
+            $file->move(public_path('uploads/produk'), $filename);
+            $produk->gambar_produk = $filename;
+        }
+
+        // Simpan perubahan ke database
+        $produk->save();
+
+        // Redirect dengan pesan sukses
+        return redirect()->route('dashboard.dataProduk.dataProduk')->with('success', 'Produk berhasil diupdate.');
+    }
+
+}
