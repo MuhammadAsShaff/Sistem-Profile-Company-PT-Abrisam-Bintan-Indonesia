@@ -16,7 +16,7 @@ class Paket extends Model
     protected $primaryKey = 'id_paket';
 
     // Fields that are mass assignable
-    protected $fillable = ['nama_paket', 'gambar_paket','deskripsi'];
+    protected $fillable = ['nama_paket','deskripsi'];
 
     // Specify that primary key is not auto-incrementing (since you are using the default)
     public $incrementing = true;

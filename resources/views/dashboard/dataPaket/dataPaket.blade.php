@@ -54,10 +54,6 @@
                 </th>
                 <th scope="col"
                   class="w-2/12 px-4 py-3.5 text-sm font-normal text-left text-gray-500 dark:text-gray-400">
-                  Gambar Paket
-                </th>
-                <th scope="col"
-                  class="w-2/12 px-4 py-3.5 text-sm font-normal text-left text-gray-500 dark:text-gray-400">
                   Jumlah Produk
                 </th>
                 <th scope="col"
@@ -72,53 +68,43 @@
             </thead>
             <tbody class="bg-white divide-y divide-gray-200 dark:divide-gray-700 dark:bg-gray-900">
               @foreach ($pakets as $paket)
-              <tr>
-              <!-- Nomor Urutan -->
-              <td class="w-1/12 px-4 py-4 text-sm font-medium text-gray-700 dark:text-white whitespace-nowrap">
-              {{ ($pakets->currentPage() - 1) * $pakets->perPage() + $loop->iteration }}
-              </td>
+          <tr>
+          <!-- Nomor Urutan -->
+          <td class="w-1/12 px-4 py-4 text-sm font-medium text-gray-700 dark:text-white whitespace-nowrap">
+            {{ ($pakets->currentPage() - 1) * $pakets->perPage() + $loop->iteration }}
+          </td>
 
-              <!-- Nama Paket -->
-              <td class="w-2/12 px-12 py-4 text-sm font-medium text-gray-700 dark:text-white whitespace-nowrap">
-              {{ $paket->nama_paket }}
-              </td>
+          <!-- Nama Paket -->
+          <td class="w-2/12 px-12 py-4 text-sm font-medium text-gray-700 dark:text-white whitespace-nowrap">
+            {{ $paket->nama_paket }}
+          </td>
 
-              <!-- Gambar Paket -->
-              <td class="w-2/12 px-4 py-4 text-sm text-gray-500 dark:text-gray-300 whitespace-nowrap">
-              @if($paket->gambar_paket)
-            <img class="object-cover w-16 h-16 rounded-lg"
-            src="{{ asset('uploads/paket/' . $paket->gambar_paket) }}" alt="Gambar Paket">
-            @else
-            <span class="text-xs text-gray-400">Tidak ada gambar</span>
-            @endif
-              </td>
+          <!-- Jumlah Produk -->
+          <td class="w-2/12 px-4 py-4 text-sm text-gray-500 dark:text-gray-300 whitespace-nowrap">
+            <span
+            class="px-3 py-1 text-xs text-red-600 bg-red-100 rounded-full dark:bg-gray-800 dark:text-blue-400">
+            {{ $paket->produk_count }} Produk
+            </span>
+            @include('dashboard.dataPaket.modalJumlahProduk')
+          </td>
 
-              <!-- Jumlah Produk -->
-              <td class="w-2/12 px-4 py-4 text-sm text-gray-500 dark:text-gray-300 whitespace-nowrap">
-              <span
-              class="px-3 py-1 text-xs text-red-600 bg-red-100 rounded-full dark:bg-gray-800 dark:text-blue-400">
-              {{ $paket->produk_count }} Produk
-              </span>
-              @include('dashboard.dataPaket.modalJumlahProduk')
-              </td>
+          <!-- Deskripsi Paket -->
+          <td class="w-4/12 px-4 py-4 text-sm text-gray-500 dark:text-gray-300 whitespace-nowrap">
+            {{ Str::limit($paket->deskripsi, 100) }}
+          </td>
 
-              <!-- Deskripsi Paket -->
-              <td class="w-4/12 px-4 py-4 text-sm text-gray-500 dark:text-gray-300 whitespace-nowrap">
-              {{ Str::limit($paket->deskripsi, 100) }}
-              </td>
+          <!-- Aksi -->
+          <td class="w-2/12 px-4 py-4 text-sm whitespace-nowrap">
+            <div class="flex items-center gap-x-6">
+            <!-- Edit Button -->
+            @include('dashboard.dataPaket.modalPerbaruiPaket')
 
-              <!-- Aksi -->
-              <td class="w-2/12 px-4 py-4 text-sm whitespace-nowrap">
-              <div class="flex items-center gap-x-6">
-              <!-- Edit Button -->
-              @include('dashboard.dataPaket.modalPerbaruiPaket')
-
-              <!-- Delete Button -->
-              @include('dashboard.dataPaket.modalHapusPaket')
-              </div>
-              </td>
-              </tr>
-      @endforeach
+            <!-- Delete Button -->
+            @include('dashboard.dataPaket.modalHapusPaket')
+            </div>
+          </td>
+          </tr>
+        @endforeach
             </tbody>
           </table>
         </div>

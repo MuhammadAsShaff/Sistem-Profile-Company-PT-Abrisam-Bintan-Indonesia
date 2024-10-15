@@ -17,7 +17,6 @@ class CreatePaketTable extends Migration
             $table->id('id_paket');
             $table->string('nama_paket');
             $table->string('deskripsi'); // Deskripsi
-            $table->string('gambar_paket')->nullable(); // Kolom gambar paket, bisa null jika tidak ada gambar
             $table->timestamps();
         });
     }

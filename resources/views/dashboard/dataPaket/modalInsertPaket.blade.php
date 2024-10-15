@@ -30,12 +30,6 @@
       <form action="{{ route('paket.store') }}" method="POST" enctype="multipart/form-data">
         @csrf
         <div class="flex items-start gap-6">
-          <!-- Foto Paket -->
-          <div class="flex flex-col items-center justify-center">
-            <label for="dropzone-file" class="block text-sm font-medium text-gray-700 mt-3">Unggah Gambar Paket</label>
-            <input id="dropzone-file" type="file" name="gambar_paket" accept="image/png, image/jpeg, image/jpg"
-              class="mt-32 ml-10">
-          </div>
 
           <!-- Nama dan Deskripsi Paket -->
           <div class="flex-1">

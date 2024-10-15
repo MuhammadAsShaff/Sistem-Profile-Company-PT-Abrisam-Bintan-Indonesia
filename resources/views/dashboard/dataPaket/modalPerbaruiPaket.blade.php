@@ -10,8 +10,7 @@
 
 <!-- Modal -->
 <dialog id="editPaketModal-{{ $paket->id_paket }}"
-  class="modal rounded-lg shadow-lg w-full max-w-4xl overflow-hidden modal-hide"
-  >
+  class="modal rounded-lg shadow-lg w-full max-w-4xl overflow-hidden modal-hide">
   <div class="relative bg-white rounded-lg shadow-lg p-6">
     <!-- Modal content -->
     <div class="relative bg-white rounded-lg">
@@ -34,15 +33,6 @@
         @csrf
         @method('PUT')
         <div class="flex items-start gap-6">
-          <!-- Gambar Paket -->
-          <div class="flex flex-col items-center justify-center">
-            <img class="w-40 h-40 object-cover rounded-lg"
-              src="{{ $paket->gambar_paket ? asset('uploads/paket/' . $paket->gambar_paket) : asset('images/blankImage.jpg') }}"
-              alt="Gambar Paket">
-            <label for="gambar_paket" class="block text-sm font-medium text-gray-700 mt-3">Ubah Gambar Paket</label>
-            <input id="gambar_paket" name="gambar_paket" type="file" accept="image/png, image/jpeg, image/jpg"
-              class="mt-10 ml-12">
-          </div>
 
           <!-- Deskripsi untuk Edit -->
           <div class="flex-1">

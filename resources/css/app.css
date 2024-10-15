@@ -1,55 +1,66 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-  /* Efek animasi masuk */
-  @keyframes modalIn {
+
+/* Efek animasi masuk */
+@keyframes modalIn {
     from {
-      opacity: 0;
-      transform: scale(0.9);
+        opacity: 0;
+        transform: scale(0.9);
     }
 
     to {
-      opacity: 1;
-      transform: scale(1);
+        opacity: 1;
+        transform: scale(1);
     }
-  }
-
-  /* Efek animasi keluar */
-  @keyframes modalOut { 
-    from {
-      opacity: 1;
-      transform: scale(1);
-    }
-
-    to {
-      opacity: 0;
-      transform: scale(0.9);
-    }
-  }
-
-  /* Modal muncul dengan animasi */
-  .modal-show {
-    animation: modalIn 0.3s forwards;
-  }
-
-  /* Modal menghilang dengan animasi */
-  .modal-hide {
-    animation: modalOut 0.3s forwards;
-  }
-
-@font-face {
-    font-family: 'Poppins';
-    src: url('/fonts/Poppins-Regular.ttf') format('truetype'),
-         url('/fonts/Poppins-Bold.ttf') format('truetype');
-    font-weight: normal;
-    font-style: normal;
 }
+
+/* Efek animasi keluar */
+@keyframes modalOut { 
+    from {
+        opacity: 1;
+        transform: scale(1);
+    }
+
+    to {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+}
+
+/* Modal muncul dengan animasi */
+.modal-show {
+    animation: modalIn 0.3s forwards;
+}
+
+/* Modal menghilang dengan animasi */
+.modal-hide {
+    animation: modalOut 0.3s forwards;
+}
+
 
 body {
     font-family: 'Poppins', sans-serif;
 }
 
-
-.text-3xl {
-    font-size: 1.5rem; /* Ukuran yang lebih kecil dari yang lainnya */
+@font-face {
+    font-family: 'TelkomselBatikSans';
+    src: url('/resources/fonts/TelkomselBatikSans-Bold.ttf') format('truetype');
+    font-weight: bold;
+    font-style: normal;
 }
+
+@font-face {
+    font-family: 'TelkomselBatikSans';
+    src: url('/resources/fonts/TelkomselBatikSans-Regular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+
+/* Penggunaan Font */
+.telkomsel-font-bold {
+    font-family: 'TelkomselBatikSans', sans-serif;
+    font-weight: bold;
+}
+
