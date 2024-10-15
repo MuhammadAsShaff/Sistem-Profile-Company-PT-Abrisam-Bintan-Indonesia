@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Paket;
 use App\Models\Produk;
 use Illuminate\Http\Request;
 
-class ProdukController extends Controller
+class PaketController extends Controller
 {
     public function index(Request $request)
     {
@@ -15,124 +16,100 @@ class ProdukController extends Controller
         // Ambil query pencarian
         $search = $request->input('search');
 
-        // Query dasar untuk mengambil semua produk
-        $query = Produk::orderBy('updated_at', 'desc');
-
+        // Query dasar untuk mengambil semua paket
+        $query = Paket::withCount('produk');
+        
         // Filter berdasarkan pencarian nama
         if (!empty($search)) {
-            $query->where('nama_produk', 'like', '%' . $search . '%');
+            $query->where('nama_paket', 'like', '%' . $search . '%');
         }
 
         // Lakukan paginasi dengan limit 7
-        $produks = $query->paginate(7);
+        $pakets = $query->paginate(7);
 
-        // Hitung total produk
+        // Hitung total paket
+        $paketCount = Paket::count();
         $produkCount = Produk::count(); // Jumlah total produk
 
         // Kirim data ke view
-        return view('dashboard.dataProduk.dataProduk', compact('produks', 'produkCount', 'search'));
+        return view('dashboard.dataPaket.dataPaket', compact('pakets', 'paketCount', 'produkCount','search'));
+    }
+
+    public function showProdukByPaket($id_paket)
+    {
+        // Ambil kategori berdasarkan ID dan produk terkait
+        $paket = Paket::with('produk')->findOrFail($id_paket);
+
+        return response()->json($paket->produk); // Kirim data produk sebagai response JSON untuk modal
     }
 
     public function store(Request $request)
     {
         // Validasi input termasuk deskripsi
         $request->validate([
-            'nama_produk' => 'required|string|max:255',
-            'deskripsi' => 'required|string|max:255', // Tambahkan validasi deskripsi
-            'gambar_produk' => 'nullable|mimes:jpg,jpeg,png|max:10000', // Gambar opsional
+            'nama_paket' => 'required|string|max:255',
+            'deskripsi' => 'required|string|max:255', // Validasi deskripsi
         ]);
 
-        // Persiapan data produk baru termasuk deskripsi
-        $produkData = [
-            'nama_produk' => $request->input('nama_produk'),
+        // Persiapan data paket baru termasuk deskripsi
+        $paketData = [
+            'nama_paket' => $request->input('nama_paket'),
             'deskripsi' => $request->input('deskripsi'), // Simpan deskripsi
         ];
 
-        // Jika ada file gambar diupload, simpan file
-        if ($request->hasFile('gambar_produk')) {
-            $file = $request->file('gambar_produk');
-            $filename = time() . '_' . $file->getClientOriginalName();
-
-            // Memastikan direktori tujuan ada
-            $destinationPath = public_path('uploads/produk');
-            if (!file_exists($destinationPath)) {
-                mkdir($destinationPath, 0755, true);
-            }
-
-            // Simpan file gambar ke direktori
-            $file->move($destinationPath, $filename);
-            $produkData['gambar_produk'] = $filename; // Menyimpan nama file gambar
-        }
-
-        // Simpan data produk ke database
-        Produk::create($produkData);
+        // Simpan data paket ke database
+        Paket::create($paketData);
 
         // Redirect dengan pesan sukses
-        return redirect()->route('dashboard.dataProduk.dataProduk')->with('success', 'Produk berhasil ditambahkan.');
+        return redirect()->route('dashboard.dataPaket.dataPaket')->with('success', 'Paket berhasil ditambahkan.');
     }
 
-    public function destroy($id_produk)
+    public function destroy($id_paket)
     {
-        // Temukan produk berdasarkan ID
-        $produk = Produk::find($id_produk);
+        // Temukan paket berdasarkan ID
+        $paket = Paket::find($id_paket);
 
-        // Cek apakah produk ditemukan
-        if (!$produk) {
-            return redirect()->back()->with('error', 'Produk tidak ditemukan.');
+        // Cek apakah paket ditemukan
+        if (!$paket) {
+            return redirect()->back()->with('error', 'Paket tidak ditemukan.');
         }
 
         // Hapus file gambar jika ada
-        if ($produk->gambar_produk && file_exists(public_path('uploads/produk/' . $produk->gambar_produk))) {
-            unlink(public_path('uploads/produk/' . $produk->gambar_produk));
+        if ($paket->gambar_paket && file_exists(public_path('uploads/paket/' . $paket->gambar_paket))) {
+            unlink(public_path('uploads/paket/' . $paket->gambar_paket));
         }
 
-        // Hapus produk
-        $produk->delete();
+        // Hapus paket
+        $paket->delete();
 
         // Redirect kembali ke halaman dengan pesan sukses
-        return redirect()->route('dashboard.dataProduk.dataProduk')->with('success', 'Produk berhasil dihapus.');
+        return redirect()->route('dashboard.dataPaket.dataPaket')->with('success', 'Paket berhasil dihapus.');
     }
 
-    public function update(Request $request, $id_produk)
+    public function update(Request $request, $id_paket)
     {
-        // Ambil produk yang akan diupdate berdasarkan ID
-        $produk = Produk::find($id_produk);
+        // Ambil paket yang akan diupdate berdasarkan ID
+        $paket = Paket::find($id_paket);
 
-        // Cek apakah produk ditemukan
-        if (!$produk) {
-            return redirect()->back()->with('error', 'Produk tidak ditemukan.');
+        // Cek apakah paket ditemukan
+        if (!$paket) {
+            return redirect()->back()->with('error', 'Paket tidak ditemukan.');
         }
 
         // Validasi data yang diinput
         $request->validate([
-            'nama_produk' => 'required|string|max:255',
-            'deskripsi' => 'required|string|max:255', // Deskripsi juga divalidasi
-            'gambar_produk' => 'nullable|mimes:jpg,jpeg,png|max:2048',
+            'nama_paket' => 'required|string|max:255',
+            'deskripsi' => 'required|string|max:255', // Validasi deskripsi
         ]);
 
-        // Update data produk
-        $produk->nama_produk = $request->input('nama_produk');
-        $produk->deskripsi = $request->input('deskripsi'); // Pastikan ini mengupdate deskripsi
-
-        // Jika ada file gambar diupload, simpan file baru
-        if ($request->hasFile('gambar_produk')) {
-            // Hapus file gambar lama jika ada
-            if ($produk->gambar_produk && file_exists(public_path('uploads/produk/' . $produk->gambar_produk))) {
-                unlink(public_path('uploads/produk/' . $produk->gambar_produk));
-            }
-
-            // Upload file baru
-            $file = $request->file('gambar_produk');
-            $filename = time() . '_' . $file->getClientOriginalName();
-            $file->move(public_path('uploads/produk'), $filename);
-            $produk->gambar_produk = $filename;
-        }
+        // Update data paket
+        $paket->nama_paket = $request->input('nama_paket');
+        $paket->deskripsi = $request->input('deskripsi'); // Pastikan ini mengupdate deskripsi
 
         // Simpan perubahan ke database
-        $produk->save();
+        $paket->save();
 
         // Redirect dengan pesan sukses
-        return redirect()->route('dashboard.dataProduk.dataProduk')->with('success', 'Produk berhasil diupdate.');
+        return redirect()->route('dashboard.dataPaket.dataPaket')->with('success', 'Paket berhasil diupdate.');
     }
-
 }
