@@ -35,10 +35,10 @@
 <div class="absolute z-10 bottom-5 lg:bottom-3 left-1/2 flex space-x-2 transform -translate-x-1/2"
   style="margin-top: 50px;">
   @foreach($promos as $key => $promo)
-    <button type="button"
-    class="w-10 h-1 lg:h-[1vh] md:w-10 md:h-1 rounded-full bg-gray-300 hover:bg-[#ED0226] transition duration-300 indicator"
-    data-slide-to="{{ $key }}" aria-current="{{ $key == 0 ? 'true' : 'false' }}"
-    aria-label="Slide {{ $key + 1 }}"></button>
+  <button type="button"
+  class="w-10 h-1 lg:h-[1vh] md:w-10 md:h-1 rounded-full bg-gray-300 hover:bg-[#D30E4C] transition duration-300 indicator"
+  data-slide-to="{{ $key }}" aria-current="{{ $key == 0 ? 'true' : 'false' }}"
+  aria-label="Slide {{ $key + 1 }}"></button>
   @endforeach
 </div>
 
