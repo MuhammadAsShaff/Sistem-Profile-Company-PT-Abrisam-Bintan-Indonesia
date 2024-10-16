@@ -29,6 +29,7 @@ Route::prefix('/')->group(function () {
     Route::get('produk', [ProdukLandingPage::class, 'index'])
         ->name('tampilProduk');
 
+    Route::get('/produk/filter', [ProdukLandingPage::class, 'filterByKategori'])->name('produk.filter');
 
     Route::get('FaQ', [LandingPageController::class, 'tampilFaQ'])
         ->name('tampilFaQ');

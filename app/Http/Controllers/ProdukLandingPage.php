@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
@@ -11,28 +10,34 @@ class ProdukLandingPage extends Controller
 {
     public function index(Request $request)
     {
-        $paketId = $request->input('paket'); // Dapatkan paket ID dari permintaan
+        $kategori = Kategori::all(); // Ambil semua kategori
 
-        // Jika ada paket yang dipilih, ambil produk berdasarkan paket tersebut
-        if ($paketId) {
-            $paket = Paket::with('produk')->findOrFail($paketId);
-            $produk = $paket->produk;
+        // Ambil semua paket beserta produk terkait
+        $paket = Paket::with('produk')->get(); 
+
+        return view('produk.layoutProduk', compact('paket', 'kategori'));
+    }
+
+    public function filterByKategori(Request $request)
+    {
+        $kategoriId = $request->input('kategori'); // Ambil ID kategori dari request
+
+        // Cek apakah kategori yang dipilih adalah "all" atau tidak ada kategori yang dipilih
+        if ($kategoriId && $kategoriId !== 'all') {
+            // Filter produk berdasarkan kategori yang dipilih
+            $paket = Paket::whereHas('produk', function ($query) use ($kategoriId) {
+                $query->where('id_kategori', $kategoriId);
+            })->with([
+                        'produk' => function ($query) use ($kategoriId) {
+                            $query->where('id_kategori', $kategoriId);
+                        }
+                    ])->get();
         } else {
-            $paket = Paket::with('produk')->get(); // Ambil semua paket beserta produk terkait
+            // Tampilkan semua paket dan produk jika "Semua Kategori" dipilih atau kategori tidak ada
+            $paket = Paket::with('produk')->get();
         }
 
-        return view('produk.layoutProduk', compact('paket')); // Kirim data paket ke view
+        // Kembalikan partial view untuk produk
+        return view('produk.produk', compact('paket'))->render();
     }
-
-    public function getProdukByPaket(Request $request)
-    {
-        $paketId = $request->input('paket'); // Ambil ID paket dari request
-        $produk = Produk::where('id_paket', $paketId)->get(); // Ambil produk berdasarkan paket
-
-        return response()->json([
-            'produk' => $produk,
-        ]);
-    }
-
-
 }
