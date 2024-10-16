@@ -7,6 +7,7 @@ use App\Http\Controllers\KategoriController;
 use App\Http\Controllers\PaketController;
 use App\Http\Controllers\Pelanggan;
 use App\Http\Controllers\ProdukController;
+use App\Http\Controllers\ProdukLandingPage;
 use App\Http\Controllers\PromoController;
 use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Http\Controllers\FaQController;
@@ -25,7 +26,7 @@ Route::prefix('/')->group(function () {
     Route::get('kontak', [LandingPageController::class, 'tampilKontak'])
         ->name('tampilKontak');
 
-    Route::get('produk', [LandingPageController::class, 'tampilProduk'])
+    Route::get('produk', [ProdukLandingPage::class, 'index'])
         ->name('tampilProduk');
 
 

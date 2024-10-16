@@ -9,5 +9,8 @@ use App\Models\Kategori;
 
 class ProdukLandingPage extends Controller
 {
-    //
+    public function index()
+    {
+        return view('produk.layoutProduk');
+    }
 }
