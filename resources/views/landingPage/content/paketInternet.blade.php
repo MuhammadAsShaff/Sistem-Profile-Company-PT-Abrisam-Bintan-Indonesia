@@ -41,7 +41,7 @@
     @foreach($paket as $pk)
     @if($pk->produk->count() > 0) <!-- Hanya tampilkan paket yang memiliki produk -->
     <button
-      class="px-4 py-2 font-semibold paket-button {{ request('paket') == $pk->id_paket ? 'text-white bg-gradient-to-r from-[#CD0A45] to-[#FD2B77] active' : 'text-gray-700' }} rounded-tl-lg rounded-tr-lg"
+      class="px-4 py-2 font-semibold paket-button {{ request('paket') == $pk->id_paket ? 'text-white bg-gradient-to-r from-[#D10A3C] to-[#FF0038] active' : 'text-gray-700' }} rounded-tl-lg rounded-tr-lg"
       data-id-paket="{{ $pk->id_paket }}">
       {{ $pk->nama_paket }}
     </button>
@@ -57,7 +57,7 @@
   <!-- View All Button -->
   <div class="text-center mt-6">
     <button id="toggle-produk-button"
-      class="bg-gradient-to-r from-[#CD0A45] to-[#FD2B77] text-white py-2 px-4 rounded-lg w-full mt-auto"
+      class="bg-gradient-to-r from-[#D10A3C] to-[#FF0038] text-white py-2 px-4 rounded-lg w-full mt-auto"
       style="display: none;">Tampilkan Semua Produk</button>
   </div>
 </div>
@@ -83,14 +83,14 @@
         var biayaPasang = new Intl.NumberFormat('id-ID').format(prod.biaya_pasang); // Format biaya pasang
         var html = `
         <div class="max-w-sm bg-white shadow-2xl shadow-gray-400 rounded-lg p-6 relative h-full">
-  ${prod.diskon ? `<div class="absolute top-0 right-0 bg-gradient-to-r from-[#CD0A45] to-[#FD2B77] text-white text-sm px-3 py-1 rounded-tr-lg rounded-bl-lg">Diskon ${prod.diskon}%</div>` : ''}
+  ${prod.diskon ? `<div class="absolute top-0 right-0 bg-gradient-to-r from-[#D10A3C] to-[#FF0038] text-white text-sm px-3 py-1 rounded-tr-lg rounded-bl-lg">Diskon ${prod.diskon}%</div>` : ''}
   <h3 class="font-bold text-xl md:text-2xl lg:text-3xl mb-2 mt-4">${prod.nama_produk}</h3>
   ${prod.diskon > 0 ? `
   <p class="text-gray-500 text-lg line-through">Rp${hargaAsli}</p>
-  <p class="text-2xl lg:text-3xl font-bold mb-2 text-pink-600">
+  <p class="text-2xl lg:text-3xl font-bold mb-2 text-red-600">
     Rp${hargaFormatted.slice(0, 3)}<span class="text-sm">${hargaFormatted.slice(3)}/Bulan</span>
   </p>` : `
-  <p class="text-3xl font-bold text-pink-600">
+  <p class="text-3xl font-bold text-red-600">
     Rp${hargaAsli.slice(0, 3)}<span class="text-sm">${hargaAsli.slice(3)}/Bulan</span>
   </p>`}
   <ul class="mb-4 text-gray-700 space-y-2">
@@ -103,7 +103,7 @@
             : '<span style="visibility:hidden;">No benefit</span>'}
     </div>
   </ul>
-  <button class="bg-gradient-to-r from-[#CD0A45] to-[#FD2B77] text-white py-2 px-4 rounded-lg w-full mt-auto">Pilih Paket</button>
+  <button class="bg-gradient-to-r from-[#D10A3C] to-[#FF0038] text-white py-2 px-4 rounded-lg w-full mt-auto">Pilih Paket</button>
 </div>
 
         `;
@@ -135,7 +135,7 @@
       var kategori = $(this).val();
 
       // Reset paket yang dipilih setiap kali kategori berubah
-      $('.paket-button').removeClass('active text-white bg-gradient-to-r from-[#CD0A45] to-[#FD2B77]').addClass('text-gray-700');
+      $('.paket-button').removeClass('active text-white bg-gradient-to-r from-[#D10A3C] to-[#FF0038]').addClass('text-gray-700');
 
       // Ajax request untuk mendapatkan produk dan paket sesuai kategori
       $.ajax({
@@ -158,12 +158,12 @@
       var paket = $(this).data('id-paket');
       var kategori = $('#kategori-filter').val(); // Get the selected category if any
 
-      // Hapus class 'active' dan 'bg-gradient-to-r from-[#CD0A45] to-[#FD2B77]' dari semua tombol paket
-      $('.paket-button').removeClass('active text-white bg-gradient-to-r from-[#CD0A45] to-[#FD2B77]');
+      // Hapus class 'active' dan 'bg-gradient-to-r from-[#D10A3C] to-[#FF0038]' dari semua tombol paket
+      $('.paket-button').removeClass('active text-white bg-gradient-to-r from-[#D10A3C] to-[#FF0038]');
       $('.paket-button').addClass('text-gray-700');
 
-      // Tambahkan class 'active', 'bg-gradient-to-r from-[#CD0A45] to-[#FD2B77]', dan 'text-white' ke tombol yang dipilih
-      $(this).addClass('active text-white bg-gradient-to-r from-[#CD0A45] to-[#FD2B77]');
+      // Tambahkan class 'active', 'bg-gradient-to-r from-[#D10A3C] to-[#FF0038]', dan 'text-white' ke tombol yang dipilih
+      $(this).addClass('active text-white bg-gradient-to-r from-[#D10A3C] to-[#FF0038]');
       $(this).removeClass('text-gray-700');
 
       // Ajax request untuk filter produk berdasarkan paket (dan kategori jika dipilih)
