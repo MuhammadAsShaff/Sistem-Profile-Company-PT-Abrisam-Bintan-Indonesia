@@ -1,12 +1,11 @@
 <div class="container mx-auto px-2 md:px-10 lg:px-16 py-10">
   <!-- Header Section -->
-  <h1 class="text-2xl md:text-3xl lg:text-4xl font-semibold text-gray-800 mb-6">Pilihan Paket IndiHome Internet
-    Unlimited</h1>
+  <h1 class="text-2xl md:text-3xl lg:text-4xl font-semibold text-gray-800 mb-6">Pilihan Paket Produk Internet Yang Kami Sediakan</h1>
 
   <!-- Paket Sesuai Area Section -->
   <div class="bg-gradient-to-r from-[#001a41] to-[#0e336c] p-6 rounded-lg shadow-lg">
-    <h2 class="text-xl md:text-2xl lg:text-3xl font-bold text-white mb-4">Paket Sesuai Area Anda</h2>
-    <p class="text-white mb-4">Temukan Pilihan Paket IndiHome sesuai Area Anda</p>
+    <h2 class="text-xl md:text-2xl lg:text-3xl font-bold text-white mb-4">Cari Berdasarkan Kategori</h2>
+    <p class="text-white mb-4">Temukan Pilihan Paket Internet Dengan Kebutuhan Yang Anda Inginkan</p>
 
     <!-- Dropdown Provinsi -->
     <div class="relative w-full md:w-1/3 lg:w-1/4"> <!-- Responsive width for different screen sizes -->

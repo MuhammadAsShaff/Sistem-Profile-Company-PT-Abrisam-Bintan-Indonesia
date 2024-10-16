@@ -1,6 +1,6 @@
 <div class="container mx-auto px-4 py-6 ">
   <!-- Wrapper utama -->
-  <div class="bg-gradient-to-r from-[#CD0A45] to-[#FD2B77] rounded-bl-[3rem] rounded-tr-[3rem] p-8 flex items-center justify-between">
+  <div class="bg-gradient-to-r from-[#D10A3C] to-[#FF0038] rounded-bl-[3rem] rounded-tr-[3rem] p-8 flex items-center justify-between">
 
     <!-- Teks utama -->
     <div>

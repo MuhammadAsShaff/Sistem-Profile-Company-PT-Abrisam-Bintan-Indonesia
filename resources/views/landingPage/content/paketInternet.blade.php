@@ -49,11 +49,9 @@
   @endforeach
   </div>
 
-  <!-- Cards Section -->
-  <div id="produk-container" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-6 py-6">
+  <div id="produk-container" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 py-6 justify-center">
     <!-- Produk akan dimuat secara dinamis -->
   </div>
-
   <!-- View All Button -->
   <div class="text-center mt-6">
     <button id="toggle-produk-button"
@@ -82,22 +80,22 @@
 
         var biayaPasang = new Intl.NumberFormat('id-ID').format(prod.biaya_pasang); // Format biaya pasang
         var html = `
-        <div class="max-w-sm bg-white shadow-2xl shadow-gray-400 rounded-lg p-6 relative h-full">
+    <div class="max-w-sm bg-white shadow-2xl shadow-gray-400 rounded-lg p-6 relative h-full mx-auto">
   ${prod.diskon ? `<div class="absolute top-0 right-0 bg-gradient-to-r from-[#D10A3C] to-[#FF0038] text-white text-sm px-3 py-1 rounded-tr-lg rounded-bl-lg">Diskon ${prod.diskon}%</div>` : ''}
-  <h3 class="font-bold text-xl md:text-2xl lg:text-3xl mb-2 mt-4">${prod.nama_produk}</h3>
+  <h3 class="font-bold text-xl md:text-2xl lg:text-3xl mb-2 mt-4 text-left">${prod.nama_produk}</h3>
   ${prod.diskon > 0 ? `
-  <p class="text-gray-500 text-lg line-through">Rp${hargaAsli}</p>
-  <p class="text-2xl lg:text-3xl font-bold mb-2 text-red-600">
+  <p class="text-gray-500 text-lg line-through text-left">Rp${hargaAsli}</p>
+  <p class="text-2xl lg:text-3xl font-bold mb-2 text-red-600 text-left">
     Rp${hargaFormatted.slice(0, 3)}<span class="text-sm">${hargaFormatted.slice(3)}/Bulan</span>
   </p>` : `
-  <p class="text-3xl font-bold text-red-600">
+  <p class="text-3xl font-bold text-red-600 text-left">
     Rp${hargaAsli.slice(0, 3)}<span class="text-sm">${hargaAsli.slice(3)}/Bulan</span>
   </p>`}
-  <ul class="mb-4 text-gray-700 space-y-2">
+  <ul class="mb-4 text-gray-700 space-y-2 text-left">
     <li><i class="fas fa-tachometer-alt" style="color: #001637;"></i> Kecepatan Internet Up to <b>${prod.kecepatan}</b> Mbps</li>
     <li class="flex items-center"><i class="fas fa-database" style="color: #001637;"></i> <span class="ml-2">${prod.kuota === 0 || prod.kuota === null ? 'Unlimited' : `${prod.kuota} GB`}</span></li>
     <li class="flex items-center"><i class="fas fa-money-bill-wave" style="color: #001637;"></i> <span class="ml-2">Biaya Pasang <b>${prod.biaya_pasang === 0 || prod.biaya_pasang === null ? 'Gratis' : `Rp${biayaPasang}`}</b></span></li>
-    <div style="min-height: 50px;"> <!-- Menjaga ukuran agar sama -->
+    <div style="min-height: 50px;" class="text-left"> <!-- Menjaga ukuran agar sama -->
       ${prod.benefit && Array.isArray(JSON.parse(prod.benefit)) && JSON.parse(prod.benefit).length > 0
             ? `<i class="fas fa-gift" style="color: #001637;"></i> ` + JSON.parse(prod.benefit).join(', ')
             : '<span style="visibility:hidden;">No benefit</span>'}

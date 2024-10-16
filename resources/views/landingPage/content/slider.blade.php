@@ -36,7 +36,7 @@
   style="margin-top: 50px;">
   @foreach($promos as $key => $promo)
   <button type="button"
-  class="w-10 h-1 lg:h-[1vh] md:w-10 md:h-1 rounded-full bg-gray-300 hover:bg-[#D30E4C] transition duration-300 indicator"
+  class="w-10 h-1 lg:h-[1vh] md:w-10 md:h-1 rounded-full bg-gray-300 hover:bg-red-600 transition duration-300 indicator"
   data-slide-to="{{ $key }}" aria-current="{{ $key == 0 ? 'true' : 'false' }}"
   aria-label="Slide {{ $key + 1 }}"></button>
   @endforeach
