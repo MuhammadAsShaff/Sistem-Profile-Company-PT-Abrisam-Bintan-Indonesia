@@ -3,10 +3,10 @@
     <div class="flex flex-col md:flex-row items-center">
       <div class="md:w-1/3 flex flex-col items-center text-center mt-[-240px]">
         <img src="{{ asset('images/FaQ.png') }}" alt="Animasi" class="w-120 h-auto " />
-        <h2 class="font-bold text-xl mt-4">Pertanyaan Umum</h2>
+        <h2 class="font-bold text-xl mt-4">Paling Sering Di Tanyakan</h2>
       </div>
 
-      <div class="md:w-2/3 mt-6 md:mt-0 md:ml-6">
+      <div class="md:w-2/3 mt-6 md:mt-0 md:ml-6 ">
         @foreach($faqs as $index => $faq)
         <div id="faq-{{ $index }}" class="bg-white shadow-md p-4 mb-4 rounded-lg cursor-pointer"
         onclick="toggleFaq({{ $index }})">

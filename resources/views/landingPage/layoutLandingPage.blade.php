@@ -27,6 +27,7 @@
         @include('landingPage.content.transisi')
         @include('landingPage.content.paketInternet')
         @include('landingPage.content.kategoriProduk')
+        @include('landingPage.content.hubungiKami')
       </div>
     </div>
 

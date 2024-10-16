@@ -15,7 +15,6 @@ class LandingPageController extends Controller
         // Ambil semua paket dan kategori
         $paket = Paket::all();
         $kategori = Kategori::all();
-
         // Ambil semua promo
         $promos = Promo::all();
 
