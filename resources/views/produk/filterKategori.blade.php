@@ -1,10 +1,10 @@
-<div class="container mx-auto px-2 md:px-10 lg:px-16 py-10">
+<div class="container mx-auto px-2 md:px-10 lg:px-14 py-10">
   <!-- Header Section -->
   <h1 class="text-2xl md:text-3xl lg:text-4xl font-semibold text-gray-800 mb-6">Pilihan Paket Produk Internet Yang Kami
     Sediakan</h1>
 
   <!-- Paket Sesuai Area Section -->
-  <div class="bg-gradient-to-r from-[#001a41] to-[#0e336c] p-6 rounded-lg shadow-lg">
+  <div class="bg-gradient-to-r from-[#001a41] to-[#0e336c] p-6 rounded-2xl shadow-lg">
     <!-- Flexbox wrapper untuk mengatur elemen -->
     <div class="flex flex-col md:flex-row justify-between items-start md:items-center">
       <!-- Bagian Kiri -->

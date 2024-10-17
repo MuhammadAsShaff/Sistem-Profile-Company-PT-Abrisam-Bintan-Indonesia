@@ -1,11 +1,11 @@
-<div id="produk-container">
+<div id="produk-container" class="rounded-bl-[5rem] rounded-tr-[5rem] bg-gray-100 p-16 -mt-4">
   @foreach($paket as $p)
     @if($p->produk->isNotEmpty()) <!-- Cek apakah paket memiliki produk -->
     <h3 class="text-2xl md:text-3xl lg:text-3xl font-semibold text-gray-800 mb-4">{{ $p->nama_paket }}</h3>
 
     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
     @foreach($p->produk as $prod)
-    <div class="max-w-sm bg-white shadow-2xl shadow-gray-400 rounded-lg p-6 relative h-full">
+    <div class="max-w-sm bg-white shadow-xl rounded-lg p-6 relative h-full">
       @if($prod->diskon)
       <div
       class="absolute top-0 right-0 bg-gradient-to-r from-[#D10A3C] to-[#FF0038] text-white text-sm px-3 py-1 rounded-tr-lg rounded-bl-lg">
@@ -33,22 +33,32 @@
       </p>
     @endif
 
-      <ul class="mb-4 text-gray-700 space-y-2 text-left">
-      <li><i class="fas fa-tachometer-alt" style="color: #001637;"></i> Kecepatan Internet Up to
+    <ul class="mb-4 text-gray-700 space-y-2 text-left">
+      <li>
+      <i class="fas fa-tachometer-alt" style="color: #001637;"></i> Kecepatan Internet Up to
       <b>{{ $prod->kecepatan }}</b> Mbps
       </li>
       <li class="flex items-center">
       <i class="fas fa-database" style="color: #001637;"></i>
-      <span
-      class="ml-2">{{ $prod->kuota === 0 || is_null($prod->kuota) ? 'Unlimited' : $prod->kuota . ' GB' }}</span>
+      <span class="ml-2">
+      {{ $prod->kuota === 0 || is_null($prod->kuota) ? 'Unlimited' : $prod->kuota . ' GB' }}
+      </span>
       </li>
       <li class="flex items-center">
       <i class="fas fa-money-bill-wave" style="color: #001637;"></i>
       <span class="ml-2">Biaya Pasang
-      <b>{{ $prod->biaya_pasang === 0 || is_null($prod->biaya_pasang) ? 'Gratis' : 'Rp' . $biayaPasang }}</b>
+      <b>{{ $prod->biaya_pasang === 0 || is_null($prod->biaya_pasang) ? 'Gratis' : 'Rp' . number_format($prod->biaya_pasang, 0, ',', '.') }}</b>
       </span>
-      </li>
-      </ul>
+      </li><div style="min-height: 50px;" class="text-left">
+      @if($prod->benefit && is_array(json_decode($prod->benefit)) && count(json_decode($prod->benefit)) > 0)
+      <i class="fas fa-gift" style="color: #001637;"></i>
+      {{ implode(', ', json_decode($prod->benefit)) }}
+    @else
+      <span style="visibility:hidden;">No benefit</span>
+    @endif
+      </div>
+    </ul>
+
 
       <button class="bg-gradient-to-r from-[#D10A3C] to-[#FF0038] text-white py-2 px-4 rounded-lg w-full mt-auto">Pilih
       Paket</button>

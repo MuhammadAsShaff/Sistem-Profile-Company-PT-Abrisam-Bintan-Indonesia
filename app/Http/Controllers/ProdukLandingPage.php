@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
@@ -11,12 +12,14 @@ class ProdukLandingPage extends Controller
     public function index(Request $request)
     {
         $kategori = Kategori::all(); // Ambil semua kategori
+        $paket = Paket::with('produk')->get(); // Ambil semua paket beserta produk terkait
 
-        // Ambil semua paket beserta produk terkait
-        $paket = Paket::with('produk')->get(); 
+        // Ambil kecepatan unik dari produk untuk digunakan di filter
+        $kecepatanProduk = Produk::select('kecepatan')->distinct()->get();
 
-        return view('produk.layoutProduk', compact('paket', 'kategori'));
+        return view('produk.layoutProduk', compact('paket', 'kategori', 'kecepatanProduk'));
     }
+
 
     public function filterByKategori(Request $request)
     {
@@ -33,11 +36,11 @@ class ProdukLandingPage extends Controller
                         }
                     ])->get();
         } else {
-            // Tampilkan semua paket dan produk jika "Semua Kategori" dipilih atau kategori tidak ada
+            // Jika "Semua Kategori" dipilih, tampilkan semua paket dan produk
             $paket = Paket::with('produk')->get();
         }
 
-        // Kembalikan partial view untuk produk
+        // Kembalikan partial view untuk produk (menggunakan AJAX untuk mengganti isi produk)
         return view('produk.produk', compact('paket'))->render();
     }
 }
