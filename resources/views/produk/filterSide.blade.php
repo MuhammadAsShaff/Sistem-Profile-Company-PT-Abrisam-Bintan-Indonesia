@@ -52,25 +52,56 @@
   </div>
 
   <!-- Filter Section: Kecepatan (Accordion) -->
-  <div class="py-4">
-    <div class="flex justify-between items-center cursor-pointer" onclick="toggleAccordion('kecepatan')">
+<!-- Filter Section: Kecepatan (Accordion) -->
+<div class="py-4">
+  <div class="flex justify-between items-center cursor-pointer" onclick="toggleAccordion('kecepatan')">
+    <div>
       <h3 class="font-semibold text-gray-700">Kecepatan</h3>
-      <svg id="arrow-kecepatan" class="w-5 h-5 text-red-500 transform rotate-180 transition-transform"
+    </div>
+    <svg id="arrow-kecepatan" class="w-5 h-5 text-red-500 transform rotate-180 transition-transform"
+      xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+    </svg>
+  </div>
+  <div id="content-kecepatan" class="mt-4" style="display: block;"><!-- Default terbuka -->
+      <p class="text-sm text-gray-500 mb-4">Anda Dapat Memilih Produk Berdasarkan Kecepatan Internet</p> 
+    <div class="space-y-2">
+      @foreach($kecepatanProduk as $kecepatan)
+      <label class="flex items-center space-x-2">
+      <input type="checkbox" name="kecepatan[]" class="form-checkbox h-5 w-5 text-red-500 rounded"
+        value="{{ $kecepatan->kecepatan }}">
+      <span class="text-gray-700">{{ $kecepatan->kecepatan }} Mbps</span>
+      </label>
+    @endforeach
+    </div>
+  </div>
+</div>
+
+
+  <div class="py-4">
+    <div class="flex justify-between items-center cursor-pointer" onclick="toggleAccordion('kuota')">
+      <div>
+        <h3 class="font-semibold text-gray-700">Kuota</h3>
+      </div>
+      <svg id="arrow-kuota" class="w-5 h-5 text-red-500 transform rotate-180 transition-transform"
         xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
       </svg>
     </div>
-    <div id="content-kecepatan" class="mt-4" style="display: block;"> <!-- Default terbuka -->
+    <div id="content-kuota" class="mt-4" style="display: block;"> <!-- Default terbuka -->
+      <p class="text-sm text-gray-500 mb-4">Anda Dapat Memilih Produk Berdasarkan Kuota Internet</p>
       <div class="space-y-2">
-        @foreach($kecepatanProduk as $kecepatan)
+      @foreach($kuota as $kuo)
       <label class="flex items-center space-x-2">
-        <input type="checkbox" class="form-checkbox h-5 w-5 text-red-500 rounded" value="{{ $kecepatan->kecepatan }}">
-        <span class="text-gray-700">{{ $kecepatan->kecepatan }} Mbps</span>
+      <input type="checkbox" name="kuota[]" class="form-checkbox h-5 w-5 text-red-500 rounded"
+        value="{{ $kuo->kuota === null ? 'Unlimited' : $kuo->kuota }}">
+      <span class="text-gray-700">{{ $kuo->kuota === null ? 'Unlimited' : $kuo->kuota . ' GB' }}</span>
       </label>
     @endforeach
       </div>
     </div>
   </div>
+
 </div>
 
 <!-- Custom Script untuk range slider -->
