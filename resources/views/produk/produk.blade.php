@@ -1,4 +1,4 @@
-<div id="produk-container" class="rounded-bl-[5rem] rounded-tr-[5rem] bg-gray-100 p-16 -mt-4">
+
   @foreach($paket as $p)
     @if($p->produk->isNotEmpty()) <!-- Cek apakah paket memiliki produk -->
     <h3 class="text-2xl md:text-3xl lg:text-3xl font-semibold text-gray-800 mb-4">{{ $p->nama_paket }}</h3>
@@ -64,4 +64,3 @@
     <br><br>
     @endif
   @endforeach
-</div>

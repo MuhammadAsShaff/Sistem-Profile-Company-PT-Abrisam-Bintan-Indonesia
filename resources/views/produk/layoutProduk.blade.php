@@ -31,7 +31,7 @@
       @include('produk.filterKategori')
   
       <!-- Produk Section -->
-      <div class="py-4 px-14">
+      <div id="produk-container" class="rounded-bl-[5rem] rounded-tr-[5rem] bg-gray-100 p-16 mt-4 mx-14">
         @include('produk.produk')
       </div>
     </div>
