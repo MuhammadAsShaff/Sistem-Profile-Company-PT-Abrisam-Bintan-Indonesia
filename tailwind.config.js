@@ -6,7 +6,11 @@ module.exports = {
         "./resources/**/*.vue",
     ],
     theme: {
-        extend: {},
+        extend: {
+            fontFamily: {
+                telkomsel: ["TelkomselBatikSans", "sans-serif"], // Menambahkan font custom
+            },
+        },
     },
     plugins: [
         require("flowbite/plugin"), // Memanggil plugin utama Flowbite

@@ -6,7 +6,7 @@
 
     <!-- Main Text -->
     <div class="relative z-10">
-      <h3 class="text-xl sm:text-2xl lg:text-3xl font-bold text-white mb-3">Ayo Berlangganan Sekarang</h3>
+      <h3 class="text-xl sm:text-2xl lg:text-3xl font-bold text-white mb-3 font-telkomsel">Ayo Berlangganan Sekarang</h3>
       <p class="text-white leading-relaxed text-base">
         Bergabunglah dengan PT Abrisam Bintan Indonesia untuk solusi bisnis digital yang handal dan fleksibel. <br>
         Nikmati berbagai layanan inovatif yang akan membantu bisnis Anda tumbuh dan lebih eksis di era digital.

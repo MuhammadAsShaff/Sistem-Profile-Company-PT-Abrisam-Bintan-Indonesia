@@ -1,6 +1,6 @@
 <div class="w-full md:w-full bg-white shadow-lg rounded-lg p-10 mt-32 ml-8">
   <!-- Filter Header -->
-  <div class="flex justify-between items-center pb-4 border-b">
+  <div class="flex justify-between items-center pb-4 border-b font-telkomsel">
     <h2 class="font-semibold text-lg flex items-center">
       <svg class="inline w-5 h-5 text-gray-700 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
         stroke="currentColor">
@@ -9,13 +9,13 @@
       </svg>
       Filter
     </h2>
-    <button class="text-red-500 focus:outline-none">Reset</button>
+    <button class="text-red-500 focus:outline-none font-telkomsel">Reset</button>
   </div>
 
   <!-- Filter Section: Harga (Accordion) -->
-  <div class="py-4 border-b">
+  <div class="py-4 border-b ">
     <div class="flex justify-between items-center cursor-pointer" onclick="toggleAccordion('harga')">
-      <h3 class="font-semibold text-gray-700">Harga</h3>
+      <h3 class="font-semibold text-gray-700 font-telkomsel">Harga</h3>
       <svg id="arrow-harga" class="w-5 h-5 text-red-500 transform rotate-180 transition-transform"
         xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
@@ -25,7 +25,7 @@
       <p class="text-sm text-gray-500">Geser untuk menentukan kisaran harga minimum dan maksimum</p>
 
       <!-- Double Range Slider -->
-      <div class="relative py-4">
+      <div class="relative py-4 font-telkomsel">
         <!-- Background track (gray line behind the slider) -->
         <div class="absolute top-1/2 transform-translate-y-1/2 w-full h-1 bg-gray-200 rounded-lg"></div>
         <!-- Garis bayangan di belakang -->
@@ -44,7 +44,7 @@
       </div>
 
       <!-- Label Mulai dan Hingga -->
-      <div class="mt-4 flex justify-between text-sm">
+      <div class="mt-4 flex justify-between text-sm font-telkomsel">
         <span>Mulai <br> <b id="label-min">Rp 0</b></span>
         <span>Hingga <br> <b id="label-max">Rp 1.000.000</b></span>
       </div>
@@ -53,10 +53,10 @@
 
   <!-- Filter Section: Kecepatan (Accordion) -->
 <!-- Filter Section: Kecepatan (Accordion) -->
-<div class="py-4">
+<div class="py-4 ">
   <div class="flex justify-between items-center cursor-pointer" onclick="toggleAccordion('kecepatan')">
     <div>
-      <h3 class="font-semibold text-gray-700">Kecepatan</h3>
+      <h3 class="font-semibold text-gray-700 font-telkomsel">Kecepatan</h3>
     </div>
     <svg id="arrow-kecepatan" class="w-5 h-5 text-red-500 transform rotate-180 transition-transform"
       xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -70,7 +70,7 @@
       <label class="flex items-center space-x-2">
       <input type="checkbox" name="kecepatan[]" class="form-checkbox h-5 w-5 text-red-500 rounded"
         value="{{ $kecepatan->kecepatan }}">
-      <span class="text-gray-700">{{ $kecepatan->kecepatan }} Mbps</span>
+      <span class="text-gray-700 font-telkomsel">{{ $kecepatan->kecepatan }} Mbps</span>
       </label>
     @endforeach
     </div>
@@ -81,7 +81,7 @@
   <div class="py-4">
     <div class="flex justify-between items-center cursor-pointer" onclick="toggleAccordion('kuota')">
       <div>
-        <h3 class="font-semibold text-gray-700">Kuota</h3>
+        <h3 class="font-semibold text-gray-700 font-telkomsel">Kuota</h3>
       </div>
       <svg id="arrow-kuota" class="w-5 h-5 text-red-500 transform rotate-180 transition-transform"
         xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -93,9 +93,9 @@
       <div class="space-y-2">
       @foreach($kuota as $kuo)
       <label class="flex items-center space-x-2">
-      <input type="checkbox" name="kuota[]" class="form-checkbox h-5 w-5 text-red-500 rounded"
+      <input type="checkbox" name="kuota[]" class="form-checkbox h-5 w-5 text-red-500 rounded "
         value="{{ $kuo->kuota === null ? 'Unlimited' : $kuo->kuota }}">
-      <span class="text-gray-700">{{ $kuo->kuota === null ? 'Unlimited' : $kuo->kuota . ' GB' }}</span>
+      <span class="text-gray-700 font-telkomsel">{{ $kuo->kuota === null ? 'Unlimited' : $kuo->kuota . ' GB' }}</span>
       </label>
     @endforeach
       </div>

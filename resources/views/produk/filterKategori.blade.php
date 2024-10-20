@@ -1,14 +1,14 @@
 <div class="container mx-auto px-2 md:px-10 lg:px-14 py-10">
-  <h1 class="text-2xl md:text-3xl lg:text-4xl font-semibold text-gray-800 mb-6">Pilihan Paket Produk Internet Yang Kami Sediakan</h1>
+  <h1 class="text-2xl md:text-3xl lg:text-4xl font-bold font-telkomsel text-gray-800 mb-6">Pilihan Paket Produk Internet Yang Kami Sediakan</h1>
 
   <div class="bg-gradient-to-r from-[#001a41] to-[#0e336c] p-6 rounded-2xl shadow-lg">
     <div class="flex flex-col md:flex-row justify-between items-start md:items-center">
       <div>
-        <h2 class="text-xl md:text-2xl lg:text-3xl font-bold text-white mb-4">Cari Berdasarkan Kategori</h2>
+        <h2 class="text-xl md:text-2xl lg:text-3xl font-bold font-telkomsel text-white mb-4">Cari Berdasarkan Kategori</h2>
         <p class="text-white mb-4">Temukan Pilihan Paket Internet Dengan Kebutuhan Yang Anda Inginkan</p>
       </div>
 
-      <div class="relative w-full md:w-1/3 lg:w-1/4 md:ml-4">
+      <div class="relative w-full md:w-1/3 lg:w-1/4 md:ml-4 font-telkomsel">
         <select id="kategori-filter" name="kategori"
           class="block w-full bg-gray-100 text-gray-800 font-semibold rounded-lg shadow-sm px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 appearance-none transition-all duration-200 ease-in-out">
           <option value="all" selected>Semua Kategori</option>

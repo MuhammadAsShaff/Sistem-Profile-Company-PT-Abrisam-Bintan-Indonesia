@@ -5,7 +5,7 @@
 
     <!-- Bagian Container yang akan ngeslide -->
     <div class="container flex flex-col justify-center w-full px-6 py-10 mx-auto lg:absolute lg:inset-x-0">
-      <h1 class="text-2xl font-semibold text-gray-800 capitalize lg:text-3xl dark:text-white text-center">
+      <h1 class="text-2xl font-semibold text-gray-800 capitalize lg:text-3xl dark:text-white text-center font-telkomsel">
         Produk Yang Kami Sediakan
       </h1>
 

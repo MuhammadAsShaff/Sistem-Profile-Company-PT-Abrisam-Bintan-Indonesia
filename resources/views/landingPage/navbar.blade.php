@@ -17,13 +17,14 @@
 
       <a href="{{ route('landingPage.layoutLandingPage') }}" class="flex items-center space-x-2">
         <img class="w-auto h-10" src="{{ asset('images/logoAbi.png') }}" alt="Logo Abi">
-        <span class="self-center text-xl sm:text-2xl font-semibold text-black dark:text-white">PT Abrisam Bintan
-          Indonesia</span>
+        <span class="self-center text-xl sm:text-2xl font-telkomsel font-bold text-black ">
+          PT Abrisam Bintan Indonesia
+        </span>
       </a>
     </div>
 
     <!-- Navbar Links -->
-    <div class="hidden w-full md:block md:w-auto z-50" id="navbar-default">
+    <div class="hidden w-full md:block md:w-auto z-50 font-telkomsel" id="navbar-default">
       <ul
         class="font-medium flex flex-col p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 rtl:space-x-reverse md:mt-0 md:border-0 md:bg-transparent dark:bg-gray-800 md:dark:bg-transparent dark:border-gray-700">
         <li>
@@ -65,7 +66,8 @@
 
   <!-- Mobile Dropdown Menu -->
   <div id="mobile-menu" class="hidden md:hidden flex flex-col space-y-4 bg-gray-100 p-4">
-    <a href="{{ route('landingPage.layoutLandingPage') }}" class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-200">Beranda</a>
+    <a href="{{ route('landingPage.layoutLandingPage') }}"
+      class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-200">Beranda</a>
     <a href="{{ route('tampilProduk') }}" class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-200">Produk</a>
     <a href="#" class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-200">Blog</a>
     <a href="{{ route('tampilKontak') }}" class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-200">Kontak</a>

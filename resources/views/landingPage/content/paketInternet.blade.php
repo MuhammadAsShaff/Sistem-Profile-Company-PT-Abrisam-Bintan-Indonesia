@@ -3,7 +3,7 @@
     <!-- Header Section -->
     <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-6">
       <div>
-        <h2 class="text-xl md:text-2xl lg:text-3xl font-bold mb-1 text-[color:#001A41]">Berlangganan Sekarang</h2>
+        <h2 class="text-xl md:text-2xl lg:text-3xl font-bold font-telkomsel mb-1 text-[color:#001A41]">Berlangganan Sekarang</h2>
         <p class="text-gray-600">
           Penawaran ini berlaku untuk semua yang ingin menikmati internet cepat. <br>Dapatkan promo menarik dan harga
           terjangkau sekarang juga. <br>Jangan lewatkan potongan harga spesial!
@@ -14,7 +14,7 @@
       <div class="mt-4 md:mt-0 flex items-center space-x-4">
         <div class="relative w-full md:w-auto">
           <select id="kategori-filter" name="kategori"
-            class="block w-full md:w-auto bg-white text-gray-700 font-semibold rounded-lg shadow-sm border-gradient-to-r from-[#CD0A45] to-[#FD2B77] focus:border-gradient-to-r from-[#CD0A45] to-[#FD2B77] focus:ring focus:ring-pink-200 px-4 py-2 appearance-none transition-colors duration-200 ease-in-out">
+            class="block w-full md:w-auto bg-white text-gray-700 font-semibold font-telkomsel rounded-lg shadow-sm border-gradient-to-r from-[#CD0A45] to-[#FD2B77] focus:border-gradient-to-r from-[#CD0A45] to-[#FD2B77] focus:ring focus:ring-pink-200 px-4 py-2 appearance-none transition-colors duration-200 ease-in-out">
             <option value="" class="text-gray-500">Semua Kategori</option>
             @foreach($kategori as $kat)
         @if($kat->produk->count() > 0) <!-- Tampilkan kategori hanya jika memiliki produk -->
@@ -39,14 +39,14 @@
   <!-- Tab Navigation -->
   <div class="flex flex-wrap justify-center space-x-4 border-b mb-4">
     @foreach($paket as $pk)
-    @if($pk->produk->count() > 0) <!-- Hanya tampilkan paket yang memiliki produk -->
-    <button
-      class="px-4 py-2 font-semibold paket-button {{ request('paket') == $pk->id_paket ? 'text-white bg-gradient-to-r from-[#D10A3C] to-[#FF0038] active' : 'text-gray-700' }} rounded-tl-lg rounded-tr-lg"
+      @if($pk->produk->count() > 0) <!-- Hanya tampilkan paket yang memiliki produk -->
+      <button
+      class="px-4 py-2 font-semibold font-telkomsel paket-button {{ request('paket') == $pk->id_paket ? 'text-white bg-gradient-to-r from-[#D10A3C] to-[#FF0038] active' : 'text-gray-700' }} rounded-tl-lg rounded-tr-lg"
       data-id-paket="{{ $pk->id_paket }}">
       {{ $pk->nama_paket }}
-    </button>
-  @endif
-  @endforeach
+      </button>
+    @endif
+    @endforeach
   </div>
 
   <div id="produk-container" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 py-6 justify-center">
@@ -82,10 +82,10 @@
         var html = `
     <div class="max-w-sm bg-white shadow-2xl shadow-gray-400 rounded-lg p-6 relative h-full mx-auto">
   ${prod.diskon ? `<div class="absolute top-0 right-0 bg-gradient-to-r from-[#D10A3C] to-[#FF0038] text-white text-sm px-3 py-1 rounded-tr-lg rounded-bl-lg">Diskon ${prod.diskon}%</div>` : ''}
-  <h3 class="font-bold text-xl md:text-2xl lg:text-3xl mb-2 mt-4 text-left">${prod.nama_produk}</h3>
+  <h3 class="font-bold font-telkomsel text-xl md:text-2xl lg:text-3xl mb-2 mt-4 text-left">${prod.nama_produk}</h3>
   ${prod.diskon > 0 ? `
-  <p class="text-gray-500 text-lg line-through text-left">Rp${hargaAsli}</p>
-  <p class="text-2xl lg:text-3xl font-bold mb-2 text-red-600 text-left">
+  <p class="font-telkomsel text-gray-500 text-lg line-through text-left">Rp${hargaAsli}</p>
+  <p class="text-2xl lg:text-3xl font-bold font-telkomsel mb-2 text-red-600 text-left">
     Rp${hargaFormatted.slice(0, 3)}<span class="text-sm">${hargaFormatted.slice(3)}/Bulan</span>
   </p>` : `
   <p class="text-3xl font-bold text-red-600 text-left">

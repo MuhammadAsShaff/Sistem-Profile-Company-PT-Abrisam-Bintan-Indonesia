@@ -45,22 +45,14 @@ body {
 
 @font-face {
     font-family: 'TelkomselBatikSans';
-    src: url('/resources/fonts/TelkomselBatikSans-Bold.ttf') format('truetype');
+    src: url('/fonts/TelkomselBatikSans-Bold.ttf') format('truetype');
     font-weight: bold;
     font-style: normal;
 }
 
 @font-face {
     font-family: 'TelkomselBatikSans';
-    src: url('/resources/fonts/TelkomselBatikSans-Regular.ttf') format('truetype');
+    src: url('/fonts/TelkomselBatikSans-Regular.ttf') format('truetype');
     font-weight: normal;
     font-style: normal;
 }
-
-
-/* Penggunaan Font */
-.telkomsel-font-bold {
-    font-family: 'TelkomselBatikSans', sans-serif;
-    font-weight: bold;
-}
-
