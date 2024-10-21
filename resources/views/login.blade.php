@@ -19,7 +19,7 @@
         style="background-image: url('https://images.unsplash.com/photo-1616763355603-9755a640a287?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80')">
         <div class="flex items-center h-full px-20 bg-gray-900 bg-opacity-40">
           <div>
-            <h2 class="text-3xl font-bold text-white sm:text-4xl telkomsel-font-bold">PT Abrisam Bintan Indonesia</h2>
+            <h2 class="text-3xl font-bold text-white sm:text-4xl font-bold font-telkomsel">PT Abrisam Bintan Indonesia</h2>
             <p class="max-w-xl mt-4 text-gray-300 ">Selalu semangat bekerja! Jaga kesehatan agar tetap optimal dalam
               menjalankan kewajiban kita. Semangat!</p>
           </div>

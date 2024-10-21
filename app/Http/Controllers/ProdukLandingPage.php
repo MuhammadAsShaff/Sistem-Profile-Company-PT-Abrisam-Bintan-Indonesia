@@ -30,32 +30,28 @@ class ProdukLandingPage extends Controller
         $kecepatan = $request->input('kecepatan');
         $kuota = $request->input('kuota');
 
-        // Query dasar untuk produk
+        // Query dasar untuk produk tanpa filter (ini kondisi reset)
         $produkQuery = Produk::query();
 
-        // Filter berdasarkan kategori jika ada
+        // Hanya menambahkan filter jika ada input yang diberikan
         if ($kategoriId && $kategoriId !== 'all') {
             $produkQuery->where('id_kategori', $kategoriId);
         }
 
-        // Filter harga jika ada rentang harga
         if ($minHarga !== null && $maxHarga !== null) {
             $produkQuery->whereBetween('harga_produk', [$minHarga, $maxHarga]);
         }
 
-        // Filter kecepatan jika ada pilihan kecepatan
         if (!empty($kecepatan)) {
             $produkQuery->whereIn('kecepatan', $kecepatan);
         }
 
-        // Filter kuota jika ada pilihan kuota
         if (!empty($kuota)) {
             $produkQuery->where(function ($query) use ($kuota) {
-                // Filter untuk kuota Unlimited (null dalam database)
                 if (in_array('Unlimited', $kuota)) {
                     $query->whereNull('kuota');
                 }
-                // Filter untuk kuota spesifik selain Unlimited
+
                 $kuotaFiltered = array_filter($kuota, fn($k) => $k !== 'Unlimited');
                 if (!empty($kuotaFiltered)) {
                     $query->orWhereIn('kuota', $kuotaFiltered);
@@ -63,19 +59,20 @@ class ProdukLandingPage extends Controller
             });
         }
 
-        // Ambil produk yang sudah difilter
-        $produkFiltered = $produkQuery->pluck('id_produk'); // Mengambil ID produk hasil filter
+        // Jika tidak ada filter yang diterapkan, ambil semua produk
+        $produkFiltered = $produkQuery->pluck('id_produk');
 
-        // Ambil paket yang hanya mengandung produk yang sudah difilter
         $paket = Paket::whereHas('produk', function ($query) use ($produkFiltered) {
-            $query->whereIn('id_produk', $produkFiltered); // Menyaring paket berdasarkan produk yang telah difilter
+            $query->whereIn('id_produk', $produkFiltered);
         })->with([
                     'produk' => function ($query) use ($produkFiltered) {
-                        $query->whereIn('id_produk', $produkFiltered); // Mengambil produk yang terkait dengan paket yang sesuai dengan filter
+                        $query->whereIn('id_produk', $produkFiltered);
                     }
                 ])->get();
 
         // Kembalikan partial view untuk produk yang difilter
         return view('produk.produk', compact('paket'))->render();
     }
+
+
 }

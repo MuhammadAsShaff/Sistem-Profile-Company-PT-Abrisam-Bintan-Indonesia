@@ -9,7 +9,7 @@
       </svg>
       Filter
     </h2>
-    <button class="text-red-500 focus:outline-none font-telkomsel">Reset</button>
+  <button type="button" class="text-red-500 focus:outline-none font-telkomsel" onclick="resetFilters()">Reset</button>
   </div>
 
   <!-- Filter Section: Harga (Accordion) -->
@@ -91,12 +91,14 @@
     <div id="content-kuota" class="mt-4" style="display: block;"> <!-- Default terbuka -->
       <p class="text-sm text-gray-500 mb-4">Anda Dapat Memilih Produk Berdasarkan Kuota Internet</p>
       <div class="space-y-2">
-      @foreach($kuota as $kuo)
-      <label class="flex items-center space-x-2">
-      <input type="checkbox" name="kuota[]" class="form-checkbox h-5 w-5 text-red-500 rounded "
-        value="{{ $kuo->kuota === null ? 'Unlimited' : $kuo->kuota }}">
-      <span class="text-gray-700 font-telkomsel">{{ $kuo->kuota === null ? 'Unlimited' : $kuo->kuota . ' GB' }}</span>
-      </label>
+      @foreach($kuota->sortByDesc(function ($kuo) {
+  return $kuo->kuota === null ? PHP_INT_MAX : $kuo->kuota;
+}) as $kuo)
+        <label class="flex items-center space-x-2">
+        <input type="checkbox" name="kuota[]" class="form-checkbox h-5 w-5 text-red-500 rounded"
+          value="{{ $kuo->kuota === null ? 'Unlimited' : $kuo->kuota }}">
+        <span class="text-gray-700 font-telkomsel">{{ $kuo->kuota === null ? 'Unlimited' : $kuo->kuota . ' GB' }}</span>
+        </label>
     @endforeach
       </div>
     </div>
@@ -156,6 +158,42 @@
 
   // Initialize range display
   updateRange();
+
+   function resetFilters() {
+    // Reset checkbox filters
+    const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+    checkboxes.forEach(checkbox => {
+        checkbox.checked = false;
+    });
+
+    // Reset range sliders
+    const rangeMin = document.getElementById('range-min');
+    const rangeMax = document.getElementById('range-max');
+    rangeMin.value = 0;
+    rangeMax.value = 1000000;
+
+    document.getElementById('label-min').textContent = 'Rp 0';
+    document.getElementById('label-max').textContent = 'Rp 1.000.000';
+
+    const track = document.getElementById('range-track');
+    track.style.left = '0%';
+    track.style.width = '100%';
+
+    // Panggil fungsi untuk reload produk (gunakan AJAX)
+    loadProducts();
+}
+
+
+    function loadProducts() {
+        const xhr = new XMLHttpRequest();
+        xhr.open('GET', '{{ route('produk.filter') }}', true); // Menggunakan rute yang didefinisikan di Laravel
+        xhr.onload = function () {
+          if (xhr.status === 200) {
+            document.getElementById('produk-container').innerHTML = xhr.responseText;
+          }
+        };
+        xhr.send();
+      }
 </script>
 
 <!-- CSS Custom untuk Styling Range Slider -->

@@ -41,7 +41,7 @@
     @foreach($paket as $pk)
       @if($pk->produk->count() > 0) <!-- Hanya tampilkan paket yang memiliki produk -->
       <button
-      class="px-4 py-2 font-semibold font-telkomsel paket-button {{ request('paket') == $pk->id_paket ? 'text-white bg-gradient-to-r from-[#D10A3C] to-[#FF0038] active' : 'text-gray-700' }} rounded-tl-lg rounded-tr-lg"
+      class="px-4 py-2 font-bold paket-button {{ request('paket') == $pk->id_paket ? 'text-white bg-gradient-to-r from-[#D10A3C] to-[#FF0038] active' : 'text-gray-700' }} rounded-tl-lg rounded-tr-lg"
       data-id-paket="{{ $pk->id_paket }}">
       {{ $pk->nama_paket }}
       </button>

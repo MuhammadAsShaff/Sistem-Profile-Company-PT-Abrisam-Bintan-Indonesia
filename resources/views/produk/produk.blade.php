@@ -1,5 +1,6 @@
 
-  @foreach($paket as $p)
+ @if($paket->isNotEmpty())
+ @foreach($paket as $p)
     @if($p->produk->isNotEmpty()) <!-- Cek apakah paket memiliki produk -->
     <h3 class="text-2xl md:text-3xl lg:text-3xl font-semibold text-gray-800 mb-4 font-telkomsel">{{ $p->nama_paket }}</h3>
 
@@ -16,10 +17,10 @@
     <h3 class="font-bold font-telkomsel text-xl md:text-2xl lg:text-3xl mb-2 mt-4 text-left">{{ $prod->nama_produk }}</h3>
 
     @php
-      $hargaDiskon = $prod->harga_produk - ($prod->harga_produk * $prod->diskon / 100);
-      $hargaFormatted = number_format($hargaDiskon, 0, ',', '.');
-      $hargaAsli = number_format($prod->harga_produk, 0, ',', '.');
-      $biayaPasang = number_format($prod->biaya_pasang, 0, ',', '.');
+        $hargaDiskon = $prod->harga_produk - ($prod->harga_produk * $prod->diskon / 100);
+        $hargaFormatted = number_format($hargaDiskon, 0, ',', '.');
+        $hargaAsli = number_format($prod->harga_produk, 0, ',', '.');
+        $biayaPasang = number_format($prod->biaya_pasang, 0, ',', '.');
     @endphp
 
     @if($prod->diskon > 0)
@@ -64,3 +65,6 @@
     <br><br>
   @endif
   @endforeach
+@else
+  <p>Produk tidak ditemukan.</p>
+@endif
