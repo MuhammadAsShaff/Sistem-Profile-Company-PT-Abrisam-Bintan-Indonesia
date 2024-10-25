@@ -99,6 +99,13 @@ class ResetPasswordController extends Controller
     private function createMimeMessage($from, $to, $subject, $messageText, $isHtml = false)
     {
         $contentType = $isHtml ? 'text/html' : 'text/plain';
+
+        // Mengambil nama pengirim dari file .env
+        $fromName = env('MAIL_FROM_NAME', 'PT Abrisam Bintan Indonesia');
+
+        // Menyertakan nama pengirim sebelum alamat email
+        $from = $fromName . ' <' . $from . '>';
+
         $rawMessageString = "From: $from\r\n";
         $rawMessageString .= "To: $to\r\n";
         $rawMessageString .= "Subject: $subject\r\n";
