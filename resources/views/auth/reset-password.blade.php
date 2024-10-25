@@ -21,7 +21,7 @@
                     <span
                         class="flex items-center justify-center w-8 h-8 border border-gray-500 rounded-full shrink-0 dark:border-gray-400">1</span>
                     <span>
-                        <h3 class="font-medium leading-tight">Masukkan Email</h3>
+                        <h3 class="font-bold font-telkomsel leading-tight">Masukkan Email</h3>
                         <p class="text-sm text-gray-500 dark:text-gray-400">Masukkan email yang terdaftar</p>
                     </span>
                 </li>
@@ -30,7 +30,7 @@
                     <span
                         class="flex items-center justify-center w-8 h-8 border border-red-500 rounded-full shrink-0 dark:border-red-400">2</span>
                     <span>
-                        <h3 class="font-medium leading-tight text-red-500 dark:text-red-400">Reset Password</h3>
+                        <h3 class="font-bold font-telkomsel leading-tight text-red-500 dark:text-red-400">Reset Password</h3>
                         <p class="text-sm text-red-500 dark:text-red-400">Buat kata sandi baru</p>
                     </span>
                 </li>
@@ -38,7 +38,7 @@
                     <span
                         class="flex items-center justify-center w-8 h-8 border border-gray-500 rounded-full shrink-0 dark:border-gray-400">3</span>
                     <span>
-                        <h3 class="font-medium leading-tight">Selesai</h3>
+                        <h3 class="font-bold font-telkomsel leading-tight">Selesai</h3>
                         <p class="text-sm text-gray-500 dark:text-gray-400">Proses reset selesai</p>
                     </span>
                 </li>
@@ -58,7 +58,7 @@
 
             <!-- Judul dan Deskripsi -->
             <div class="text-center">
-                <h1 class="text-3xl font-bold tracking-wide text-gray-800 capitalize md:text-4xl dark:text-white">
+                <h1 class="text-3xl font-bold font-telkomsel tracking-wide text-gray-800 capitalize md:text-4xl dark:text-white">
                     Reset Password Anda
                 </h1>
                 <p class="mt-4 text-lg text-gray-500 dark:text-gray-400 max-w-xl mx-auto">
@@ -76,7 +76,7 @@
                     <!-- Input Email -->
                     <div class="relative">
                         <label for="email_admin"
-                            class="block mb-2 text-sm font-medium text-gray-600 dark:text-gray-200">Email:</label>
+                            class="block mb-2 text-sm font-bold font-telkomsel text-gray-600 dark:text-gray-200">Email:</label>
                         <input type="email" name="email_admin" id="email_admin"
                             class="block w-full pl-3 pr-10 py-3 mt-2 text-gray-700 placeholder-gray-400 bg-white border border-gray-300 rounded-lg dark:placeholder-gray-600 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-700 focus:border-red-400 dark:focus:border-red-400 focus:ring-red-400 focus:outline-none focus:ring focus:ring-opacity-40"
                             placeholder="Masukkan email Anda..." required>
