@@ -46,9 +46,9 @@
         </li>
     
         <li>
-          <a href="#"
+          <a href="{{ route('tampilBlog')}}"
             class="block py-2 px-3 rounded md:p-0 
-            {{ Route::is('blog') ? 'text-red-500 md:text-red-500 dark:text-red-500' : 'text-gray-900 hover:text-red-500 dark:text-white md:dark:hover:text-red-500' }}">
+            {{ Route::is('tampilBlog') ? 'text-red-500 md:text-red-500 dark:text-red-500' : 'text-gray-900 hover:text-red-500 dark:text-white md:dark:hover:text-red-500' }}">
             Blog
           </a>
         </li>
@@ -62,9 +62,9 @@
         </li>
     
         <li>
-          <a href="#"
+          <a href="{{route('tampilTentangKami')}}"
             class="block py-2 px-3 rounded md:p-0 
-            {{ Route::is('tentangKami') ? 'text-red-500 md:text-red-500 dark:text-red-500' : 'text-gray-900 hover:text-red-500 dark:text-white md:dark:hover:text-red-500' }}">
+            {{ Route::is('tampilTentangKami') ? 'text-red-500 md:text-red-500 dark:text-red-500' : 'text-gray-900 hover:text-red-500 dark:text-white md:dark:hover:text-red-500' }}">
             Tentang Kami
           </a>
         </li>

@@ -12,8 +12,10 @@ use App\Http\Controllers\PromoController;
 use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Http\Controllers\FaQController;
 use App\Http\Controllers\BlogController;
+use App\Http\Controllers\BlogLandingPage;
 use App\Http\Controllers\LandingPageController;
 use App\Http\Controllers\PesanProduk;
+use App\Http\Controllers\TentangKamiLandingPage;
 use Illuminate\Support\Facades\Route;
 use App\Http\Middleware\SavePreviousUrl;
 use App\Http\Middleware\PreventBackHistory; // Middleware untuk mencegah back
@@ -31,6 +33,12 @@ Route::prefix('/')->group(function () {
         ->name('tampilProduk');
 
     Route::get('/produk/filter', [ProdukLandingPage::class, 'filterByKategori'])->name('produk.filter');
+
+    Route::get('blog',[BlogLandingPage::class,'index'])
+            ->name('tampilBlog');
+
+    Route::get('TentangKami',[TentangKamiLandingPage::class,'index'])
+            ->name('tampilTentangKami');
 
     Route::get('FaQ', [LandingPageController::class, 'tampilFaQ'])
         ->name('tampilFaQ');

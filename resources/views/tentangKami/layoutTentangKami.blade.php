@@ -26,7 +26,7 @@
     <!-- Contact Section -->
     <div>
       <!-- Kontak berada di tengah -->
-      @include('blog.blog')
+      @include('tentangKami.tentangKami')
     </div>
 
     <!-- Footer Section -->
