@@ -8,8 +8,8 @@
   <link rel="icon" href="{{ asset('images/logoAbi.png') }}" type="image/x-icon" />
   <title>PT Abrisam Bintan Indonesia</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
-  @vite('resources/css/app.css')
-  @vite('resources/js/app.js')
+
+  @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
 <body>
@@ -27,6 +27,8 @@
       @yield('dataPelanggan')
       @yield('kategori')
       @yield('blog') 
+      @yield('editBlog')
+      @yield('tambahBlog')
       @yield('FaQ')
       @yield('datauser') 
     </div>

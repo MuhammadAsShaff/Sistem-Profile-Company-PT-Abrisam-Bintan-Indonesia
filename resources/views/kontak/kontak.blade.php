@@ -3,7 +3,7 @@
     <div>
       <p class="font-medium text-red-500 dark:text-red-400">Informasi Kontak</p>
 
-      <h1 class="mt-2 text-2xl font-semibold text-gray-800 md:text-3xl dark:text-white">Hubungi Kami</h1>
+      <h1 class="mt-2 text-2xl font-bold font-telkomsel text-gray-800 md:text-3xl ">Hubungi Kami</h1>
 
       <p class="mt-3 text-gray-500 dark:text-gray-400">Daftar IndiHome Pekanbaru melalui kami sekarang. Dapatkan harga
         paket IndiHome Pekanbaru terbaru,<br>dan berbagai Promo IndiHome Pekanbaru.Hubungi Marketing resmi IndiHome
@@ -21,7 +21,7 @@
             </svg>
           </span>
 
-          <h2 class="mt-4 text-base font-medium text-gray-800 dark:text-white"><b>Email</b></h2>
+          <h2 class="mt-4 text-base font-medium font-telkomsel text-gray-800"><b>Email</b></h2>
           <p class="text-sm text-gray-500 dark:text-gray-400">Anda Dapat Menghubungi Kami Melalui Email</p>
           <p class="text-sm text-red-500 dark:text-red-400">
             <a href="mailto:Abrisambintanindonesia@gmail.com" class="hover:underline">
@@ -40,7 +40,7 @@
             </svg>
           </span>
 
-          <h2 class="mt-4 text-base font-medium text-gray-800 dark:text-white"><b>Kantor</b></h2>
+          <h2 class="mt-4 text-base font-medium font-telkomsel text-gray-800 dark:text-white"><b>Kantor</b></h2>
           <p class="text-sm text-gray-500 dark:text-gray-400">Anda Dapat Datang Ke Kantor Kami</p>
           <p class="text-sm text-red-500 dark:text-red-400">JL.Lobak No.16,Pekanbaru</p>
         </div>
@@ -54,7 +54,7 @@
             </svg>
           </span>
 
-          <h2 class="mt-4 text-base font-medium text-gray-800 dark:text-white"><b>Kontak Perusahaan</b></h2>
+          <h2 class="mt-4 text-base font-medium font-telkomsel text-gray-800 dark:text-white"><b>Kontak Perusahaan</b></h2>
           <p class="text-sm text-gray-500 dark:text-gray-400">Anda Dapat Menghubungi Kami Melalui</p>
           <div class="flex justify-start items-center space-x-4 mt-2">
             <!-- Instagram -->

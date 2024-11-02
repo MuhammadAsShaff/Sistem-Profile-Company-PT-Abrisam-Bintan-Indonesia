@@ -1,15 +1,15 @@
 <?php
+
 namespace App\Http\Controllers;
 
 use App\Models\Blog;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class BlogController extends Controller
 {
   public function index(Request $request)
   {
-    session(['previous_url' => url()->full()]);
-
     $search = $request->input('search');
     $query = Blog::orderBy('created_at', 'desc');
 
@@ -17,8 +17,8 @@ class BlogController extends Controller
       $query->where('judul_blog', 'like', '%' . $search . '%');
     }
 
-    $blogCount = Blog::count();
     $blogs = $query->paginate(5);
+    $blogCount = Blog::count();
 
     return view('dashboard.blog.blog', compact('blogs', 'blogCount', 'search'));
   }
@@ -28,63 +28,57 @@ class BlogController extends Controller
     $validated = $request->validate([
       'judul_blog' => 'required|string|max:255',
       'isi_blog' => 'required|string',
-      'gambar_ilustrasi' => 'nullable|mimes:jpg,jpeg,png|max:2048',
-      'gambar_cover' => 'nullable|mimes:jpg,jpeg,png|max:2048',
+      'kategori' => 'required|string|max:100',
+      'gambar_cover' => 'nullable|mimes:jpg,jpeg,png|max:10000',
     ]);
 
-    $blogData = [
-      'judul_blog' => $validated['judul_blog'],
-      'isi_blog' => $validated['isi_blog'],
+    // Buat slug awal dari judul
+    $slug = Str::slug($validated['judul_blog']);
+    $blogData = array_merge($validated, [
       'tanggal_penulisan' => now(),
-    ];
-
-    if ($request->hasFile('gambar_ilustrasi')) {
-      $filename = time() . '_' . $request->file('gambar_ilustrasi')->getClientOriginalName();
-      $request->file('gambar_ilustrasi')->move(public_path('uploads/blogs'), $filename);
-      $blogData['gambar_ilustrasi'] = $filename;
-    }
+      'slug' => $slug, // Set slug sementara
+    ]);
 
     if ($request->hasFile('gambar_cover')) {
-      $filename = time() . '_' . $request->file('gambar_cover')->getClientOriginalName();
-      $request->file('gambar_cover')->move(public_path('uploads/blogs'), $filename);
-      $blogData['gambar_cover'] = $filename;
+      $coverFilename = time() . '_cover_' . $request->file('gambar_cover')->getClientOriginalName();
+      $request->file('gambar_cover')->move(public_path('uploads/blogs'), $coverFilename);
+      $blogData['gambar_cover'] = $coverFilename;
     }
 
-    Blog::create($blogData);
+    // Simpan blog terlebih dahulu untuk mendapatkan id_blog
+    $blog = Blog::create($blogData);
+
+    // Update slug dengan id_blog agar unik
+    $blog->slug = $slug . '-' . $blog->id_blog;
+    $blog->save();
 
     return redirect()->route('dashboard.blog.blog')->with('success', 'Blog berhasil ditambahkan');
   }
 
   public function update(Request $request, $id_blog)
   {
-    $blog = Blog::find($id_blog);
-    if (!$blog) {
-      return redirect()->back()->with('error', 'Blog tidak ditemukan.');
-    }
+    $blog = Blog::findOrFail($id_blog);
 
     $validated = $request->validate([
       'judul_blog' => 'required|string|max:255',
       'isi_blog' => 'required|string',
-      'gambar_ilustrasi' => 'nullable|mimes:jpg,jpeg,png|max:2048',
-      'gambar_cover' => 'nullable|mimes:jpg,jpeg,png|max:2048',
+      'kategori' => 'required|string|max:100',
+      'gambar_cover' => 'nullable|mimes:jpg,jpeg,png|max:10000',
     ]);
 
-    $blog->judul_blog = $validated['judul_blog'];
-    $blog->isi_blog = $validated['isi_blog'];
+    $blog->fill($validated);
 
-    if ($request->hasFile('gambar_ilustrasi')) {
-      if (file_exists(public_path('uploads/blogs/' . $blog->gambar_ilustrasi))) {
-        unlink(public_path('uploads/blogs/' . $blog->gambar_ilustrasi));
-      }
-      $filename = time() . '_' . $request->file('gambar_ilustrasi')->getClientOriginalName();
-      $request->file('gambar_ilustrasi')->move(public_path('uploads/blogs'), $filename);
-      $blog->gambar_ilustrasi = $filename;
+    // Perbarui slug jika judul berubah
+    if ($blog->isDirty('judul_blog')) {
+      $slug = Str::slug($validated['judul_blog']) . '-' . $blog->id_blog;
+      $blog->slug = $slug;
     }
 
     if ($request->hasFile('gambar_cover')) {
-      if (file_exists(public_path('uploads/blogs/' . $blog->gambar_cover))) {
+      if ($blog->gambar_cover && file_exists(public_path('uploads/blogs/' . $blog->gambar_cover))) {
         unlink(public_path('uploads/blogs/' . $blog->gambar_cover));
       }
+
       $filename = time() . '_' . $request->file('gambar_cover')->getClientOriginalName();
       $request->file('gambar_cover')->move(public_path('uploads/blogs'), $filename);
       $blog->gambar_cover = $filename;
@@ -92,20 +86,24 @@ class BlogController extends Controller
 
     $blog->save();
 
-    return redirect()->back()->with('success', 'Blog berhasil diupdate.');
+    return redirect()->route('dashboard.blog.blog')->with('success', 'Blog berhasil diupdate');
+  }
+
+  public function edit($id_blog)
+  {
+    $blog = Blog::findOrFail($id_blog);
+
+    return view('dashboard.blog.perbaruiBlog', compact('blog'));
+  }
+
+  public function insert(){
+    return view('dashboard.blog.insertBlog');
   }
 
   public function destroy($id_blog)
   {
-    $blog = Blog::find($id_blog);
+    $blog = Blog::findOrFail($id_blog);
 
-    if (!$blog) {
-      return redirect()->back()->with('error', 'Blog tidak ditemukan.');
-    }
-
-    if ($blog->gambar_ilustrasi && file_exists(public_path('uploads/blogs/' . $blog->gambar_ilustrasi))) {
-      unlink(public_path('uploads/blogs/' . $blog->gambar_ilustrasi));
-    }
     if ($blog->gambar_cover && file_exists(public_path('uploads/blogs/' . $blog->gambar_cover))) {
       unlink(public_path('uploads/blogs/' . $blog->gambar_cover));
     }

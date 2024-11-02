@@ -36,6 +36,9 @@ Route::prefix('/')->group(function () {
 
     Route::get('blog',[BlogLandingPage::class,'index'])
             ->name('tampilBlog');
+    Route::get('/blog/search', [BlogLandingPage::class, 'search'])->name('blog.search');
+
+    Route::get('/blog/{slug}', [BlogLandingPage::class, 'isiBlog'])->name('isiBlog');
 
     Route::get('TentangKami',[TentangKamiLandingPage::class,'index'])
             ->name('tampilTentangKami');
@@ -90,13 +93,12 @@ Route::prefix('dashboard')->middleware(['auth:admin', PreventBackHistory::class]
     Route::get('/faq/{id_faq}', [FaQController::class, 'show'])->name('faq.show'); // Menampilkan detail FaQ
 
     // Route untuk Blog
-    Route::get('blog', [BlogController::class, 'index'])
-        ->name('dashboard.blog.blog')
-        ->middleware(SavePreviousUrl::class);
-    Route::post('/blog/store', [BlogController::class, 'store'])->name('blog.store'); // Menyimpan Blog baru
-    Route::put('/blog/update/{id_blog}', [BlogController::class, 'update'])->name('blog.update'); // Mengupdate Blog berdasarkan ID
-    Route::delete('/blog/delete/{id_blog}', [BlogController::class, 'destroy'])->name('blog.delete'); // Menghapus Blog berdasarkan ID
-    Route::get('/blog/{id_blog}', [BlogController::class, 'show'])->name('blog.show'); // Menampilkan detail Blog
+    Route::get('blog', [BlogController::class, 'index'])->name('dashboard.blog.blog');
+    Route::get('/blog/insert', [BlogController::class, 'insert'])->name('blog.insert');
+    Route::post('/dashboard/blog/store', [BlogController::class, 'store'])->name('blog.store');
+    Route::get('/blog/edit/{id_blog}', [BlogController::class, 'edit'])->name('blog.edit');
+    Route::put('/blog/update/{id_blog}', [BlogController::class, 'update'])->name('blog.update');
+    Route::delete('/blog/delete/{id_blog}', [BlogController::class, 'destroy'])->name('blog.delete');
 
     // Route untuk produk
     Route::get('/produk', [ProdukController::class, 'index'])
