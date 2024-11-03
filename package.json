@@ -14,6 +14,7 @@
     "vite": "^5.0"
   },
   "dependencies": {
+    "@balkangraph/orgchart.js": "^8.14.57",
     "ckeditor5": "^43.2.0",
     "flowbite": "^2.5.2"
   }

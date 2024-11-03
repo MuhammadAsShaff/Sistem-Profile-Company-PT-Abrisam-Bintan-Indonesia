@@ -66,7 +66,8 @@
           <h3 class="text-red-500 text-xs font-bold uppercase">{{ strtoupper($related->kategori) }}</h3>
           <h2 class="text-lg font-bold font-telkomsel mb-1">{{ $related->judul_blog }}</h2>
           <p class="text-gray-700 text-sm mb-2">{{ Str::limit(strip_tags($related->isi_blog), 60) }}</p>
-          <span class="text-gray-500 text-xs">{{ \Carbon\Carbon::parse($related->created_at)->format('d M Y') }}</span>
+          <span
+            class="text-gray-500 text-xs">{{ \Carbon\Carbon::parse($related->created_at)->format('d M Y') }}</span>
           <a href="{{ route('isiBlog', ['slug' => $related->slug]) }}"
             class="text-red-500 text-sm font-bold font-telkomsel block mt-2">Lihat Selengkapnya &gt;</a>
           </div>
@@ -195,7 +196,7 @@
       margin-left: 1.5em;
       color: #000;
       padding-left: 0;
-    
+
     }
 
     .blog-detail-content-text ol {
