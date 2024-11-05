@@ -21,6 +21,7 @@
     <!-- Main Content -->
     <div class="flex-1 p-6">
       @yield('report')
+      @yield('tentangKami')
       @yield('dataProduk')
       @yield('Paket')
       @yield('Promo')

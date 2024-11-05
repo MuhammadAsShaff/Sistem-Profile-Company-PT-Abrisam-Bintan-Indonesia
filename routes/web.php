@@ -15,6 +15,7 @@ use App\Http\Controllers\BlogController;
 use App\Http\Controllers\BlogLandingPage;
 use App\Http\Controllers\LandingPageController;
 use App\Http\Controllers\PesanProduk;
+use App\Http\Controllers\BaganOrganisasiController;
 use App\Http\Controllers\TentangKamiLandingPage;
 use Illuminate\Support\Facades\Route;
 use App\Http\Middleware\SavePreviousUrl;
@@ -77,6 +78,12 @@ Route::prefix('dashboard')->middleware(['auth:admin', PreventBackHistory::class]
     Route::get('/', [Dashboard::class, 'index'])
         ->name('dashboard.dashboard.index')
         ->middleware(SavePreviousUrl::class); // Pasang middleware untuk simpan URL
+
+    Route::get('TentangKami',[BaganOrganisasiController::class,'index'])->name('dashboard.tentangKami.layoutTentangKami');
+    Route::post('/bagan/store', [BaganOrganisasiController::class, 'store'])->name('bagan.store');
+    Route::delete('/bagan/destroy/{id}', [BaganOrganisasiController::class, 'destroy'])->name('bagan.destroy');
+    Route::put('/bagan/update/{id}', [BaganOrganisasiController::class, 'update'])->name('bagan.update');
+
 
     // Route untuk data pelanggan
     Route::get('dataPelanggan', [Pelanggan::class, 'index'])
