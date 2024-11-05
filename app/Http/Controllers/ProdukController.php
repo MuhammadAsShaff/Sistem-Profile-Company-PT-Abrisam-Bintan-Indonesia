@@ -28,40 +28,58 @@ class ProdukController extends Controller
 
     public function store(Request $request)
     {
-        // Validasi input termasuk syarat_ketentuan sebagai array
-        $validated = $request->validate([
-            'nama_kategori' => 'required|string|max:255',
-            'deskripsi' => 'nullable|string',
-            'gambar_kategori' => 'nullable|mimes:jpg,jpeg,png|max:10000',
-            'syarat_ketentuan' => 'nullable|array', // syarat_ketentuan sebagai array
+        // Remove thousand separators from 'harga_produk' and 'biaya_pasang' inputs for validation
+        $hargaProduk = str_replace('.', '', $request->input('harga_produk'));
+        $biayaPasang = str_replace('.', '', $request->input('biaya_pasang'));
+
+        // Set default for 'biaya_pasang' if empty
+        if (empty($biayaPasang)) {
+            $biayaPasang = 0;
+        }
+
+        // Merge processed values back into the request
+        $request->merge([
+            'harga_produk' => $hargaProduk,
+            'biaya_pasang' => $biayaPasang
         ]);
 
-        // Konversi syarat_ketentuan array menjadi format JSON untuk penyimpanan
-        $syaratKetentuanJson = !empty($validated['syarat_ketentuan']) ? json_encode($validated['syarat_ketentuan']) : null;
+        // Validate the input data
+        $validated = $request->validate([
+            'nama_produk' => 'required|string|max:255',
+            'harga_produk' => 'required|numeric|min:0',
+            'benefit' => 'nullable|array', // Benefit must be an array
+            'kecepatan' => 'required|integer',
+            'deskripsi' => 'required|string',
+            'diskon' => 'nullable|numeric|min:0|max:100',
+            'biaya_pasang' => 'nullable|numeric|min:0',
+            'kuota' => 'nullable|integer|min:0',
+            'id_kategori' => 'required|exists:kategori,id_kategori',
+            'id_paket' => 'required|exists:paket,id_paket',
+        ]);
 
-        // Persiapan data kategori yang akan disimpan
-        $kategoriData = [
-            'nama_kategori' => $validated['nama_kategori'],
+        // Prepare product data with JSON-encoded 'benefit' array
+        $produkData = [
+            'nama_produk' => $validated['nama_produk'],
+            'harga_produk' => $validated['harga_produk'],
+            'benefit' => json_encode($validated['benefit'] ?? []), // Convert to JSON
+            'kecepatan' => $validated['kecepatan'],
             'deskripsi' => $validated['deskripsi'],
-            'syarat_ketentuan' => $syaratKetentuanJson, // Simpan syarat ketentuan sebagai JSON
+            'diskon' => $validated['diskon'] ?? 0, // Default to 0 if not provided
+            'biaya_pasang' => $biayaPasang, // Already set to 0 if empty
+            'kuota' => $validated['kuota'] ?? null, // Default to null if not provided
+            'id_kategori' => $validated['id_kategori'],
+            'id_paket' => $validated['id_paket'],
         ];
 
-        // Simpan gambar jika ada
-        if ($request->hasFile('gambar_kategori')) {
-            $file = $request->file('gambar_kategori');
-            $filename = time() . '_' . $file->getClientOriginalName();
-            $file->move(public_path('uploads/kategori'), $filename);
-            $kategoriData['gambar_kategori'] = $filename;
-        }
-
-        // Simpan kategori ke database
+        // Insert product into the database
         try {
-            Kategori::create($kategoriData);
-            return redirect()->route('dashboard.dataKategori.dataKategori')->with('success', 'Kategori berhasil ditambahkan');
+            Produk::create($produkData);
+            return redirect()->route('dashboard.dataProduk.dataProduk')->with('success', 'Produk berhasil ditambahkan');
         } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Gagal menambahkan kategori: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Gagal menambahkan produk: ' . $e->getMessage());
         }
     }
+
 
 
     public function update(Request $request, $id_produk)
