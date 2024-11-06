@@ -13,6 +13,7 @@ use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Http\Controllers\FaQController;
 use App\Http\Controllers\BlogController;
 use App\Http\Controllers\BlogLandingPage;
+use App\Http\Controllers\TentangKamiController;
 use App\Http\Controllers\LandingPageController;
 use App\Http\Controllers\PesanProduk;
 use App\Http\Controllers\BaganOrganisasiController;
@@ -35,14 +36,14 @@ Route::prefix('/')->group(function () {
 
     Route::get('/produk/filter', [ProdukLandingPage::class, 'filterByKategori'])->name('produk.filter');
 
-    Route::get('blog',[BlogLandingPage::class,'index'])
-            ->name('tampilBlog');
+    Route::get('blog', [BlogLandingPage::class, 'index'])
+        ->name('tampilBlog');
     Route::get('/blog/search', [BlogLandingPage::class, 'search'])->name('blog.search');
 
     Route::get('/blog/{slug}', [BlogLandingPage::class, 'isiBlog'])->name('isiBlog');
 
-    Route::get('TentangKami',[TentangKamiLandingPage::class,'index'])
-            ->name('tampilTentangKami');
+    Route::get('TentangKami', [TentangKamiLandingPage::class, 'index'])
+        ->name('tampilTentangKami');
 
     Route::get('FaQ', [LandingPageController::class, 'tampilFaQ'])
         ->name('tampilFaQ');
@@ -79,7 +80,7 @@ Route::prefix('dashboard')->middleware(['auth:admin', PreventBackHistory::class]
         ->name('dashboard.dashboard.index')
         ->middleware(SavePreviousUrl::class); // Pasang middleware untuk simpan URL
 
-    Route::get('TentangKami',[BaganOrganisasiController::class,'index'])->name('dashboard.tentangKami.layoutTentangKami');
+    Route::get('TentangKami', [BaganOrganisasiController::class, 'index'])->name('dashboard.tentangKami.layoutTentangKami');
     Route::post('/bagan/store', [BaganOrganisasiController::class, 'store'])->name('bagan.store');
     Route::delete('/bagan/destroy/{id}', [BaganOrganisasiController::class, 'destroy'])->name('bagan.destroy');
     Route::put('/bagan/update/{id}', [BaganOrganisasiController::class, 'update'])->name('bagan.update');
@@ -100,7 +101,9 @@ Route::prefix('dashboard')->middleware(['auth:admin', PreventBackHistory::class]
     Route::get('/faq/{id_faq}', [FaQController::class, 'show'])->name('faq.show'); // Menampilkan detail FaQ
 
     // Route untuk Blog
-    Route::get('blog', [BlogController::class, 'index'])->name('dashboard.blog.blog');
+    Route::get('blog', [BlogController::class, 'index'])
+        ->name('dashboard.blog.blog')
+        ->middleware(SavePreviousUrl::class);
     Route::get('/blog/insert', [BlogController::class, 'insert'])->name('blog.insert');
     Route::post('/dashboard/blog/store', [BlogController::class, 'store'])->name('blog.store');
     Route::get('/blog/edit/{id_blog}', [BlogController::class, 'edit'])->name('blog.edit');
@@ -116,6 +119,10 @@ Route::prefix('dashboard')->middleware(['auth:admin', PreventBackHistory::class]
     Route::post('/produk/update-benefit', [ProdukController::class, 'updateBenefit']);
     Route::delete('/produk/delete/{id_produk}', [ProdukController::class, 'destroy'])->name('produk.delete');
 
+    //Route untuk tentang kami
+    Route::post('/tentang-kami/store', [TentangKamiController::class, 'store'])->name('tentangKami.store'); 
+    Route::put('/tentang-kami/update/{id}', [TentangKamiController::class, 'update'])->name('tentangKami.update');
+    Route::delete('/tentang-kami/delete/{id}', [TentangKamiController::class, 'destroy'])->name('tentangKami.delete');
 
     // Route untuk promo
     Route::get('promo', [PromoController::class, 'index'])

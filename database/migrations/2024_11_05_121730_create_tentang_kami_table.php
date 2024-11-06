@@ -17,7 +17,6 @@ class CreateTentangKamiTable extends Migration
             $table->text('deskripsi_perusahaan');
             $table->text('visi');
             $table->text('misi');
-            $table->json('gambar_kegiatan')->nullable(); // Menyimpan gambar dalam format JSON
             $table->timestamps();
         });
     }

@@ -55,7 +55,7 @@
   <!-- View All Button -->
   <div class="text-center mt-6">
     <button id="toggle-produk-button"
-      class="bg-gradient-to-r from-[#D10A3C] to-[#FF0038] text-white py-2 px-4 rounded-lg w-full mt-auto"
+      class="text-red-500 py-2 px-4 rounded-lg w-full mt-auto"
       style="display: none;">Tampilkan Semua Produk</button>
   </div>
 </div>

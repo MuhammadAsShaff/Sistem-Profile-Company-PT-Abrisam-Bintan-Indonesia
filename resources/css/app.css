@@ -38,6 +38,9 @@
     animation: modalOut 0.3s forwards;
 }
 
+ form[data-boc-edit-form] {
+    display: none !important;
+    }
 
 body {
     font-family: 'Poppins', sans-serif;

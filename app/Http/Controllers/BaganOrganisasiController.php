@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\BaganOrganisasi;
+use App\Models\TentangKami;
 use Illuminate\Http\Request;
 
 class BaganOrganisasiController extends Controller
@@ -11,6 +12,9 @@ class BaganOrganisasiController extends Controller
     {
         // Mengambil semua data dari tabel BaganOrganisasi
         $data = BaganOrganisasi::all();
+
+        // Mengambil hanya satu record dari TentangKami
+        $tentangKami = TentangKami::first(); // Ambil record pertama saja
 
         // Mengambil data untuk dropdown parent options
         $parentOptions = BaganOrganisasi::all();
@@ -22,18 +26,18 @@ class BaganOrganisasiController extends Controller
                 'pid' => $item->parent_id,
                 'name' => $item->name,
                 'title' => $item->title,
-                'img' => $item->img_url ? asset('uploads/bagan/' . $item->img_url) : null, // Pastikan path yang benar
+                'img' => $item->img_url ? asset('uploads/bagan/' . $item->img_url) : null,
             ];
         });
 
         // Mengirimkan data ke view
         return view('dashboard.tentangKami.layoutTentangKami', [
-            'nodes' => $nodes->isEmpty() ? '[]' : $nodes->toJson(), // Jika kosong, kirim array kosong dalam format JSON
-            'parentOptions' => $parentOptions, // Data untuk dropdown parent options
-            'countNode' => $nodes->count() // Menyimpan jumlah node untuk keperluan logika tampilan di Blade
+            'nodes' => $nodes->isEmpty() ? '[]' : $nodes->toJson(),
+            'parentOptions' => $parentOptions,
+            'countNode' => $nodes->count(),
+            'tentangKami' => $tentangKami // Mengirim satu instance TentangKami ke view
         ]);
     }
-
 
     public function store(Request $request)
     {

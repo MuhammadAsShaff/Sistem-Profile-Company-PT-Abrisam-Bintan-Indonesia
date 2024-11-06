@@ -40,24 +40,15 @@
   </form>
 
 @else
-    <!-- Div untuk menampilkan bagan jika ada node -->
-    <div id="tree"></div>
-    @include('dashboard.tentangKami.modalHapus')
-    @include('dashboard.tentangKami.modalInsert')
-    @include('dashboard.tentangKami.modalUpdate')
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://balkan.app/js/OrgChart.js"></script>
+  <!-- Div untuk menampilkan bagan jika ada node -->
+  <div id="tree"></div>
+  @include('dashboard.tentangKami.modalHapus')
+  @include('dashboard.tentangKami.modalInsert')
+  @include('dashboard.tentangKami.modalUpdate')
 
-    <div id="tree" class="container mx-auto mt-20 p-4"></div>
-
-    <style>
-    form[data-boc-edit-form] {
-    display: none !important;
-    }
-    </style>
-
-    <script>
-
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://balkan.app/js/OrgChart.js"></script>
+  <script>
     OrgChart.templates.olivia.nodeCircleMenuButton = {
     radius: 18,
     x: 250,
@@ -126,27 +117,27 @@
       processData: false,
       contentType: false,
       success: function (response) {
-      // Tutup modal dan tampilkan SweetAlert jika berhasil
-      closeModal('addNodeDialog');
-      Swal.fire({
-      title: 'Berhasil!',
-      text: response.message,
-      icon: 'success',
-      timer: 1500,
-      showConfirmButton: false
-      }).then(() => {
-      // Redirect ke halaman yang diinginkan
-      window.location.href = "{{ route('dashboard.tentangKami.layoutTentangKami') }}";
-      });
+        // Tutup modal dan tampilkan SweetAlert jika berhasil
+        closeModal('addNodeDialog');
+        Swal.fire({
+        title: 'Berhasil!',
+        text: response.message,
+        icon: 'success',
+        timer: 1500,
+        showConfirmButton: false
+        }).then(() => {
+        // Redirect ke halaman yang diinginkan
+        window.location.href = "{{ route('dashboard.tentangKami.layoutTentangKami') }}";
+        });
       },
       error: function (error) {
-      // Tampilkan pesan error jika gagal
-      Swal.fire({
-      title: 'Gagal!',
-      text: error.responseJSON ? error.responseJSON.message : 'Error tidak dikenal',
-      icon: 'error'
-      });
-      closeModal('addNodeDialog');
+        // Tampilkan pesan error jika gagal
+        Swal.fire({
+        title: 'Gagal!',
+        text: error.responseJSON ? error.responseJSON.message : 'Error tidak dikenal',
+        icon: 'error'
+        });
+        closeModal('addNodeDialog');
       }
       });
     } else {
@@ -169,46 +160,45 @@
     if (confirmDeleteButton) {
       confirmDeleteButton.addEventListener('click', function () {
       if (currentNodeId) {
-      $.ajax({
-      url: "{{ route('bagan.destroy', '') }}/" + currentNodeId,
-      type: "DELETE",
-      data: {
-        _token: '{{ csrf_token() }}'
-      },
-      success: function (response) {
-        // Hapus node dari chart dan tutup modal
-        chart.removeNode(currentNodeId);
-        closeModal('deleteNodeDialog');
+        $.ajax({
+        url: "{{ route('bagan.destroy', '') }}/" + currentNodeId,
+        type: "DELETE",
+        data: {
+          _token: '{{ csrf_token() }}'
+        },
+        success: function (response) {
+          // Hapus node dari chart dan tutup modal
+          chart.removeNode(currentNodeId);
+          closeModal('deleteNodeDialog');
 
-        // Tampilkan SweetAlert setelah penghapusan berhasil
-        Swal.fire({
-        title: 'Berhasil!',
-        text: response.message,
-        icon: 'success',
-        timer: 1500,  // 1.5 detik
-        showConfirmButton: false
-        }).then(() => {
-        // Redirect ke halaman yang ditentukan dalam respons JSON
-        if (response.redirect) {
-        window.location.href = response.redirect;
+          // Tampilkan SweetAlert setelah penghapusan berhasil
+          Swal.fire({
+          title: 'Berhasil!',
+          text: response.message,
+          icon: 'success',
+          timer: 1500,  // 1.5 detik
+          showConfirmButton: false
+          }).then(() => {
+          // Redirect ke halaman yang ditentukan dalam respons JSON
+          if (response.redirect) {
+            window.location.href = response.redirect;
+          }
+          });
+        },
+        error: function (error) {
+          // Tampilkan SweetAlert untuk error
+          Swal.fire({
+          title: 'Gagal!',
+          text: error.responseJSON ? error.responseJSON.message : 'Error tidak dikenal',
+          icon: 'error'
+          });
+          closeModal('deleteNodeDialog'); // Tutup modal jika terjadi kesalahan
         }
         });
-      },
-      error: function (error) {
-        // Tampilkan SweetAlert untuk error
-        Swal.fire({
-        title: 'Gagal!',
-        text: error.responseJSON ? error.responseJSON.message : 'Error tidak dikenal',
-        icon: 'error'
-        });
-        closeModal('deleteNodeDialog'); // Tutup modal jika terjadi kesalahan
-      }
-      });
       }
       });
     }
     });
-
 
 
     function editNode(nodeId) {
@@ -236,48 +226,48 @@
       const imgFile = document.getElementById('editNodeImage').files[0];
 
       if (updatedName && updatedTitle && currentEditNodeId) {
-      const formData = new FormData();
-      formData.append('name', updatedName);
-      formData.append('title', updatedTitle);
-      formData.append('_token', '{{ csrf_token() }} ');
-      formData.append('_method', 'PUT'); // Tambahkan ini
-      // Tambahkan gambar jika ada
-      if (imgFile) {
-      formData.append('img_file', imgFile);
-      }
+        const formData = new FormData();
+        formData.append('name', updatedName);
+        formData.append('title', updatedTitle);
+        formData.append('_token', '{{ csrf_token() }} ');
+        formData.append('_method', 'PUT'); // Tambahkan ini
+        // Tambahkan gambar jika ada
+        if (imgFile) {
+        formData.append('img_file', imgFile);
+        }
 
-      $.ajax({
-      url: "{{ route('bagan.update', '') }}/" + currentEditNodeId,
-      type: "POST",
-      data: formData,
-      processData: false,  // Agar jQuery tidak memproses data
-      contentType: false,  // Agar jQuery tidak mengatur jenis konten
-      success: function (response) {
-        chart.updateNode({ id: currentEditNodeId, name: updatedName, title: updatedTitle });
-        closeModal('editNodeDialog');
-        Swal.fire({
-        title: 'Berhasil!',
-        text: response.message,
-        icon: 'success',
-        timer: 1500,
-        showConfirmButton: false
-        }).then(() => {
-        if (response.redirect) {
-        window.location.href = response.redirect;
+        $.ajax({
+        url: "{{ route('bagan.update', '') }}/" + currentEditNodeId,
+        type: "POST",
+        data: formData,
+        processData: false,  // Agar jQuery tidak memproses data
+        contentType: false,  // Agar jQuery tidak mengatur jenis konten
+        success: function (response) {
+          chart.updateNode({ id: currentEditNodeId, name: updatedName, title: updatedTitle });
+          closeModal('editNodeDialog');
+          Swal.fire({
+          title: 'Berhasil!',
+          text: response.message,
+          icon: 'success',
+          timer: 1500,
+          showConfirmButton: false
+          }).then(() => {
+          if (response.redirect) {
+            window.location.href = response.redirect;
+          }
+          });
+        },
+        error: function (error) {
+          Swal.fire({
+          title: 'Gagal!',
+          text: error.responseJSON ? error.responseJSON.message : 'Error tidak dikenal',
+          icon: 'error'
+          });
+          closeModal('editNodeDialog');
         }
         });
-      },
-      error: function (error) {
-        Swal.fire({
-        title: 'Gagal!',
-        text: error.responseJSON ? error.responseJSON.message : 'Error tidak dikenal',
-        icon: 'error'
-        });
-        closeModal('editNodeDialog');
-      }
-      });
       } else {
-      alert("Nama dan Jabatan harus diisi.");
+        alert("Nama dan Jabatan harus diisi.");
       }
       });
     }
@@ -301,6 +291,6 @@
     });
     // Memuat data dari database
     chart.load({!! $nodes !!});
-    </script>
+  </script>
 
 @endif

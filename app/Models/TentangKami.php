@@ -17,11 +17,7 @@ class TentangKami extends Model
         'deskripsi_perusahaan',
         'visi',
         'misi',
-        'gambar_kegiatan',
+        
     ];
 
-    // Konversikan 'gambar_kegiatan' ke array saat diambil dari database
-    protected $casts = [
-        'gambar_kegiatan' => 'array',
-    ];
 }
