@@ -81,10 +81,12 @@ Route::prefix('dashboard')->middleware(['auth:admin', PreventBackHistory::class]
         ->name('dashboard.dashboard.index')
         ->middleware(SavePreviousUrl::class); // Pasang middleware untuk simpan URL
 
-    Route::get('TentangKami', [BaganOrganisasiController::class, 'index'])->name('dashboard.tentangKami.layoutTentangKami');
-    Route::post('/bagan/store', [BaganOrganisasiController::class, 'store'])->name('bagan.store');
-    Route::delete('/bagan/destroy/{id}', [BaganOrganisasiController::class, 'destroy'])->name('bagan.destroy');
-    Route::put('/bagan/update/{id}', [BaganOrganisasiController::class, 'update'])->name('bagan.update');
+    Route::prefix('bagan')->group(function () {
+        Route::get('/TentangKami', [BaganOrganisasiController::class, 'index'])->name('dashboard.tentangKami.layoutTentangKami');
+        Route::post('/store', [BaganOrganisasiController::class, 'store'])->name('bagan.store');
+        Route::put('/update/{id}', [BaganOrganisasiController::class, 'update'])->name('bagan.update');
+        Route::delete('/destroy/{id}', [BaganOrganisasiController::class, 'destroy'])->name('bagan.destroy');
+    });
 
 
     // Route untuk data pelanggan
@@ -93,87 +95,104 @@ Route::prefix('dashboard')->middleware(['auth:admin', PreventBackHistory::class]
         ->middleware(SavePreviousUrl::class);
 
     // Route untuk FaQ
-    Route::get('FAQ', [FaQController::class, 'index'])
-        ->name('dashboard.FaQ.FaQ')
-        ->middleware(SavePreviousUrl::class);
-    Route::post('/faq/store', [FaQController::class, 'store'])->name('faq.store'); // Menyimpan FaQ baru
-    Route::put('/faq/update/{id_faq}', [FaQController::class, 'update'])->name('faq.update'); // Mengupdate FaQ berdasarkan ID
-    Route::delete('/faq/delete/{id_faq}', [FaQController::class, 'destroy'])->name('faq.delete'); // Menghapus FaQ berdasarkan ID
-    Route::get('/faq/{id_faq}', [FaQController::class, 'show'])->name('faq.show'); // Menampilkan detail FaQ
+    Route::prefix('faq')->group(function () {
+        Route::get('/', [FaQController::class, 'index'])
+            ->name('dashboard.FaQ.FaQ')
+            ->middleware(SavePreviousUrl::class);
+        Route::post('/store', [FaQController::class, 'store'])->name('faq.store'); 
+        Route::put('/update/{id_faq}', [FaQController::class, 'update'])->name('faq.update'); 
+        Route::delete('/delete/{id_faq}', [FaQController::class, 'destroy'])->name('faq.delete'); 
+        Route::get('/{id_faq}', [FaQController::class, 'show'])->name('faq.show'); 
+    });
+
 
     // Route untuk Blog
-    Route::get('blog', [BlogController::class, 'index'])
-        ->name('dashboard.blog.blog')
-        ->middleware(SavePreviousUrl::class);
-    Route::get('/blog/insert', [BlogController::class, 'insert'])->name('blog.insert');
-    Route::post('/dashboard/blog/store', [BlogController::class, 'store'])->name('blog.store');
-    Route::get('/blog/edit/{id_blog}', [BlogController::class, 'edit'])->name('blog.edit');
-    Route::put('/blog/update/{id_blog}', [BlogController::class, 'update'])->name('blog.update');
-    Route::delete('/blog/delete/{id_blog}', [BlogController::class, 'destroy'])->name('blog.delete');
+    Route::prefix('blog')->group(function () {
+        Route::get('/', [BlogController::class, 'index'])
+            ->name('dashboard.blog.blog')
+            ->middleware(SavePreviousUrl::class);
+        Route::get('/insert', [BlogController::class, 'insert'])->name('blog.insert');
+        Route::post('/store', [BlogController::class, 'store'])->name('blog.store');
+        Route::get('/edit/{id_blog}', [BlogController::class, 'edit'])->name('blog.edit');
+        Route::put('/update/{id_blog}', [BlogController::class, 'update'])->name('blog.update');
+        Route::delete('/delete/{id_blog}', [BlogController::class, 'destroy'])->name('blog.delete');
+    });
+
 
     // Route untuk produk
-    Route::get('/produk', [ProdukController::class, 'index'])
-        ->name('dashboard.dataProduk.dataProduk')
-        ->middleware(SavePreviousUrl::class);
-    Route::post('/produk/store', [ProdukController::class, 'store'])->name('produk.store');
-    Route::put('/produk/update/{id_produk}', [ProdukController::class, 'update'])->name('produk.update');
-    Route::post('/produk/update-benefit', [ProdukController::class, 'updateBenefit']);
-    Route::delete('/produk/delete/{id_produk}', [ProdukController::class, 'destroy'])->name('produk.delete');
+    Route::prefix('produk')->group(function () {
+        Route::get('/', [ProdukController::class, 'index'])
+            ->name('dashboard.dataProduk.dataProduk')
+            ->middleware(SavePreviousUrl::class);
+        Route::post('/store', [ProdukController::class, 'store'])->name('produk.store');
+        Route::put('/update/{id_produk}', [ProdukController::class, 'update'])->name('produk.update');
+        Route::post('/update-benefit', [ProdukController::class, 'updateBenefit'])->name('produk.updateBenefit');
+        Route::delete('/delete/{id_produk}', [ProdukController::class, 'destroy'])->name('produk.delete');
+    });
+
 
     //Route untuk tentang kami
-    Route::post('/tentang-kami/store', [TentangKamiController::class, 'store'])->name('tentangKami.store'); 
-    Route::put('/tentang-kami/update/{id}', [TentangKamiController::class, 'update'])->name('tentangKami.update');
-    Route::delete('/tentang-kami/delete/{id}', [TentangKamiController::class, 'destroy'])->name('tentangKami.delete');
+    Route::prefix('tentang-kami')->group(function () {
+        Route::post('/store', [TentangKamiController::class, 'store'])->name('tentangKami.store');
+        Route::put('/update/{id}', [TentangKamiController::class, 'update'])->name('tentangKami.update');
+        Route::delete('/delete/{id}', [TentangKamiController::class, 'destroy'])->name('tentangKami.delete');
+    });
+
 
     //Route Kegiatan
     Route::prefix('tentang-kami/kegiatan')->group(function () {
-        // Route untuk menyimpan kegiatan (Create)
         Route::post('/store', [KegiatanController::class, 'store'])->name('kegiatan.store');
-
-        // Route untuk memperbarui kegiatan (Update)
         Route::put('/update/{id}', [KegiatanController::class, 'update'])->name('kegiatan.update');
-
-        // Route untuk menghapus kegiatan (Delete)
         Route::delete('/delete/{id}', [KegiatanController::class, 'destroy'])->name('kegiatan.delete');
     });
 
 
     // Route untuk promo
-    Route::get('promo', [PromoController::class, 'index'])
-        ->name('dashboard.Promo.Promo')
-        ->middleware(SavePreviousUrl::class);
-    Route::post('/promo/store', [PromoController::class, 'store'])->name('promo.store');
-    Route::put('/promo/update/{id_promo}', [PromoController::class, 'update'])->name('promo.update');
-    Route::delete('/promo/delete/{id_promo}', [PromoController::class, 'destroy'])->name('promo.delete');
+    Route::prefix('promo')->middleware(SavePreviousUrl::class)->group(function () {
+        Route::get('/', [PromoController::class, 'index'])->name('dashboard.Promo.Promo');
+        Route::post('/store', [PromoController::class, 'store'])->name('promo.store');
+        Route::put('/update/{id_promo}', [PromoController::class, 'update'])->name('promo.update');
+        Route::delete('/delete/{id_promo}', [PromoController::class, 'destroy'])->name('promo.delete');
+    });
+
 
     // Route untuk paket
-    Route::get('paket/{id_paket}/produk', [PaketController::class, 'showProdukByPaket'])->name('paket.showProdukByPaket');
-    Route::get('dataPaket', [PaketController::class, 'index'])
-        ->name('dashboard.dataPaket.dataPaket')
-        ->middleware(SavePreviousUrl::class);
-    Route::post('/paket/store', [PaketController::class, 'store'])->name('paket.store');
-    Route::put('/paket/update/{id_paket}', [PaketController::class, 'update'])->name('paket.update');
-    Route::delete('/paket/delete/{id_paket}', [PaketController::class, 'destroy'])->name('paket.delete');
+    Route::prefix('paket')->group(function () {
+        Route::get('/{id_paket}/produk', [PaketController::class, 'showProdukByPaket'])->name('paket.showProdukByPaket');
+        Route::get('/dataPaket', [PaketController::class, 'index'])
+            ->name('dashboard.dataPaket.dataPaket')
+            ->middleware(SavePreviousUrl::class);
+        Route::post('/store', [PaketController::class, 'store'])->name('paket.store');
+        Route::put('/update/{id_paket}', [PaketController::class, 'update'])->name('paket.update');
+        Route::delete('/delete/{id_paket}', [PaketController::class, 'destroy'])->name('paket.delete');
+    });
+
 
     // Route untuk kategori
-    Route::get('dataKategori', [KategoriController::class, 'index'])
-        ->name('dashboard.dataKategori.dataKategori')
-        ->middleware(SavePreviousUrl::class);
-    Route::post('/kategori/store', [KategoriController::class, 'store'])->name('kategori.store');
-    Route::put('/kategori/update/{id_kategori}', [KategoriController::class, 'update'])->name('kategori.update');
-    Route::delete('/kategori/delete/{id_kategori}', [KategoriController::class, 'destroy'])->name('kategori.delete');
-    Route::get('/kategori/{id_kategori}/produk', [KategoriController::class, 'showProdukByKategori'])
-        ->name('kategori.showProdukByKategori');
+    Route::prefix('kategori')->group(function () {
+        Route::get('/dataKategori', [KategoriController::class, 'index'])
+            ->name('dashboard.dataKategori.dataKategori')
+            ->middleware(SavePreviousUrl::class);
+        Route::post('/store', [KategoriController::class, 'store'])->name('kategori.store');
+        Route::put('/update/{id_kategori}', [KategoriController::class, 'update'])->name('kategori.update');
+        Route::delete('/delete/{id_kategori}', [KategoriController::class, 'destroy'])->name('kategori.delete');
+        Route::get('/{id_kategori}/produk', [KategoriController::class, 'showProdukByKategori'])
+            ->name('kategori.showProdukByKategori');
+    });
+
 
     // Route untuk data user (admin management)
-    Route::get('datauser', [DataUser::class, 'index'])
-        ->name('dashboard.dataUser.datauser')
-        ->middleware(SavePreviousUrl::class);
-    Route::post('/admin/store', [DataUser::class, 'store'])->name('admin.store');
-    Route::put('/admin/update/{id}', [DataUser::class, 'update'])
-        ->name('admin.update')
-        ->middleware('auth:admin');
-    Route::delete('/admin/delete/{id}', [DataUser::class, 'destroy'])->name('admin.delete');
+    Route::prefix('datauser')->middleware(SavePreviousUrl::class)->group(function () {
+        Route::get('/', [DataUser::class, 'index'])
+            ->name('dashboard.dataUser.datauser');
+
+        Route::prefix('admin')->middleware('auth:admin')->group(function () {
+            Route::post('/store', [DataUser::class, 'store'])->name('admin.store');
+            Route::put('/update/{id}', [DataUser::class, 'update'])->name('admin.update');
+            Route::delete('/delete/{id}', [DataUser::class, 'destroy'])->name('admin.delete');
+        });
+    });
+
 
     // Route untuk update profile admin
     Route::put('/admin/profile/update/{id}', [DataUser::class, 'updateProfile'])
