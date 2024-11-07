@@ -10,8 +10,26 @@
       <span class="text-gray-500 font-semibold">Tidak Ada Gambar</span>
       </div>
     @else
+      @foreach($kegiatan as $item)
+      <div class="bg-white shadow-md rounded-lg overflow-hidden cursor-pointer">
+      <img src="{{ asset('uploads/kegiatan/' . $item->gambar) }}" alt="Gambar Kegiatan"
+      class="w-full h-60 object-cover">
+      <div class="p-4">
+      <h2 class="text-lg font-semibold text-gray-800 capitalize">{{ $item->nama }}</h2>
+      <p class=" text-gray-600 text-sm">{{ $item->keterangan }}</p>
+      <button onclick="openModal('editKegiatanModal-{{ $item->id }}')"
+      class="bg-blue-500 text-white px-4 py-2 rounded">
+      Edit
+      </button>
+      <button type="button" onclick="openModal('deleteModalKegiatan-{{ $item->id }}')"
+      class="bg-red-500 text-white px-4 py-2 rounded">Hapus
+      </button>
+      </div>
+      </div>
       <!-- Looping untuk menampilkan gambar kegiatan jika ada -->
       @include('dashboard.tentangKami.modalUpdateKegiatan')
+      @include('dashboard.tentangKami.modalHapusKegiatan')
+    @endforeach
     @endif
     </div>
     <!-- Button to open the create modal positioned at the bottom left -->
@@ -22,4 +40,3 @@
     </div>
   </div>
 </section>
-
