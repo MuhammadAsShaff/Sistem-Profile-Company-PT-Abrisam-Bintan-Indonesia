@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\BaganOrganisasi;
 use App\Models\TentangKami;
+use App\Models\Kegiatan;
 use Illuminate\Http\Request;
 
 class BaganOrganisasiController extends Controller
@@ -18,6 +19,9 @@ class BaganOrganisasiController extends Controller
 
         // Mengambil data untuk dropdown parent options
         $parentOptions = BaganOrganisasi::all();
+
+        // Mengambil data kegiatan untuk dropdown parent options
+        $kegiatan = Kegiatan::all();
 
         // Memetakan data menjadi format yang sesuai untuk digunakan pada organigram
         $nodes = $data->map(function ($item) {
@@ -35,7 +39,8 @@ class BaganOrganisasiController extends Controller
             'nodes' => $nodes->isEmpty() ? '[]' : $nodes->toJson(),
             'parentOptions' => $parentOptions,
             'countNode' => $nodes->count(),
-            'tentangKami' => $tentangKami // Mengirim satu instance TentangKami ke view
+            'tentangKami' => $tentangKami, // Mengirim satu instance TentangKami ke view
+            'kegiatan' => $kegiatan
         ]);
     }
 

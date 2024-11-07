@@ -17,6 +17,7 @@ use App\Http\Controllers\TentangKamiController;
 use App\Http\Controllers\LandingPageController;
 use App\Http\Controllers\PesanProduk;
 use App\Http\Controllers\BaganOrganisasiController;
+use App\Http\Controllers\KegiatanController;
 use App\Http\Controllers\TentangKamiLandingPage;
 use Illuminate\Support\Facades\Route;
 use App\Http\Middleware\SavePreviousUrl;
@@ -123,6 +124,19 @@ Route::prefix('dashboard')->middleware(['auth:admin', PreventBackHistory::class]
     Route::post('/tentang-kami/store', [TentangKamiController::class, 'store'])->name('tentangKami.store'); 
     Route::put('/tentang-kami/update/{id}', [TentangKamiController::class, 'update'])->name('tentangKami.update');
     Route::delete('/tentang-kami/delete/{id}', [TentangKamiController::class, 'destroy'])->name('tentangKami.delete');
+
+    //Route Kegiatan
+    Route::prefix('tentang-kami/kegiatan')->group(function () {
+        // Route untuk menyimpan kegiatan (Create)
+        Route::post('/store', [KegiatanController::class, 'store'])->name('kegiatan.store');
+
+        // Route untuk memperbarui kegiatan (Update)
+        Route::put('/update/{id}', [KegiatanController::class, 'update'])->name('kegiatan.update');
+
+        // Route untuk menghapus kegiatan (Delete)
+        Route::delete('/delete/{id}', [KegiatanController::class, 'destroy'])->name('kegiatan.delete');
+    });
+
 
     // Route untuk promo
     Route::get('promo', [PromoController::class, 'index'])
