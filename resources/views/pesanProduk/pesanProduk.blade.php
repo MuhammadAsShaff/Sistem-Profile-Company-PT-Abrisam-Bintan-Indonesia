@@ -9,7 +9,12 @@
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
   @vite('resources/css/app.css')
   @vite('resources/js/app.js')
+  
+  <!-- Tambahkan Leaflet CSS dan JavaScript -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
 </head>
+
 
 <body>
   <!-- Step Indicator -->
@@ -48,8 +53,8 @@
   <div class="container mx-auto max-w-4xl mt-32 p-5 bg-white shadow-lg rounded-lg">
     <h2 class="text-center text-2xl font-bold mb-6">Cari Lokasi untuk Pemasangan IndiHome</h2>
   
-    <!-- Peta Google -->
-    <div id="map" class="w-full rounded-lg mb-6"></div>
+    <!-- Peta -->
+    <div id="map" class="w-full h-64 rounded-lg mb-6"></div>
   
     <!-- Input Pencarian Lokasi -->
     <div class="space-y-4">
@@ -65,95 +70,64 @@
         disabled>Pilih lokasi ini</button>
     </div>
   </div>
+  
+  <script>
+    // Inisialisasi peta dengan koordinat awal di Pekanbaru
+    var map = L.map('map').setView([0.507068, 101.447779], 13);
 
-    <script>
-      let map;
-      let marker;
-      let geocoder;
-      let searchBox;
-      let selectedLocation = {};
+    // Tambahkan peta ubin dari OpenStreetMap
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      maxZoom: 19,
+      attribution: '© OpenStreetMap'
+    }).addTo(map);
 
-      function initMap() {
-        // Inisialisasi peta
-        map = new google.maps.Map(document.getElementById('map'), {
-          center: { lat: 0.5071, lng: 101.4478 }, // Jakarta default
-          zoom: 12
-        });
+    // Marker untuk menandai lokasi yang dipilih
+    var marker = L.marker([0.507068, 101.447779], { draggable: true }).addTo(map);
 
-        // Inisialisasi Geocoder
-        geocoder = new google.maps.Geocoder();
+    // Fungsi untuk memperbarui posisi marker dan alamat berdasarkan koordinat
+    function updateAddress(lat, lng) {
+      // Panggil API LocationIQ dengan koordinat yang diberikan
+      fetch(`https://us1.locationiq.com/v1/reverse.php?key=YOUR_LOCATIONIQ_API_KEY&lat=${lat}&lon=${lng}&format=json`)
+        .then(response => response.json())
+        .then(data => {
+          document.getElementById('alamatLengkap').value = data.display_name;
+          document.getElementById('selectLocationBtn').disabled = false;
+          document.getElementById('selectLocationBtn').classList.remove("bg-gray-400", "cursor-not-allowed");
+          document.getElementById('selectLocationBtn').classList.add("bg-blue-500", "hover:bg-blue-600");
+        })
+        .catch(error => console.error('Error:', error));
+    }
 
-        // Inisialisasi SearchBox
-        searchBox = new google.maps.places.SearchBox(document.getElementById('searchBox'));
+    // Update alamat ketika marker dipindahkan
+    marker.on('dragend', function (e) {
+      var position = marker.getLatLng();
+      updateAddress(position.lat, position.lng);
+    });
 
-        // Event listener ketika user memilih dari hasil pencarian
-        searchBox.addListener('places_changed', () => {
-          const places = searchBox.getPlaces();
-          if (places.length == 0) return;
+    // Tambahkan event listener pada search box (opsional)
+    document.getElementById('searchBox').addEventListener('keypress', function (e) {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        var query = document.getElementById('searchBox').value;
 
-          const place = places[0];
-          const location = place.geometry.location;
-
-          // Pindahkan peta ke lokasi yang dipilih
-          map.setCenter(location);
-          map.setZoom(15);
-
-          // Pindahkan atau buat marker pada lokasi
-          if (marker) {
-            marker.setPosition(location);
-          } else {
-            marker = new google.maps.Marker({
-              position: location,
-              map: map,
-              draggable: true // marker dapat dipindahkan
-            });
-          }
-
-          // Set detail lokasi terpilih
-          selectedLocation = {
-            lat: location.lat(),
-            lng: location.lng(),
-            address: place.formatted_address || place.name
-          };
-
-          // Tampilkan alamat di text area
-          document.getElementById('alamatLengkap').value = selectedLocation.address;
-
-          // Enable button
-          const selectButton = document.getElementById('selectLocationBtn');
-          selectButton.disabled = false;
-          selectButton.classList.remove('bg-gray-400', 'cursor-not-allowed');
-          selectButton.classList.add('bg-blue-500', 'hover:bg-blue-700', 'cursor-pointer');
-        });
-
-        // Listener untuk event ketika marker dipindahkan
-        marker.addListener('dragend', function () {
-          const position = marker.getPosition();
-          selectedLocation = {
-            lat: position.lat(),
-            lng: position.lng()
-          };
-
-          // Reverse Geocoding untuk mendapatkan alamat
-          geocoder.geocode({ location: selectedLocation }, function (results, status) {
-            if (status === 'OK') {
-              if (results[0]) {
-                document.getElementById('alamatLengkap').value = results[0].formatted_address;
-                selectedLocation.address = results[0].formatted_address;
-              }
+        // Panggil API LocationIQ untuk mencari lokasi berdasarkan query
+        fetch(`https://us1.locationiq.com/v1/search.php?key=YOUR_LOCATIONIQ_API_KEY&q=${query}&format=json`)
+          .then(response => response.json())
+          .then(data => {
+            if (data && data.length > 0) {
+              var lat = data[0].lat;
+              var lon = data[0].lon;
+              map.setView([lat, lon], 13);
+              marker.setLatLng([lat, lon]);
+              updateAddress(lat, lon);
             }
-          });
-        });
+          })
+          .catch(error => console.error('Error:', error));
       }
+    });
+  </script>
 
-      // Panggil fungsi inisialisasi peta
-      window.onload = initMap;
-
-      // Fungsi untuk memilih lokasi yang ditandai
-      document.getElementById('selectLocationBtn').addEventListener('click', function () {
-        alert('Lokasi Terpilih:\nLatitude: ' + selectedLocation.lat + '\nLongitude: ' + selectedLocation.lng + '\nAlamat: ' + selectedLocation.address);
-      });
-    </script>
+    
 </body>
 
 </html>

@@ -34,5 +34,11 @@ return [
             'channel' => env('SLACK_BOT_USER_DEFAULT_CHANNEL'),
         ],
     ],
+    
+    'location' => [
+        'latitude' => env('DEFAULT_LATITUDE', 0.507068),
+        'longitude' => env('DEFAULT_LONGITUDE', 101.447779),
+    ],
+
 
 ];
