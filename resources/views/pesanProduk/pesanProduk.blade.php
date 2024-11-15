@@ -9,12 +9,43 @@
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
   @vite('resources/css/app.css')
   @vite('resources/js/app.js')
-  
+
   <!-- Tambahkan Leaflet CSS dan JavaScript -->
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
   <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
-</head>
 
+  <!-- CSS tambahan untuk autocomplete -->
+  <style>
+    .autocomplete-items {
+      position: absolute;
+      background-color: #ffffff;
+      border: 1px solid #ddd;
+      max-height: 150px;
+      overflow-y: auto;
+      width: 100%;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      border-radius: 8px;
+      margin-top: 8px;
+      z-index: 9999;
+    }
+
+    .autocomplete-items div {
+      padding: 10px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+    }
+
+    .autocomplete-items div:hover {
+      background-color: #f0f0f0;
+    }
+
+    .autocomplete-icon {
+      margin-right: 8px;
+      color: #666;
+    }
+  </style>
+</head>
 
 <body>
   <!-- Step Indicator -->
@@ -26,16 +57,15 @@
             class="flex items-center justify-center w-8 h-8 border border-red-500 rounded-full shrink-0 dark:border-gray-400">1</span>
           <span>
             <h3 class="font-bold font-telkomsel text-red-500 leading-tight">Pilih Lokasi & Paket</h3>
-            <p class="text-sm text-red-500 ">Tentukan lokasi pemasangan kamu dan pilih paket Internet</p>
+            <p class="text-sm text-red-500">Tentukan lokasi pemasangan kamu dan pilih paket Internet</p>
           </span>
         </li>
-
         <li class="flex items-center text-gray-500 space-x-2 rtl:space-x-reverse">
           <span
             class="flex items-center justify-center w-8 h-8 border border-gray-500 rounded-full shrink-0 dark:border-red-400">2</span>
           <span>
             <h3 class="font-bold font-telkomsel leading-tight">Isi Data Diri</h3>
-            <p class="text-sm  dark:text-red-400">Siapkan identitas, isi data diri dan Lakukan Konfirmasi Data Anda</p>
+            <p class="text-sm dark:text-red-400">Siapkan identitas, isi data diri dan Lakukan Konfirmasi Data Anda</p>
           </span>
         </li>
         <li class="flex items-center text-gray-500 dark:text-gray-400 space-x-2 rtl:space-x-reverse">
@@ -52,45 +82,56 @@
 
   <div class="container mx-auto max-w-4xl mt-32 p-5 bg-white shadow-lg rounded-lg">
     <h2 class="text-center text-2xl font-bold mb-6">Cari Lokasi untuk Pemasangan IndiHome</h2>
-  
+
     <!-- Peta -->
     <div id="map" class="w-full h-64 rounded-lg mb-6"></div>
-  
+    <button id="getCurrentLocationBtn" class="w-full p-3 bg-blue-500 text-white rounded-lg hover:bg-blue-600">
+      Gunakan Lokasi Saya Saat Ini
+    </button>
+
     <!-- Input Pencarian Lokasi -->
-    <div class="space-y-4">
-      <input id="searchBox" type="text" placeholder="Cari nama jalan, kelurahan, gedung, dsb..."
-        class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" />
-  
+    <div class="space-y-4 relative">
+      <div class="flex">
+        <input id="searchBox" type="text" placeholder="Cari nama jalan, kelurahan, gedung, dsb..."
+          class="w-full p-3 mt-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" />
+        <button id="searchBtn" class="p-3 mt-4 ml-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600">
+          Cari
+        </button>
+      </div>
+
+      <!-- Container untuk autocomplete suggestions -->
+      <div id="autocomplete-list" class="autocomplete-items"></div>
+
       <!-- Alamat lengkap -->
       <textarea id="alamatLengkap" placeholder="Masukkan alamat lengkap" rows="4"
         class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"></textarea>
-  
+
       <!-- Tombol Pilih Lokasi -->
       <button id="selectLocationBtn" class="w-full p-3 bg-gray-400 text-white rounded-lg cursor-not-allowed"
         disabled>Pilih lokasi ini</button>
     </div>
   </div>
-  
-  <script>
-    // Inisialisasi peta dengan koordinat awal di Pekanbaru
-    var map = L.map('map').setView([0.507068, 101.447779], 13);
 
-    // Tambahkan peta ubin dari OpenStreetMap
+  <script>
+    const locationIQApiKey = "{{ $locationIQApiKey }}"; // Ambil kunci API dari controller
+
+    // Inisialisasi peta
+    var map = L.map('map').setView([0.507068, 101.447779], 16);
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       maxZoom: 19,
       attribution: '© OpenStreetMap'
     }).addTo(map);
+    var centerMarker = L.marker(map.getCenter(), { draggable: false }).addTo(map);
 
-    // Marker untuk menandai lokasi yang dipilih
-    var marker = L.marker([0.507068, 101.447779], { draggable: true }).addTo(map);
+    function updateAddressFromMapCenter() {
+      var center = map.getCenter();
+      var lat = center.lat;
+      var lng = center.lng;
 
-    // Fungsi untuk memperbarui posisi marker dan alamat berdasarkan koordinat
-    function updateAddress(lat, lng) {
-      // Panggil API LocationIQ dengan koordinat yang diberikan
-      fetch(`https://us1.locationiq.com/v1/reverse.php?key=YOUR_LOCATIONIQ_API_KEY&lat=${lat}&lon=${lng}&format=json`)
+      fetch(`https://us1.locationiq.com/v1/reverse.php?key=${locationIQApiKey}&lat=${lat}&lon=${lng}&format=json`)
         .then(response => response.json())
         .then(data => {
-          document.getElementById('alamatLengkap').value = data.display_name;
+          document.getElementById('alamatLengkap').value = data.display_name || "Alamat tidak ditemukan";
           document.getElementById('selectLocationBtn').disabled = false;
           document.getElementById('selectLocationBtn').classList.remove("bg-gray-400", "cursor-not-allowed");
           document.getElementById('selectLocationBtn').classList.add("bg-blue-500", "hover:bg-blue-600");
@@ -98,36 +139,109 @@
         .catch(error => console.error('Error:', error));
     }
 
-    // Update alamat ketika marker dipindahkan
-    marker.on('dragend', function (e) {
-      var position = marker.getLatLng();
-      updateAddress(position.lat, position.lng);
+    map.on('move', function () {
+      centerMarker.setLatLng(map.getCenter());
+    });
+    map.on('moveend', updateAddressFromMapCenter);
+
+    // Fungsi untuk mencari lokasi berdasarkan input pencarian
+    document.getElementById('searchBox').addEventListener('input', function () {
+      const query = this.value;
+      if (query.length < 3) {
+        clearSuggestions();
+        return;
+      }
+
+      fetch(`https://us1.locationiq.com/v1/search.php?key=${locationIQApiKey}&q=${query}&format=json`)
+        .then(response => response.json())
+        .then(data => {
+          if (data && data.length > 0) {
+            showSuggestions(data);
+          } else {
+            clearSuggestions();
+          }
+        })
+        .catch(error => {
+          console.error('Error:', error);
+          clearSuggestions();
+        });
     });
 
-    // Tambahkan event listener pada search box (opsional)
+    // Menangani pencarian ketika tombol Cari diklik atau ketika Enter ditekan
+    document.getElementById('searchBtn').addEventListener('click', performSearch);
     document.getElementById('searchBox').addEventListener('keypress', function (e) {
       if (e.key === 'Enter') {
         e.preventDefault();
-        var query = document.getElementById('searchBox').value;
+        performSearch();
+      }
+    });
 
-        // Panggil API LocationIQ untuk mencari lokasi berdasarkan query
-        fetch(`https://us1.locationiq.com/v1/search.php?key=YOUR_LOCATIONIQ_API_KEY&q=${query}&format=json`)
-          .then(response => response.json())
-          .then(data => {
-            if (data && data.length > 0) {
-              var lat = data[0].lat;
-              var lon = data[0].lon;
-              map.setView([lat, lon], 13);
-              marker.setLatLng([lat, lon]);
-              updateAddress(lat, lon);
-            }
-          })
-          .catch(error => console.error('Error:', error));
+    function performSearch() {
+      const query = document.getElementById('searchBox').value;
+      if (query.length < 3) {
+        alert("Masukkan minimal 3 karakter untuk pencarian.");
+        return;
+      }
+
+      fetch(`https://us1.locationiq.com/v1/search.php?key=${locationIQApiKey}&q=${query}&format=json`)
+        .then(response => response.json())
+        .then(data => {
+          if (data && data.length > 0) {
+            var lat = data[0].lat;
+            var lon = data[0].lon;
+            map.setView([lat, lon], 16);
+            document.getElementById('alamatLengkap').value = data[0].display_name;
+          } else {
+            document.getElementById('alamatLengkap').value = "Alamat tidak ditemukan";
+          }
+          clearSuggestions();
+        })
+        .catch(error => console.error('Error:', error));
+    }
+
+    // Menampilkan saran pencarian
+    function showSuggestions(suggestions) {
+      clearSuggestions();
+      const suggestionBox = document.getElementById('autocomplete-list');
+
+      suggestions.forEach(item => {
+        const suggestionItem = document.createElement('div');
+        suggestionItem.innerHTML = `
+          <i class="autocomplete-icon">📍</i>
+          <span>${item.display_name}</span>
+        `;
+        suggestionItem.addEventListener('click', function () {
+          document.getElementById('searchBox').value = item.display_name;
+          map.setView([item.lat, item.lon], 16);
+          document.getElementById('alamatLengkap').value = item.display_name;
+          updateAddressFromMapCenter();
+          clearSuggestions();
+        });
+        suggestionBox.appendChild(suggestionItem);
+      });
+    }
+
+    // Menghapus saran pencarian
+    function clearSuggestions() {
+      const suggestionBox = document.getElementById('autocomplete-list');
+      suggestionBox.innerHTML = '';
+    }
+
+    document.getElementById('getCurrentLocationBtn').addEventListener('click', function () {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(function (position) {
+          var lat = position.coords.latitude;
+          var lng = position.coords.longitude;
+          map.setView([lat, lng], 18);
+          updateAddressFromMapCenter();
+        }, function (error) {
+          console.error('Error mendapatkan lokasi: ' + error.message);
+        });
+      } else {
+        console.error('Geolocation tidak didukung oleh browser ini.');
       }
     });
   </script>
-
-    
 </body>
 
 </html>
