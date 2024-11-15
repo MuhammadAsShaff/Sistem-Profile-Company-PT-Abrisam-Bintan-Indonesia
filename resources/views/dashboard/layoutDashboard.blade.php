@@ -19,7 +19,7 @@
       @include('dashboard.sidebar')
     </div>
     <!-- Main Content -->
-    <div class="flex-1 p-6">
+    <div class="flex-1 overflow-y-auto h-screen ml-0 md:ml-64 p-6">
       @yield('report')
       @yield('tentangKami')
       @yield('dataProduk')
