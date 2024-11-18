@@ -19,7 +19,7 @@
       @include('dashboard.sidebar')
     </div>
     <!-- Main Content -->
-    <div class="flex-1 overflow-y-auto h-screen ml-0 md:ml-64 p-6">
+    <div class="flex-1 overflow-y-auto h-screen p-6">
       @yield('report')
       @yield('tentangKami')
       @yield('dataProduk')
@@ -38,7 +38,8 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.4.7/flowbite.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/simple-datatables@9.0.3"></script>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-  
+  <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.10.5/dist/cdn.min.js" defer></script>
+
   @if (session('success'))
     <script>
     Swal.fire({

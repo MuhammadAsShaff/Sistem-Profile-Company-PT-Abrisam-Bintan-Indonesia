@@ -7,7 +7,7 @@
 
   <!-- Teks -->
   <div>
-    <h5 class="text-xl font-bold tracking-tight text-gray-900 dark:text-white">Judul Card</h5>
+    <h5 class="text-xl font-bold tracking-tight text-gray-900 dark:text-white">Jumlah Blog</h5>
     <p class="font-normal text-gray-700 dark:text-gray-400">Deskripsi atau isi card.</p>
   </div>
 </a>
