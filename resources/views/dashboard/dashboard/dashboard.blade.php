@@ -7,7 +7,7 @@
 
 <div class="flex flex-wrap lg:flex-nowrap px-4 mx-auto mt-8 gap-4">
   <div class="w-full lg:w-1/3">
-    @include('dashboard.dashboard.jumlahBlog')
+    @include('dashboard.dashboard.cardCustomerBulanIni')
   </div>
 
   <div class="w-full lg:w-1/3">
@@ -15,16 +15,16 @@
   </div>
 
   <div class="w-full lg:w-1/3">
-    @include('dashboard.dashboard.cardCustomerBulanIni')
+    @include('dashboard.dashboard.jumlahBlog')
   </div>
 </div>
 
 <div class="flex flex-wrap lg:flex-nowrap justify-start gap-8 px-4 mx-auto overflow-hidden">
-  <div class="w-full md:w-1/2 lg:w-1/2 custom-height">
+  <div class="w-full md:w-1/2 lg:w-1/2">
         @include('dashboard.dashboard.chartPerbulanCustomer')
   </div>
 
-  <div class="w-full md:w-1/2 lg:w-1/2 custom-height">
+  <div class="w-full md:w-1/2 lg:w-1/2">
         @include('dashboard.dashboard.grafikProdukTerbanyak')
   </div>
 </div>
