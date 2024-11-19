@@ -159,8 +159,8 @@ Route::prefix('dashboard')->middleware(['auth:admin', PreventBackHistory::class]
 
     // Route untuk paket
     Route::prefix('paket')->group(function () {
-        Route::get('/{id_paket}/produk', [PaketController::class, 'showProdukByPaket'])->name('paket.showProdukByPaket');
-        Route::get('/dataPaket', [PaketController::class, 'index'])
+        Route::get('/{id_paket}', [PaketController::class, 'showProdukByPaket'])->name('paket.showProdukByPaket');
+        Route::get('/', [PaketController::class, 'index'])
             ->name('dashboard.dataPaket.dataPaket')
             ->middleware(SavePreviousUrl::class);
         Route::post('/store', [PaketController::class, 'store'])->name('paket.store');
@@ -171,13 +171,13 @@ Route::prefix('dashboard')->middleware(['auth:admin', PreventBackHistory::class]
 
     // Route untuk kategori
     Route::prefix('kategori')->group(function () {
-        Route::get('/dataKategori', [KategoriController::class, 'index'])
+        Route::get('/', [KategoriController::class, 'index'])
             ->name('dashboard.dataKategori.dataKategori')
             ->middleware(SavePreviousUrl::class);
         Route::post('/store', [KategoriController::class, 'store'])->name('kategori.store');
         Route::put('/update/{id_kategori}', [KategoriController::class, 'update'])->name('kategori.update');
         Route::delete('/delete/{id_kategori}', [KategoriController::class, 'destroy'])->name('kategori.delete');
-        Route::get('/{id_kategori}/produk', [KategoriController::class, 'showProdukByKategori'])
+        Route::get('/{id_kategori}', [KategoriController::class, 'showProdukByKategori'])
             ->name('kategori.showProdukByKategori');
     });
 
