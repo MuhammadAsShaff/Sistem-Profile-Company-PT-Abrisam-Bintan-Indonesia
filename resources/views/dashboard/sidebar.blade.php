@@ -46,7 +46,7 @@
           </svg>
           <span class="mx-4 font-medium">Profile Company</span>
         </button>
-        <div x-show="open === 1" x-cloak class="mt-2 ml-8 space-y-2">
+        <div x-show="open === 1" x-cloak class="mt-2 ml-4 space-y-2">
           <a class="flex items-center px-4 py-2 mb-4 text-gray-600 rounded-lg transition-colors duration-300 {{ Request::is('dashboard/promo') ? 'bg-gray-100 border-l-4 border-red-500 text-blue-600' : 'hover:bg-gray-100 hover:text-gray-700' }}"
             href="{{ route('dashboard.Promo.Promo') }}">
             <svg class="w-6 h-6 ml-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"
@@ -88,7 +88,7 @@
           </svg>
           <span class="mx-4 font-medium">Produk Internet</span>
         </button>
-        <div x-show="open === 2" x-cloak class="mt-2 ml-8 space-y-2 pl-6">
+        <div x-show="open === 2" x-cloak class="mt-2 ml-4 space-y-2">
           <a class="flex items-center px-4 py-2 mb-4 text-gray-600 rounded-lg transition-colors duration-300 {{ Request::is('dashboard/kategori') ? 'bg-gray-100 border-l-4 border-red-500 text-blue-600' : 'hover:bg-gray-100 hover:text-gray-700' }}"
             href="{{ route('dashboard.dataKategori.dataKategori') }}">
             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"
@@ -116,6 +116,39 @@
             </svg>
             <span class="mx-4 font-sm">Data Produk</span>
           </a>
+        </div>
+      </div>
+
+      <!-- inventory -->
+      <div class="mb-6">
+        <button @click="open = open === 3 ? null : 3"
+          class="flex items-center w-full px-4 py-2 text-gray-600 transition-colors duration-300 rounded-lg hover:bg-gray-100 hover:text-gray-700">
+          <svg :class="open === 3 ? 'rotate-180' : ''" class="w-6 h-6 transition-transform duration-300" fill="none"
+            stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 10l5 5m0 0l5-5m-5 5V6" />
+          </svg>
+          <span class="mx-4 font-medium">Inventory</span>
+        </button>
+        <div x-show="open === 3" x-cloak class="mt-2 ml-4 space-y-2">
+          <a class="flex items-center px-4 py-2 mb-4 text-gray-600 rounded-lg transition-colors duration-300 {{ Request::is('dashboard/inventory/masuk') ? 'bg-gray-100 border-l-4 border-red-500 text-blue-600' : 'hover:bg-gray-100 hover:text-gray-700' }}"
+            href="{{route('inventoryMasuk')}}">
+            <svg class="w-6 h-6 ml-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+              width="24" height="24" fill="none" viewBox="0 0 24 24">
+              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M4 15v2a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3v-2m-8 1V4m0 12-4-4m4 4 4-4" />
+            </svg>
+            <span class="ml-2 font-sm">Produk Masuk</span>
+          </a>
+
+        <a class="flex items-center px-4 py-2 mb-4 text-gray-600 rounded-lg transition-colors duration-300 {{ Request::is('dashboard/inventory/keluar') ? 'bg-gray-100 border-l-4 border-red-500 text-blue-600' : 'hover:bg-gray-100 hover:text-gray-700' }}"
+          href="{{route('inventoryKeluar')}}">
+          <svg class="w-6 h-6 ml-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+            width="24" height="24" fill="none" viewBox="0 0 24 24">
+            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M4 15v2a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3v-2M12 4v12m0-12 4 4m-4-4L8 8" />
+          </svg>
+          <span class="ml-2 font-sm">Produk Keluar</span>
+        </a>
         </div>
       </div>
 

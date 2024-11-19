@@ -17,13 +17,14 @@ use App\Http\Controllers\TentangKamiController;
 use App\Http\Controllers\LandingPageController;
 use App\Http\Controllers\PesanProduk;
 use App\Http\Controllers\BaganOrganisasiController;
+use App\Http\Controllers\InventoryController;
 use App\Http\Controllers\KegiatanController;
 use App\Http\Controllers\LokasiController;
 use App\Http\Controllers\TentangKamiLandingPage;
 use Illuminate\Support\Facades\Route;
 use App\Http\Middleware\SavePreviousUrl;
 use App\Http\Middleware\PreventBackHistory;
-
+use App\Models\Inventory;
 
 // Route untuk Landing Page
 Route::prefix('/')->group(function () {
@@ -50,8 +51,8 @@ Route::prefix('/')->group(function () {
     Route::get('FaQ', [LandingPageController::class, 'tampilFaQ'])
         ->name('tampilFaQ');
 
-    Route::get('pesanProduk', [LokasiController::class, 'showLocation'])
-        ->name('pesanProduk');
+    Route::post('produk/pilih', [LokasiController::class, 'pilihProduk'])->name('produk.pilih');
+    Route::get('pesanProduk', [LokasiController::class, 'showLocation'])->name('pesanProduk');
 
 });
 
@@ -194,6 +195,14 @@ Route::prefix('dashboard')->middleware(['auth:admin', PreventBackHistory::class]
         });
     });
 
+    // Route untuk inventory masuk 
+    Route::prefix('inventory')->middleware(SavePreviousUrl::class)->group(function () {
+        Route::get('/masuk', [InventoryController::class, 'showInventoryMasuk'])
+            ->name('inventoryMasuk');
+        Route::get('/keluar', [InventoryController::class, 'showInventoryKeluar'])
+            ->name('inventoryKeluar');
+        });
+    
 
     // Route untuk update profile admin
     Route::put('/admin/profile/update/{id}', [DataUser::class, 'updateProfile'])

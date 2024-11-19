@@ -31,6 +31,8 @@
       @yield('editBlog')
       @yield('tambahBlog')
       @yield('FaQ')
+      @yield('produkMasuk')
+      @yield('produkKeluar')
       @yield('datauser') 
     </div>
   </div>
