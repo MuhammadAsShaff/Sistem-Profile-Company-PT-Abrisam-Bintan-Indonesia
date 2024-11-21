@@ -28,10 +28,11 @@
       <div class="flex-grow">
         @include('dashboard.inventory.inventoryMasuk.searchBar')
       </div>
+      @include('dashboard.inventory.inventoryMasuk.modalInsertInventori')
     </div>
   </div>
 
-  <!-- Tabel FAQ -->
+
   <div class="flex flex-col mt-6">
     <div class="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
       <div class="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
@@ -46,31 +47,31 @@
               </tr>
             </thead>
             <tbody class="bg-white divide-y divide-gray-200 dark:divide-gray-700 dark:bg-gray-900">
-              
+              @foreach ($inventoryMasuk as $item)  
           <tr>
-          <!-- Nomor -->
-          <td class="px-4 py-4 text-sm font-medium text-gray-700 dark:text-white">
-           
-          </td>
+            <!-- Nomor -->
+            <td class="px-4 py-4 text-sm font-medium text-gray-700 dark:text-white">
+              {{ ($inventoryMasuk->currentPage() - 1) * $inventoryMasuk->perPage() + $loop->iteration }}
+            </td>
 
-          <!-- Judul FAQ -->
-          <td class="px-12 py-4 text-sm font-medium text-gray-700 dark:text-white whitespace-nowrap">
-           
-          </td>
+            <!-- Judul FAQ -->
+            <td class="px-12 py-4 text-sm font-medium text-gray-700 dark:text-white whitespace-nowrap">
+              {{ $item->kategoriProduk }}
+            </td>
 
-          <!-- Isi FAQ -->
-          <td class="px-4 py-4 text-sm text-gray-500 dark:text-gray-300 whitespace-nowrap">
-          
-          </td>
+            <!-- Isi FAQ -->
+            <td class="px-4 py-4 text-sm text-gray-500 dark:text-gray-300 whitespace-nowrap">
 
-          <!-- Aksi -->
-          <td class="px-4 py-4 text-sm whitespace-nowrap">
-            <div class="flex items-center gap-x-6">
-          
-            </div>
-          </td>
-          </tr>
-      
+            </td>
+
+            <!-- Aksi -->
+            <td class="px-4 py-4 text-sm whitespace-nowrap">
+              <div class="flex items-center gap-x-6">
+
+              </div>
+            </td>
+            </tr>
+        @endforeach
             </tbody>
           </table>
         </div>
@@ -78,6 +79,6 @@
     </div>
   </div>
 
-  
+
 </section>
 @endsection

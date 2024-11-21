@@ -182,6 +182,8 @@ Route::prefix('dashboard')->middleware(['auth:admin', PreventBackHistory::class]
             ->name('kategori.showProdukByKategori');
     });
 
+    
+
 
     // Route untuk data user (admin management)
     Route::prefix('datauser')->middleware(SavePreviousUrl::class)->group(function () {
@@ -201,6 +203,7 @@ Route::prefix('dashboard')->middleware(['auth:admin', PreventBackHistory::class]
             ->name('inventoryMasuk');
         Route::get('/keluar', [InventoryController::class, 'showInventoryKeluar'])
             ->name('inventoryKeluar');
+        Route::post('/store', [InventoryController::class, 'insertInventoryMasuk'])->name('inventoryMasuk.store');
         });
     
 
