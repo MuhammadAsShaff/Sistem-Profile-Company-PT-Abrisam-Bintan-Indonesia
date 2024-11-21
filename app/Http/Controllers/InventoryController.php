@@ -2,18 +2,28 @@
 namespace App\Http\Controllers;
 use App\Models\InventoryKeluar;
 use App\Models\InventoryMasuk;
+use App\Models\Stock;
 use Illuminate\Http\Request;
 
 class InventoryController extends Controller
 {
     public function showInventoryMasuk()
     {
-        // Ambil semua data dari tabel inventory_masuk
+        // Ambil data inventory masuk dengan pagination
         $inventoryMasuk = InventoryMasuk::paginate(10);
 
-        // Kirim data ke view
+        // Hitung jumlah stok berdasarkan kategoriProduk
+        $jumlahStockMasukPerKategori = Stock::select('kategoriProduk', \DB::raw('COUNT(id_inventoryMasuk) as jumlah'))
+            ->groupBy('kategoriProduk')
+            ->get();
+
+        // Ambil semua stok
+        $stok = Stock::all();
+
         return view('dashboard.inventory.inventoryMasuk.inventoryMasuk', [
             'inventoryMasuk' => $inventoryMasuk,
+            'jumlahStockMasukPerKategori' => $jumlahStockMasukPerKategori,
+            'stok' => $stok,
         ]);
     }
 
@@ -22,11 +32,16 @@ class InventoryController extends Controller
         // Ambil semua data dari tabel inventory_keluar
         $inventoryKeluar = InventoryKeluar::paginate(10);
 
+        // Hitung jumlah stock berdasarkan id_inventoryKeluar
+        $jumlahStockKeluar = Stock::whereNotNull('id_inventoryKeluar')->count();
+
         // Kirim data ke view
         return view('dashboard.inventory.inventoryKeluar.inventoryKeluar', [
             'inventoryKeluar' => $inventoryKeluar,
+            'jumlahStockKeluar' => $jumlahStockKeluar,
         ]);
     }
+
 
     // Method untuk Insert Inventory Masuk
     public function insertInventoryMasuk(Request $request)

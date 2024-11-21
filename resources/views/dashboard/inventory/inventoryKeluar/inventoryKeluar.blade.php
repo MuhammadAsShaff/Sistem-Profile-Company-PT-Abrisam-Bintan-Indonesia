@@ -46,16 +46,18 @@
               </tr>
             </thead>
             <tbody class="bg-white divide-y divide-gray-200 dark:divide-gray-700 dark:bg-gray-900">
+              @foreach ($inventoryKeluar as $item)
               
+             
           <tr>
           <!-- Nomor -->
           <td class="px-4 py-4 text-sm font-medium text-gray-700 dark:text-white">
-           
+            {{ ($inventoryKeluar->currentPage() - 1) * $inventoryKeluar->perPage() + $loop->iteration }}
           </td>
 
           <!-- Judul FAQ -->
           <td class="px-12 py-4 text-sm font-medium text-gray-700 dark:text-white whitespace-nowrap">
-           
+              {{ $item->kategoriProduk }}
           </td>
 
           <!-- Isi FAQ -->
@@ -70,6 +72,7 @@
             </div>
           </td>
           </tr>
+          @endforeach
             </tbody>
           </table>
         </div>

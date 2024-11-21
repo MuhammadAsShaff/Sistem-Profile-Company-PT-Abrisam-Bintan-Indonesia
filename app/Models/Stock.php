@@ -8,8 +8,9 @@ class Stock extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['namaProduk', 'nomorProduk', 'id_inventoryMasuk', 'id_inventoryKeluar'];
-
+    protected $table = 'stock';
+    protected $fillable = ['kategoriProduk', 'nomorProduk', 'id_inventoryMasuk', 'id_inventoryKeluar','keterangan'];
+    protected $primaryKey = 'id_stock';
     public static function boot()
     {
         parent::boot();

@@ -10,9 +10,9 @@ return new class extends Migration
     {
         Schema::create('stock', function (Blueprint $table) {
             $table->id('id_stock'); // Primary key untuk tabel stock
-            $table->string('namaProduk');
+            $table->string('kategoriProduk')->unique();
             $table->string('nomorProduk')->unique();
-
+            $table->string('keterangan');
             // Foreign key ke tabel inventory_masuk
             $table->unsignedBigInteger('id_inventoryMasuk')->nullable();
             $table->foreign('id_inventoryMasuk')
