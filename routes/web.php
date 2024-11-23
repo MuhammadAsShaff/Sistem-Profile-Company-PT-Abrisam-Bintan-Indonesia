@@ -182,7 +182,7 @@ Route::prefix('dashboard')->middleware(['auth:admin', PreventBackHistory::class]
             ->name('kategori.showProdukByKategori');
     });
 
-    
+
 
 
     // Route untuk data user (admin management)
@@ -204,8 +204,12 @@ Route::prefix('dashboard')->middleware(['auth:admin', PreventBackHistory::class]
         Route::get('/keluar', [InventoryController::class, 'showInventoryKeluar'])
             ->name('inventoryKeluar');
         Route::post('/store', [InventoryController::class, 'insertInventoryMasuk'])->name('inventoryMasuk.store');
-        });
-    
+        Route::post('/stock/store', [InventoryController::class, 'storeStock'])->name('stock.store');
+        Route::get('/inventory/{id_inventoryMasuk}/stocks', [InventoryController::class, 'getStocks'])->name('inventory.stocks');
+        Route::post('/stock/pindahkan/massal', [InventoryController::class, 'pindahkanProdukMassal'])->name('stock.pindahkan.massal');
+
+    });
+
 
     // Route untuk update profile admin
     Route::put('/admin/profile/update/{id}', [DataUser::class, 'updateProfile'])

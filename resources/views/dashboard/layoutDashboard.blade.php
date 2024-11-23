@@ -8,7 +8,6 @@
   <link rel="icon" href="{{ asset('images/logoAbi.png') }}" type="image/x-icon" />
   <title>PT Abrisam Bintan Indonesia</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
-
   @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
@@ -54,6 +53,21 @@
       // Aksi opsional jika diperlukan setelah alert ditutup
       console.log('Alert closed');
       }
+    });
+    </script>
+  @endif
+
+  @if ($errors->any())
+    <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      // SweetAlert untuk menampilkan error dengan icon silang
+      Swal.fire({
+      icon: 'error',
+      title: 'Gagal!',
+      text: '{{ $errors->first() }}',
+      showConfirmButton: true,
+      confirmButtonText: 'OK'
+      });
     });
     </script>
   @endif
@@ -106,20 +120,7 @@
   </script>
 
 
-  @if ($errors->any())
-    <script>
-    document.addEventListener('DOMContentLoaded', function () {
-      // SweetAlert untuk menampilkan error dengan icon silang
-      Swal.fire({
-      icon: 'error',
-      title: 'Gagal!',
-      text: '{{ $errors->first() }}',
-      showConfirmButton: true,
-      confirmButtonText: 'OK'
-      });
-    });
-    </script>
-  @endif
+
 </body>
 
 </html>

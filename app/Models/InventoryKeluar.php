@@ -8,14 +8,15 @@ use Illuminate\Database\Eloquent\Model;
 class InventoryKeluar extends Model
 {
     use HasFactory;
+
     protected $primaryKey = 'id_inventoryKeluar';
     protected $table = 'inventory_keluar';
     protected $fillable = ['kategoriProduk'];
 
-    // Relasi dengan tabel Stock
+    // Relasi ke Stock
     public function stocks()
     {
-        return $this->hasMany(Stock::class, 'id_inventoryKeluar', 'id');
+        return $this->hasMany(Stock::class, 'id_inventoryKeluar', 'id_inventoryKeluar');
     }
 
     // Atur kapitalisasi kategori produk saat disimpan
@@ -24,3 +25,4 @@ class InventoryKeluar extends Model
         $this->attributes['kategoriProduk'] = ucwords(strtolower($value));
     }
 }
+

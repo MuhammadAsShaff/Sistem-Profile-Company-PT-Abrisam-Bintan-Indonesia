@@ -9,17 +9,34 @@ class Stock extends Model
     use HasFactory;
 
     protected $table = 'stock';
-    protected $fillable = ['kategoriProduk', 'nomorProduk', 'id_inventoryMasuk', 'id_inventoryKeluar','keterangan'];
+    protected $fillable = ['kategoriProduk', 'nomorProduk', 'id_inventoryMasuk', 'id_inventoryKeluar', 'keterangan'];
     protected $primaryKey = 'id_stock';
-    public static function boot()
+
+    protected static function boot()
     {
         parent::boot();
 
-        // Saat menghapus id_inventoryMasuk, pindahkan ke id_inventoryKeluar
+        // Saat stok dipindahkan dari InventoryMasuk ke InventoryKeluar
         static::updating(function ($stock) {
-            if ($stock->isDirty('id_inventoryMasuk') && $stock->id_inventoryMasuk === null) {
-                $stock->id_inventoryKeluar = InventoryKeluar::where('kategoriProduk', $stock->kategoriProduk)->value('id_inventoryKeluar');
+            if ($stock->isDirty('id_inventoryMasuk') && is_null($stock->id_inventoryMasuk)) {
+                $inventoryKeluar = \App\Models\InventoryKeluar::where('kategoriProduk', $stock->kategoriProduk)->first();
+                if ($inventoryKeluar) {
+                    $stock->id_inventoryKeluar = $inventoryKeluar->id_inventoryKeluar;
+                }
             }
         });
     }
+
+    // Relasi ke InventoryMasuk
+    public function inventoryMasuk()
+    {
+        return $this->belongsTo(InventoryMasuk::class, 'id_inventoryMasuk', 'id_inventoryMasuk');
+    }
+
+    // Relasi ke InventoryKeluar
+    public function inventoryKeluar()
+    {
+        return $this->belongsTo(InventoryKeluar::class, 'id_inventoryKeluar', 'id_inventoryKeluar');
+    }
 }
+
