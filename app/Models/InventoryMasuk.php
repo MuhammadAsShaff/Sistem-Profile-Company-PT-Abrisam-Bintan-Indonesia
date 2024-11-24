@@ -12,18 +12,6 @@ class InventoryMasuk extends Model
     protected $table = 'inventory_masuk';
     protected $fillable = ['kategoriProduk'];
 
-    protected static function boot()
-    {
-        parent::boot();
-
-        // Saat membuat InventoryMasuk, otomatis buat entry di InventoryKeluar
-        static::created(function ($inventoryMasuk) {
-            if (!\App\Models\InventoryKeluar::where('kategoriProduk', $inventoryMasuk->kategoriProduk)->exists()) {
-                \App\Models\InventoryKeluar::create(['kategoriProduk' => $inventoryMasuk->kategoriProduk]);
-            }
-        });
-    }
-
     // Relasi ke Stock
     public function stocks()
     {

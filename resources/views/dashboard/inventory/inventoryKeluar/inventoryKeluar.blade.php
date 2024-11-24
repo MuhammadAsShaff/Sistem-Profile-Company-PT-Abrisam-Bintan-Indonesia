@@ -11,15 +11,15 @@
   <div class="mb-6">
     <p class="text-sm text-gray-600 dark:text-gray-300">
       Halaman ini menampilkan <b>Inventory Keluar</b> yang tersedia di sistem. Anda dapat menambah, memperbarui, atau
-      menghapus FAQ sesuai kebutuhan.
+      menghapus data sesuai kebutuhan.
     </p>
   </div>
 
-  <!-- Search Bar dan Tombol Tambah FAQ -->
+  <!-- Statistik Jumlah Inventory -->
   <div class="flex justify-between items-center gap-x-3">
     <div class="flex items-center gap-x-3">
       <span class="px-3 py-1 text-xs text-red-500 bg-red-100 rounded-full dark:bg-gray-800 dark:text-red-400">
-        Produk Keluar
+        Total: {{ $jumlahStockKeluarPerKategori->sum('jumlah') }} Inventory Keluar
       </span>
     </div>
 
@@ -28,51 +28,65 @@
       <div class="flex-grow">
         @include('dashboard.inventory.inventoryKeluar.searchBar')
       </div>
+      
     </div>
   </div>
 
-  <!-- Tabel FAQ -->
+  <!-- Tabel Inventory Keluar -->
   <div class="flex flex-col mt-6">
     <div class="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
       <div class="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
         <div class="overflow-hidden border border-gray-200 dark:border-gray-700 md:rounded-lg">
-          <table class="min-w-full table-fixed divide-y divide-gray-200 dark:divide-gray-700">
+          <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
             <thead class="bg-gray-50 dark:bg-gray-800">
               <tr>
-                <th class="px-4 py-3.5 text-sm font-normal text-left text-gray-500 dark:text-gray-400">Nomor</th>
-                <th class="px-12 py-3.5 text-sm font-normal text-left text-gray-500 dark:text-gray-400">Nama Produk</th>
-                <th class="px-4 py-3.5 text-sm font-normal text-left text-gray-500 dark:text-gray-400">Jumlah</th>
-                <th class="px-4 py-3.5 text-sm font-normal text-left text-gray-500 dark:text-gray-400">Kategori</th>
+                <th class="px-4 py-3 text-sm font-normal text-left text-gray-500 dark:text-gray-400">Nomor</th>
+                <th class="px-12 py-3 text-sm font-normal text-left text-gray-500 dark:text-gray-400">Kategori Produk
+                </th>
+                <th class="px-4 py-3 text-sm font-normal text-left text-gray-500 dark:text-gray-400">Jumlah Stok</th>
+                <th class="px-4 py-3 text-sm font-normal text-left text-gray-500 dark:text-gray-400">Lihat Produk</th>
+                <th class="px-4 py-3 text-sm font-normal text-left text-gray-500 dark:text-gray-400">Aksi</th>
               </tr>
             </thead>
             <tbody class="bg-white divide-y divide-gray-200 dark:divide-gray-700 dark:bg-gray-900">
-              @foreach ($inventoryKeluar as $item)
-              
-             
-          <tr>
-          <!-- Nomor -->
-          <td class="px-4 py-4 text-sm font-medium text-gray-700 dark:text-white">
-            {{ ($inventoryKeluar->currentPage() - 1) * $inventoryKeluar->perPage() + $loop->iteration }}
-          </td>
+              @forelse ($inventoryKeluar as $index => $item)
+                <tr>
+                <!-- Nomor -->
+                <td class="px-4 py-4 text-sm font-medium text-gray-700 dark:text-white">
+                  {{ ($inventoryKeluar->currentPage() - 1) * $inventoryKeluar->perPage() + $loop->iteration }}
+                </td>
 
-          <!-- Judul FAQ -->
-          <td class="px-12 py-4 text-sm font-medium text-gray-700 dark:text-white whitespace-nowrap">
-              {{ $item->kategoriProduk }}
-          </td>
+                <!-- Kategori Produk -->
+                <td class="px-12 py-4 text-sm font-medium text-gray-700 dark:text-white">
+                  {{ $item->kategoriProduk }}
+                </td>
 
-          <!-- Isi FAQ -->
-          <td class="px-4 py-4 text-sm text-gray-500 dark:text-gray-300 whitespace-nowrap">
-          
-          </td>
+                <!-- Jumlah Stok -->
+                <td class="px-4 py-4 text-sm text-gray-500 dark:text-gray-300">
+                  @php
+          $jumlah = $jumlahStockKeluarPerKategori->firstWhere('kategoriProduk', $item->kategoriProduk)->jumlah ?? 0;
+                @endphp
+                  {{ $jumlah }}
+                </td>
 
-          <!-- Aksi -->
-          <td class="px-4 py-4 text-sm whitespace-nowrap">
-            <div class="flex items-center gap-x-6">
-          
-            </div>
-          </td>
-          </tr>
-          @endforeach
+                <!-- Lihat Produk -->
+                <td class="px-2 py-4 text-sm text-gray-500 dark:text-gray-300">
+                  @include('dashboard.inventory.inventoryKeluar.daftarProduk')
+                </td>
+
+                <!-- Aksi -->
+                <td class="px-4 py-4 text-sm font-medium text-gray-700 dark:text-white whitespace-nowrap">
+                  @include('dashboard.inventory.inventoryKeluar.modalUpdateInventori')
+                  @include('dashboard.inventory.inventoryKeluar.modalHapusInventori')
+                </td>
+                </tr>
+        @empty
+        <tr>
+        <td colspan="5" class="px-4 py-4 text-center text-sm text-gray-500 dark:text-gray-300">
+          Tidak ada data Inventory Keluar.
+        </td>
+        </tr>
+      @endforelse
             </tbody>
           </table>
         </div>

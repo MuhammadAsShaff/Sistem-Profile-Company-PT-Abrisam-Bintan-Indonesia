@@ -207,7 +207,11 @@ Route::prefix('dashboard')->middleware(['auth:admin', PreventBackHistory::class]
         Route::post('/stock/store', [InventoryController::class, 'storeStock'])->name('stock.store');
         Route::get('/inventory/{id_inventoryMasuk}/stocks', [InventoryController::class, 'getStocks'])->name('inventory.stocks');
         Route::post('/stock/pindahkan/massal', [InventoryController::class, 'pindahkanProdukMassal'])->name('stock.pindahkan.massal');
-
+        Route::put('/dashboard/inventory/update-inventory-masuk/{id}', [InventoryController::class, 'updateInventoryMasuk'])->name('inventoryMasuk.update');
+        Route::delete('/inventory/delete/{id}', [InventoryController::class, 'deleteInventory'])->name('inventory.delete');
+        Route::delete('/inventory-keluar/{id}', [InventoryController::class, 'deleteInventoryKeluar'])->name('inventoryKeluar.delete');
+        Route::put('/dashboard/inventory/update-inventory-keluar/{id}', [InventoryController::class, 'updateInventoryKeluar'])->name('inventoryKeluar.update');
+        Route::post('/stock-pindahkan-keluar', [InventoryController::class, 'pindahkanProdukKeluar'])->name('stock.pindahkan.keluar');
     });
 
 

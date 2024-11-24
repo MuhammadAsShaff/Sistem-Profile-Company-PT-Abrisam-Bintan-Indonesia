@@ -4,6 +4,7 @@ use App\Models\InventoryKeluar;
 use App\Models\InventoryMasuk;
 use App\Models\Stock;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class InventoryController extends Controller
 {
@@ -30,18 +31,26 @@ class InventoryController extends Controller
 
     public function showInventoryKeluar()
     {
-        // Ambil semua data dari tabel inventory_keluar
-        $inventoryKeluar = InventoryKeluar::paginate(10);
+        // Ambil data Inventory Keluar
+        $inventoryKeluar = InventoryKeluar::with('stocks')->paginate(10);
 
-        // Hitung jumlah stock berdasarkan id_inventoryKeluar
-        $jumlahStockKeluar = Stock::whereNotNull('id_inventoryKeluar')->count();
+        // Hitung jumlah stok keluar berdasarkan kategoriProduk
+        $jumlahStockKeluarPerKategori = Stock::select('kategoriProduk', \DB::raw('COUNT(id_inventoryKeluar) as jumlah'))
+            ->whereNotNull('id_inventoryKeluar')
+            ->groupBy('kategoriProduk')
+            ->get();
 
-        // Kirim data ke view
+        // Ambil semua data stok
+        $stok = Stock::all();
+
         return view('dashboard.inventory.inventoryKeluar.inventoryKeluar', [
             'inventoryKeluar' => $inventoryKeluar,
-            'jumlahStockKeluar' => $jumlahStockKeluar,
+            'jumlahStockKeluarPerKategori' => $jumlahStockKeluarPerKategori,
+            'stok' => $stok,
         ]);
     }
+
+
 
 
     // Method untuk Insert Inventory Masuk
@@ -51,15 +60,18 @@ class InventoryController extends Controller
             'kategoriProduk' => 'required|string|unique:inventory_masuk,kategoriProduk',
         ]);
 
+        // Ubah kategoriProduk menjadi format kapital pertama (ucwords)
+        $kategoriProduk = ucwords(strtolower($validatedData['kategoriProduk']));
+
         // Tambahkan data ke Inventory Masuk
         $inventoryMasuk = InventoryMasuk::create([
-            'kategoriProduk' => $validatedData['kategoriProduk'],
+            'kategoriProduk' => $kategoriProduk,
         ]);
 
         // Periksa jika kategori sudah ada di InventoryKeluar
-        if (!InventoryKeluar::where('kategoriProduk', $validatedData['kategoriProduk'])->exists()) {
+        if (!InventoryKeluar::where('kategoriProduk', $kategoriProduk)->exists()) {
             InventoryKeluar::create([
-                'kategoriProduk' => $validatedData['kategoriProduk'],
+                'kategoriProduk' => $kategoriProduk,
             ]);
         }
 
@@ -67,43 +79,166 @@ class InventoryController extends Controller
     }
 
 
-
-    // Method untuk Insert Inventory Keluar
-    public function insertInventoryKeluar(Request $request)
+    public function updateInventoryMasuk(Request $request, $id)
     {
+        // Validasi input
         $validatedData = $request->validate([
-            'kategoriProduk' => 'required|string|unique:inventory_keluar,kategoriProduk',
+            'kategoriProduk' => 'required|string',
         ]);
 
-        InventoryKeluar::create([
+        // Ambil data Inventory Masuk berdasarkan ID
+        $inventoryMasuk = InventoryMasuk::findOrFail($id);
+
+        // Ambil kategoriProduk sebelum diubah
+        $oldKategoriProduk = $inventoryMasuk->kategoriProduk;
+
+        // Perbarui kategoriProduk di Inventory Masuk
+        $inventoryMasuk->update([
             'kategoriProduk' => $validatedData['kategoriProduk'],
         ]);
 
-        return redirect()->route('inventoryKeluar')->with('success', 'Inventory Keluar berhasil ditambahkan.');
+        // Cari data di InventoryKeluar berdasarkan kategoriProduk lama
+        $inventoryKeluar = InventoryKeluar::where('kategoriProduk', $oldKategoriProduk)->first();
+
+        if ($inventoryKeluar) {
+            // Perbarui kategoriProduk di Inventory Keluar
+            $inventoryKeluar->update([
+                'kategoriProduk' => $validatedData['kategoriProduk'],
+            ]);
+        } else {
+            return redirect()->route('inventoryMasuk')->with('error', 'Kategori produk lama tidak ditemukan di Inventory Keluar.');
+        }
+
+        // Perbarui kategoriProduk di tabel Stock
+        $stocks = Stock::where('kategoriProduk', $oldKategoriProduk)->get();
+        foreach ($stocks as $stock) {
+            $stock->update([
+                'kategoriProduk' => $validatedData['kategoriProduk'],
+            ]);
+        }
+
+        // Kembali ke halaman Inventory Masuk dengan pesan sukses
+        return redirect()->route('inventoryMasuk')->with('success', 'Inventory Masuk, Inventory Keluar, dan Stock berhasil diperbarui.');
     }
 
-    // Method untuk Delete Inventory Masuk
-    public function deleteInventoryMasuk($id)
+    public function updateInventoryKeluar(Request $request, $id)
     {
-        $inventoryMasuk = InventoryMasuk::findOrFail($id);
+        try {
+            // Validasi input
+            $validatedData = $request->validate([
+                'kategoriProduk' => 'required|string',
+            ]);
 
-        // Menambahkan id_inventoryKeluar otomatis jika Inventory Masuk dihapus
-        InventoryKeluar::where('kategoriProduk', $inventoryMasuk->kategoriProduk)
-            ->update(['id_inventoryKeluar' => $inventoryMasuk->id]);
+            // Ambil data Inventory Keluar berdasarkan ID
+            $inventoryKeluar = InventoryKeluar::findOrFail($id);
 
-        $inventoryMasuk->delete();
+            // Log sebelum proses pembaruan
+            Log::info('Memperbarui Inventory Keluar ID: ' . $id . ' Kategori Lama: ' . $inventoryKeluar->kategoriProduk);
 
-        return redirect()->route('inventoryMasuk')->with('success', 'Inventory Masuk berhasil dihapus.');
+            // Ambil kategoriProduk sebelum diubah
+            $oldKategoriProduk = $inventoryKeluar->kategoriProduk;
+
+            // Perbarui kategoriProduk di Inventory Keluar
+            $inventoryKeluar->update([
+                'kategoriProduk' => $validatedData['kategoriProduk'],
+            ]);
+
+            // Cari data di Inventory Masuk berdasarkan kategoriProduk lama
+            $inventoryMasuk = InventoryMasuk::where('kategoriProduk', $oldKategoriProduk)->first();
+
+            if ($inventoryMasuk) {
+                // Log jika ditemukan Inventory Masuk
+                Log::info('Memperbarui Inventory Masuk terkait dengan kategori lama: ' . $oldKategoriProduk);
+
+                // Perbarui kategoriProduk di Inventory Masuk
+                $inventoryMasuk->update([
+                    'kategoriProduk' => $validatedData['kategoriProduk'],
+                ]);
+            }
+
+            // Perbarui kategoriProduk di tabel Stock
+            $stocks = Stock::where('kategoriProduk', $oldKategoriProduk)->get();
+            foreach ($stocks as $stock) {
+                $stock->update([
+                    'kategoriProduk' => $validatedData['kategoriProduk'],
+                ]);
+            }
+
+            return redirect()->route('inventoryKeluar')->with('success', 'Inventory Keluar, Inventory Masuk, dan Stock berhasil diperbarui.');
+        } catch (\Exception $e) {
+            Log::error('Error saat memperbarui Inventory Keluar: ' . $e->getMessage());
+            return redirect()->route('inventoryKeluar')->with('error', 'Terjadi kesalahan saat memperbarui data.');
+        }
     }
 
-    // Method untuk Delete Inventory Keluar
-    public function deleteInventoryKeluar($id)
+
+
+    public function deleteInventory(Request $request, $id)
     {
-        $inventoryKeluar = InventoryKeluar::findOrFail($id);
-        $inventoryKeluar->delete();
+        try {
+            // Cari Inventory Masuk berdasarkan ID
+            $inventoryMasuk = InventoryMasuk::findOrFail($id);
 
-        return redirect()->route('inventoryKeluar')->with('success', 'Inventory Keluar berhasil dihapus.');
+            // Simpan kategori produk untuk pencarian di InventoryKeluar
+            $kategoriProduk = $inventoryMasuk->kategoriProduk;
+
+            // Hapus semua stock terkait dengan Inventory Masuk
+            Stock::where('id_inventoryMasuk', $inventoryMasuk->id_inventoryMasuk)->delete();
+
+            // Hapus Inventory Masuk
+            $inventoryMasuk->delete();
+
+            // Cari dan hapus Inventory Keluar dengan kategori produk yang sama
+            $inventoryKeluar = InventoryKeluar::where('kategoriProduk', $kategoriProduk)->first();
+            if ($inventoryKeluar) {
+                // Hapus semua stock terkait dengan Inventory Keluar
+                Stock::where('id_inventoryKeluar', $inventoryKeluar->id_inventoryKeluar)->delete();
+                $inventoryKeluar->delete();
+            }
+
+            return redirect()->route('inventoryMasuk')->with('success', 'Inventory Masuk, Inventory Keluar, dan Stock terkait berhasil dihapus.');
+        } catch (\Exception $e) {
+            return redirect()->route('inventoryMasuk')->with('error', 'Terjadi kesalahan saat menghapus data.');
+        }
     }
+
+    public function deleteInventoryKeluar(Request $request, $id)
+    {
+        try {
+            // Cari Inventory Keluar berdasarkan ID
+            $inventoryKeluar = InventoryKeluar::findOrFail($id);
+
+            // Log kategori produk untuk memastikan data valid
+            Log::info('Menghapus Inventory Keluar dengan ID: ' . $id . ' dan kategori: ' . $inventoryKeluar->kategoriProduk);
+
+            // Simpan kategori produk untuk pencarian di InventoryMasuk
+            $kategoriProduk = $inventoryKeluar->kategoriProduk;
+
+            // Hapus semua stock terkait dengan Inventory Keluar
+            Stock::where('id_inventoryKeluar', $inventoryKeluar->id_inventoryKeluar)->delete();
+
+            // Hapus Inventory Keluar
+            $inventoryKeluar->delete();
+
+            // Cari dan hapus Inventory Masuk dengan kategori produk yang sama
+            $inventoryMasuk = InventoryMasuk::where('kategoriProduk', $kategoriProduk)->first();
+            if ($inventoryMasuk) {
+                // Log jika Inventory Masuk ditemukan
+                Log::info('Menghapus Inventory Masuk terkait dengan kategori: ' . $kategoriProduk);
+
+                // Hapus semua stock terkait dengan Inventory Masuk
+                Stock::where('id_inventoryMasuk', $inventoryMasuk->id_inventoryMasuk)->delete();
+                $inventoryMasuk->delete();
+            }
+
+            return redirect()->route('inventoryKeluar')->with('success', 'Inventory Keluar, Inventory Masuk, dan Stock terkait berhasil dihapus.');
+        } catch (\Exception $e) {
+            Log::error('Error saat menghapus Inventory Keluar: ' . $e->getMessage());
+            return redirect()->route('inventoryKeluar')->with('error', 'Terjadi kesalahan saat menghapus data.');
+        }
+    }
+
+
 
     public function storeStock(Request $request)
     {
@@ -160,6 +295,27 @@ class InventoryController extends Controller
 
         return redirect()->back()->with('success', 'Produk berhasil dipindahkan.');
     }
+
+    public function pindahkanProdukKeluar(Request $request)
+    {
+        try {
+            // Ambil ID stock dari checkbox
+            $ids = $request->input('ids');
+
+            // Validasi jika tidak ada data yang dipilih
+            if (empty($ids)) {
+                return redirect()->back()->with('error', 'Tidak ada produk yang dipilih.');
+            }
+
+            // Hapus stock berdasarkan ID yang dipilih
+            $deletedCount = Stock::whereIn('id_stock', $ids)->delete();
+
+            return redirect()->back()->with('success', "$deletedCount produk berhasil dihapus.");
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Terjadi kesalahan saat menghapus produk.');
+        }
+    }
+
 
 
 }

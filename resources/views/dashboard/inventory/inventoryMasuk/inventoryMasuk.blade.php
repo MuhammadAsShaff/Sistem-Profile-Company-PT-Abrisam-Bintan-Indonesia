@@ -57,28 +57,32 @@
                 </td>
 
                 <!-- Kategori Produk -->
-                <td class="px-12 py-4 text-sm font-medium text-gray-700 ">
+                <td class="px-12 py-4 text-sm font-medium text-gray-700 dark:text-white">
                   {{ $item->kategoriProduk }}
                 </td>
 
                 <!-- Jumlah Stok -->
-                <td class="px-4 py-4 text-sm text-gray-500 dark:text-gray-300 ">
+                <td class="px-4 py-4 text-sm text-gray-500 dark:text-gray-300">
                   @php
             $jumlah = $jumlahStockMasukPerKategori->firstWhere('kategoriProduk', $item->kategoriProduk)->jumlah ?? 0;
-        @endphp
+          @endphp
                   {{ $jumlah }}
                 </td>
-                <td class="px-4 py-4 text-sm text-gray-500 dark:text-gray-300 ">
-                 @include('dashboard.inventory.inventoryMasuk.daftarProduk')
-                </td>
-                <td class="px-12 py-4 text-sm font-medium text-gray-700 dark:text-white whitespace-nowrap">
-                  
+
+                <!-- Lihat Produk -->
+                <td class="px-2 py-4 text-sm text-gray-500 dark:text-gray-300">
+                  @include('dashboard.inventory.inventoryMasuk.daftarProduk')
                 </td>
 
+                <!-- Aksi -->
+                <td class="px-4 py-4 text-sm font-medium text-gray-700 dark:text-white whitespace-nowrap">
+                  @include('dashboard.inventory.inventoryMasuk.modalUpdateInventori')
+                  @include('dashboard.inventory.inventoryMasuk.modalHapusInventori')
+                </td>
                 </tr>
         @empty
         <tr>
-        <td colspan="3" class="px-4 py-4 text-center text-sm text-gray-500 dark:text-gray-300">
+        <td colspan="5" class="px-4 py-4 text-center text-sm text-gray-500 dark:text-gray-300">
           Tidak ada data Inventory Masuk.
         </td>
         </tr>

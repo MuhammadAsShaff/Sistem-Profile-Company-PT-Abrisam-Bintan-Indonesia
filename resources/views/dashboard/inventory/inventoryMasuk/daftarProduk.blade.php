@@ -22,16 +22,16 @@
       </button>
     </div>
 
-    <div class="modal-body" style="max-height: 60vh; overflow-y: auto;">
-      <form id="formTambahProduk-{{ $item->id_inventoryMasuk }}" class="flex items-center space-x-2 mb-4" method="POST"
-        action="{{ route('stock.store') }}">
+    <div class="modal-body">
+      <form id="formTambahProduk-{{ $item->id_inventoryMasuk }}" class="flex flex-col space-y-4 mb-4 w-full"
+        method="POST" action="{{ route('stock.store') }}">
         @csrf
         <input type="hidden" name="id_inventoryMasuk" value="{{ $item->id_inventoryMasuk }}" />
         <input type="hidden" name="kategoriProduk" value="{{ $item->kategoriProduk }}" />
-      
+
         <!-- Form Input Produk -->
-        <div id="inputProdukContainer">
-          <div class="produkInput">
+        <div id="inputProdukContainer" class="space-y-2 w-full">
+          <div class="produkInput flex space-x-2 w-full">
             <input type="text" name="nomorProduk[]"
               class="flex-grow px-4 py-2 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500"
               placeholder="Masukkan Nomor Produk" required />
@@ -40,17 +40,23 @@
               placeholder="Masukkan Keterangan" />
           </div>
         </div>
-      
-        <!-- Tombol untuk menambah input baru -->
-        <button type="button" onclick="tambahInputProduk()"
-          class="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 shadow-md">+</button>
-      
-        <!-- Tombol untuk submit data -->
-        <button type="submit"
-          class="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500 shadow-md">
-          Tambah
-        </button>
+
+        <!-- Tombol untuk menambah input baru dan tombol submit bersampingan -->
+        <div class="flex items-center justify-end space-x-2 mt-4">
+          <!-- Tombol untuk menambah input baru -->
+          <button type="button" onclick="tambahInputProduk()"
+            class="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 shadow-md">
+            Tambah Inputan
+          </button>
+
+          <!-- Tombol untuk submit data -->
+          <button type="submit"
+            class="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500 shadow-md">
+            Tambah Stock
+          </button>
+        </div>
       </form>
+
 
     </div>
 
@@ -69,28 +75,40 @@
         </thead>
         <tbody class="bg-white divide-y divide-gray-200">
           @php
-$filteredStocks = $stok->where('id_inventoryMasuk', $item->id_inventoryMasuk);
+      $filteredStocks = $stok->where('id_inventoryMasuk', $item->id_inventoryMasuk);
       @endphp
-          @foreach ($filteredStocks as $index => $stockItem)
-        <tr data-id="{{ $stockItem->id_stock }}">
-        <td class="px-4 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-          <input type="checkbox" name="ids[]" class="checkbox-item" value="{{ $stockItem->id_stock }}">
-        </td>
-        <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-500">{{ $stockItem->nomorProduk }}</td>
-        <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-500">{{ $stockItem->keterangan ?? '-' }}</td>
-        </tr>
-      @endforeach
+
+          @if($filteredStocks->count() > 0)
+        @foreach ($filteredStocks as $index => $stockItem)
+      <tr data-id="{{ $stockItem->id_stock }}">
+      <td class="px-4 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+        <input type="checkbox" name="ids[]" class="checkbox-item" value="{{ $stockItem->id_stock }}">
+      </td>
+      <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-500">{{ $stockItem->nomorProduk }}</td>
+      <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-500">{{ $stockItem->keterangan ?? '-' }}</td>
+      </tr>
+    @endforeach
+      @else
+      <tr>
+      <td colspan="3" class="px-4 py-4 text-center text-sm text-gray-500">
+        Belum ada stock masuk
+      </td>
+      </tr>
+    @endif
         </tbody>
       </table>
 
       <!-- Tombol Hapus Massal -->
+      @if($filteredStocks->count() > 0)
       <div class="mt-4 text-right">
-        <button type="submit"
-          class="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500 shadow-md">
-          Hapus Terpilih
-        </button>
+      <button type="submit"
+        class="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500 shadow-md">
+        Hapus Terpilih
+      </button>
       </div>
+    @endif
     </form>
+
   </div>
 </dialog>
 
@@ -101,8 +119,14 @@ $filteredStocks = $stok->where('id_inventoryMasuk', $item->id_inventoryMasuk);
     const newInput = document.createElement('div');
     newInput.classList.add('produkInput');
     newInput.innerHTML = `
-      <input type="text" name="nomorProduk[]" class="flex-grow px-4 py-2 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500" placeholder="Masukkan Nomor Produk" required />
-      <input type="text" name="keterangan[]" class="flex-grow px-4 py-2 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500" placeholder="Masukkan Keterangan" />
+       <div class="produkInput flex space-x-2 w-full">
+            <input type="text" name="nomorProduk[]"
+              class="flex-grow px-4 py-2 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500"
+              placeholder="Masukkan Nomor Produk" required />
+            <input type="text" name="keterangan[]"
+              class="flex-grow px-4 py-2 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              placeholder="Masukkan Keterangan" />
+          </div>
     `;
     inputContainer.appendChild(newInput);
   }
