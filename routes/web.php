@@ -1,5 +1,6 @@
 <?php
-
+use App\Exports\InventoryExport;
+use Maatwebsite\Excel\Facades\Excel;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\Dashboard;
 use App\Http\Controllers\DataUser;
@@ -24,7 +25,7 @@ use App\Http\Controllers\TentangKamiLandingPage;
 use Illuminate\Support\Facades\Route;
 use App\Http\Middleware\SavePreviousUrl;
 use App\Http\Middleware\PreventBackHistory;
-use App\Models\Inventory;
+
 
 // Route untuk Landing Page
 Route::prefix('/')->group(function () {
@@ -212,6 +213,13 @@ Route::prefix('dashboard')->middleware(['auth:admin', PreventBackHistory::class]
         Route::delete('/inventory-keluar/{id}', [InventoryController::class, 'deleteInventoryKeluar'])->name('inventoryKeluar.delete');
         Route::put('/dashboard/inventory/update-inventory-keluar/{id}', [InventoryController::class, 'updateInventoryKeluar'])->name('inventoryKeluar.update');
         Route::post('/stock-pindahkan-keluar', [InventoryController::class, 'pindahkanProdukKeluar'])->name('stock.pindahkan.keluar');
+        Route::get('/export-inventory-masuk', function () {
+            return Excel::download(new InventoryExport('Masuk'), 'inventory_masuk.xlsx');
+        })->name('export.inventoryMasuk');
+
+        Route::get('/export-inventory-keluar', function () {
+            return Excel::download(new InventoryExport('Keluar'), 'inventory_keluar.xlsx');
+        })->name('export.inventoryKeluar');
     });
 
 

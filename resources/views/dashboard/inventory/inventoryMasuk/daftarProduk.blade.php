@@ -30,7 +30,7 @@
         <input type="hidden" name="kategoriProduk" value="{{ $item->kategoriProduk }}" />
 
         <!-- Form Input Produk -->
-        <div id="inputProdukContainer" class="space-y-2 w-full">
+        <div id="inputProdukContainer-{{ $item->id_inventoryMasuk }}" class="space-y-2 w-full">
           <div class="produkInput flex space-x-2 w-full">
             <input type="text" name="nomorProduk[]"
               class="flex-grow px-4 py-2 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500"
@@ -41,23 +41,19 @@
           </div>
         </div>
 
-        <!-- Tombol untuk menambah input baru dan tombol submit bersampingan -->
+        <!-- Tombol untuk menambah input baru -->
         <div class="flex items-center justify-end space-x-2 mt-4">
-          <!-- Tombol untuk menambah input baru -->
-          <button type="button" onclick="tambahInputProduk()"
+          <button type="button" onclick="tambahInputProduk('{{ $item->id_inventoryMasuk }}')"
             class="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 shadow-md">
             Tambah Inputan
           </button>
 
-          <!-- Tombol untuk submit data -->
           <button type="submit"
             class="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500 shadow-md">
             Tambah Stock
           </button>
         </div>
       </form>
-
-
     </div>
 
     <!-- Form untuk Hapus Massal -->
@@ -75,7 +71,7 @@
         </thead>
         <tbody class="bg-white divide-y divide-gray-200">
           @php
-      $filteredStocks = $stok->where('id_inventoryMasuk', $item->id_inventoryMasuk);
+$filteredStocks = $stok->where('id_inventoryMasuk', $item->id_inventoryMasuk);
       @endphp
 
           @if($filteredStocks->count() > 0)
@@ -114,11 +110,15 @@
 
 <script>
   // Fungsi untuk menambah form input baru secara dinamis
-  function tambahInputProduk() {
-    const inputContainer = document.getElementById('inputProdukContainer');
-    const newInput = document.createElement('div');
-    newInput.classList.add('produkInput');
-    newInput.innerHTML = `
+  function tambahInputProduk(id) {
+      // Cari container input berdasarkan ID modal
+      const inputContainer = document.getElementById(`inputProdukContainer-${id}`);
+      if (!inputContainer) return; // Jika container tidak ditemukan, hentikan
+
+      // Buat elemen input baru
+      const newInput = document.createElement('div');
+      newInput.classList.add('produkInput');
+      newInput.innerHTML = `
        <div class="produkInput flex space-x-2 w-full">
             <input type="text" name="nomorProduk[]"
               class="flex-grow px-4 py-2 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500"
@@ -128,8 +128,11 @@
               placeholder="Masukkan Keterangan" />
           </div>
     `;
-    inputContainer.appendChild(newInput);
-  }
+
+      // Tambahkan input baru ke container yang sesuai
+      inputContainer.appendChild(newInput);
+    }
+
 
   function toggleSelectAll() {
     const selectAllCheckbox = document.getElementById('selectAllCheckbox');

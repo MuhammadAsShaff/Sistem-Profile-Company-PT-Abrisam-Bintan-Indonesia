@@ -24,12 +24,24 @@
     </div>
 
     <!-- Search Bar -->
-    <div class="flex items-center space-x-2 w-full max-w-lg">
+    <div class="flex items-center justify-between space-x-4 w-full max-w-lg">
+      <!-- Search Bar -->
       <div class="flex-grow">
         @include('dashboard.inventory.inventoryKeluar.searchBar')
       </div>
-      
+    
+      <!-- Tombol Export -->
+      <a href="{{ route('export.inventoryKeluar') }}"
+        class="inline-flex items-center space-x-2 px-3 py-2.5 bg-green-500 text-sm font-medium text-white rounded-lg hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-300 shadow-md transition duration-150 ease-in-out">
+        <svg class="w-6 h-6 text-white" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
+          <path fill-rule="evenodd"
+            d="M9 7V2.221a2 2 0 0 0-.5.365L4.586 6.5a2 2 0 0 0-.365.5H9Zm2 0V2h7a2 2 0 0 1 2 2v9.293l-2-2a1 1 0 0 0-1.414 1.414l.293.293h-6.586a1 1 0 1 0 0 2h6.586l-.293.293A1 1 0 0 0 18 16.707l2-2V20a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V9h5a2 2 0 0 0 2-2Z"
+            clip-rule="evenodd" />
+        </svg>
+        <span>Excel</span>
+      </a>
     </div>
+
   </div>
 
   <!-- Tabel Inventory Keluar -->
@@ -64,7 +76,7 @@
                 <!-- Jumlah Stok -->
                 <td class="px-4 py-4 text-sm text-gray-500 dark:text-gray-300">
                   @php
-          $jumlah = $jumlahStockKeluarPerKategori->firstWhere('kategoriProduk', $item->kategoriProduk)->jumlah ?? 0;
+  $jumlah = $jumlahStockKeluarPerKategori->firstWhere('kategoriProduk', $item->kategoriProduk)->jumlah ?? 0;
                 @endphp
                   {{ $jumlah }}
                 </td>
