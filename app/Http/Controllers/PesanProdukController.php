@@ -4,8 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Services\LocationService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
 
-class LokasiController extends Controller
+class PesanProdukController extends Controller
 {
     protected $locationService;
 
@@ -28,5 +29,16 @@ class LokasiController extends Controller
         return view('pesanProduk.pesanProduk', compact('address', 'locationIQApiKey'));
     }
 
+    public function storeSelection()
+    {
+        // Simpan status di session
+        Session::put('selected_product', true);
+        return redirect()->route('pesanProduk');
+    }
+
+    public function isiDataDiri()
+    {
+        return view('pesanProduk.isiDataDiri');
+    }
 
 }

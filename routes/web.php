@@ -16,11 +16,10 @@ use App\Http\Controllers\BlogController;
 use App\Http\Controllers\BlogLandingPage;
 use App\Http\Controllers\TentangKamiController;
 use App\Http\Controllers\LandingPageController;
-use App\Http\Controllers\PesanProduk;
 use App\Http\Controllers\BaganOrganisasiController;
 use App\Http\Controllers\InventoryController;
 use App\Http\Controllers\KegiatanController;
-use App\Http\Controllers\LokasiController;
+use App\Http\Controllers\PesanProdukController;
 use App\Http\Controllers\TentangKamiLandingPage;
 use Illuminate\Support\Facades\Route;
 use App\Http\Middleware\SavePreviousUrl;
@@ -52,8 +51,9 @@ Route::prefix('/')->group(function () {
     Route::get('FaQ', [LandingPageController::class, 'tampilFaQ'])
         ->name('tampilFaQ');
 
-    Route::post('produk/pilih', [LokasiController::class, 'pilihProduk'])->name('produk.pilih');
-    Route::get('pesanProduk', [LokasiController::class, 'showLocation'])->name('pesanProduk');
+    Route::post('produk/pilih', [PesanProdukController::class, 'pilihProduk'])->name('produk.pilih');
+    Route::get('pesanProduk', [PesanProdukController::class, 'showLocation'])->name('pesanProduk');
+    Route::get('isiDataDiri', [PesanProdukController::class, 'isiDataDiri'])->name('isiDataDiri');
 
 });
 
@@ -216,7 +216,6 @@ Route::prefix('dashboard')->middleware(['auth:admin', PreventBackHistory::class]
         Route::get('/export-inventory-masuk', function () {
             return Excel::download(new InventoryExport('Masuk'), 'inventory_masuk.xlsx');
         })->name('export.inventoryMasuk');
-
         Route::get('/export-inventory-keluar', function () {
             return Excel::download(new InventoryExport('Keluar'), 'inventory_keluar.xlsx');
         })->name('export.inventoryKeluar');

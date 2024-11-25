@@ -9,6 +9,8 @@
   <!-- Teks -->
   <div>
     <h5 class="text-xl font-bold tracking-tight text-gray-900 dark:text-white">Admin Online</h5>
-    <p class="font-normal text-gray-700 dark:text-gray-400">Deskripsi atau isi card.</p>
+  @if ($onlineCount)
+    <span class="px-3 py-1 text-xs text-black bg-gray-200 rounded-full dark:bg-gray-800 dark:text-red-400">Admin Sedang Online Ada <b>{{$onlineCount}}</b></span>
+  @endif
   </div>
 </a>

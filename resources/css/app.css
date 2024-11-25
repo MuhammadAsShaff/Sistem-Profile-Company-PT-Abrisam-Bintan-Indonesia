@@ -59,3 +59,21 @@ body {
     font-weight: normal;
     font-style: normal;
 }
+  .gradient-text {
+    background: linear-gradient(to right, #D10A3C, #FF0038);
+    /* Gradien warna */
+    -webkit-background-clip: text;
+    /* Klip background ke teks */
+    -webkit-text-fill-color: transparent;
+    /* Buat teks transparan agar gradien terlihat */
+  }
+
+  input[type="number"]::-webkit-inner-spin-button,
+  input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  input[type="number"] {
+    -moz-appearance: textfield;
+  }

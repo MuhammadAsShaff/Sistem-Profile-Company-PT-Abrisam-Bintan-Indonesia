@@ -14,38 +14,6 @@
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
   <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
 
-  <!-- CSS tambahan untuk autocomplete -->
-<style>
-  .autocomplete-items {
-    position: relative; /* Ganti absolute menjadi relative */
-    background-color: #ffffff;
-    
-    max-height: 150px;
-    overflow-y: auto;
-    width: 100%;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    border-radius: 8px;
-    margin-top: 8px; /* Tambahkan jarak dengan input */
-  }
-
-  .autocomplete-items div {
-    padding: 10px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-  }
-
-  .autocomplete-items div:hover {
-    background-color: #f0f0f0;
-  }
-
-  .autocomplete-icon {
-    margin-right: 8px;
-    color: #666;
-  }
-</style>
-
-
 </head>
 
 <body>
@@ -57,8 +25,8 @@
           <span
             class="flex items-center justify-center w-8 h-8 border border-red-500 rounded-full shrink-0 dark:border-gray-400">1</span>
           <span>
-            <h3 class="font-bold font-telkomsel text-red-500 leading-tight">Pilih Lokasi & Paket</h3>
-            <p class="text-sm text-red-500">Tentukan lokasi pemasangan kamu dan pilih paket Internet</p>
+            <h3 class="font-bold font-telkomsel gradient-text leading-tight">Pilih Lokasi & Paket</h3>
+            <p class="text-sm gradient-text">Tentukan lokasi pemasangan kamu dan pilih paket Internet</p>
           </span>
         </li>
         <li class="flex items-center text-gray-500 space-x-2 rtl:space-x-reverse">
@@ -80,41 +48,56 @@
       </ol>
     </div>
   </div>
-
-  <div class="container mx-auto max-w-4xl mt-32 p-5 bg-white shadow-lg rounded-lg">
+  
+  <div class="container mx-auto max-w-4xl mt-32 p-5 bg-white shadow-lg rounded-lg mb-42">
     <h2 class="text-center text-2xl font-bold mb-6 font-telkomsel">Cari Lokasi untuk Pemasangan IndiHome</h2>
-
+  
     <!-- Peta -->
     <div id="map" class="w-full h-64 rounded-lg mb-6"></div>
-    <button id="getCurrentLocationBtn" class="w-full p-3 bg-red-500 text-white rounded-lg hover:bg-red-600">
+    <button id="getCurrentLocationBtn" class="w-full p-3 bg-gradient-to-r from-[#D10A3C] to-[#FF0038] text-white rounded-lg hover:bg-red-600">
       Gunakan Lokasi Saya Saat Ini
     </button>
-
+  
     <!-- Input Pencarian Lokasi -->
-   <div class="space-y-4">
-  <!-- Input dan tombol pencarian -->
-  <div class="flex">
-    <input id="searchBox" type="text" placeholder="Cari nama jalan, kelurahan, gedung, dsb..."
-      class="w-full p-3 mt-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500" />
-    <button id="searchBtn" class="p-3 mt-4 ml-2 bg-red-500 text-white rounded-lg hover:bg-red-600">
-      Cari
-    </button>
+    <div class="space-y-4">
+      <!-- Input dan tombol pencarian -->
+      <div class="flex">
+        <input id="searchBox" type="text" placeholder="Cari nama jalan, kelurahan, gedung, dsb..."
+          class="w-full p-3 mt-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500" />
+        <button id="searchBtn" class="p-3 mt-4 ml-2 bg-gradient-to-r from-[#D10A3C] to-[#FF0038] text-white rounded-lg hover:bg-red-600">
+          Cari
+        </button>
+      </div>
+  
+      <!-- Container untuk autocomplete suggestions -->
+      <div id="autocomplete-list" class="bg-white shadow rounded-lg overflow-y-auto max-h-40 mt-2"></div>
+  
+      <!-- Alamat lengkap -->
+      <textarea id="alamatLengkap" placeholder="Masukkan alamat lengkap" rows="4"
+        class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500"></textarea>
+  
+    </div>
   </div>
-
-  <!-- Container untuk autocomplete suggestions -->
-  <div id="autocomplete-list" class="autocomplete-items"></div>
-
-  <!-- Alamat lengkap -->
-  <textarea id="alamatLengkap" placeholder="Masukkan alamat lengkap" rows="4"
-    class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500"></textarea>
-
-  <!-- Tombol Pilih Lokasi -->
-  <button id="selectLocationBtn" class="w-full p-3 bg-gray-400 text-white rounded-lg cursor-not-allowed"
-    disabled>Pilih lokasi ini</button>
-</div>
-
-
+  
+  <!-- Fixed Bottom Bar -->
+  <div class="fixed bottom-0 left-0 w-full bg-white border-t border-gray-200 shadow-lg z-50">
+    <div class="container mx-auto max-w-4xl flex items-center justify-between p-4">
+      <div class="flex items-center">
+        <div class="flex items-center justify-center w-12 h-12 bg-gradient-to-r from-[#D10A3C] to-[#FF0038] text-white font-bold rounded-lg mr-8 p-8">
+          <span class="font-telkomsel text-lg">20 Mbps</span>
+        </div>
+        <div class="ml-4">
+          <h4 class="text-lg font-bold font-telkomsel">Orbit Star N1 + Philips Smart Lamp</h4>
+          <p class="text-gray-500">Rp 644.000</p>
+        </div>
+      </div>
+      <div class="flex">
+        <button id="selectLocationBtn" class="w-full p-3 bg-gray-400 text-white rounded-lg cursor-not-allowed"
+        disabled>Selanjutnya</button>
+      </div>
+    </div>
   </div>
+  
 
   <script>
     const locationIQApiKey = "{{ $locationIQApiKey }}"; // Ambil kunci API dari controller
@@ -138,7 +121,8 @@
           document.getElementById('alamatLengkap').value = data.display_name || "Alamat tidak ditemukan";
           document.getElementById('selectLocationBtn').disabled = false;
           document.getElementById('selectLocationBtn').classList.remove("bg-gray-400", "cursor-not-allowed");
-          document.getElementById('selectLocationBtn').classList.add("bg-red-500", "hover:bg-red-600");
+          document.getElementById('selectLocationBtn').classList.add("bg-gradient-to-r", "from-[#D10A3C]", "to-[#FF0038]", "hover:opacity-90");
+
         })
         .catch(error => console.error('Error:', error));
     }

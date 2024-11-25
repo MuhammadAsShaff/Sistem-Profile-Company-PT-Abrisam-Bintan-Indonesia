@@ -1,6 +1,6 @@
 <aside class="flex flex-col w-64 h-screen px-4 py-8 overflow-y-auto bg-white border-r">
   <!-- Logo -->
-  <a href="#" class="mx-auto">
+  <a href="{{ route('dashboard.dashboard.index') }}" class="mx-auto">
     <img class="w-auto h-14" src="{{ asset('images/logoAbi.png') }}" alt="Logo Abi">
   </a>
 
@@ -65,15 +65,15 @@
             </svg>
             <span class="ml-2 font-sm">FaQ</span>
           </a>
-        <a class="flex items-center px-4 py-2 mb-4 text-gray-600 rounded-lg transition-colors duration-300 {{ Request::is('dashboard/TentangKami') ? 'bg-gray-100 border-l-4 border-red-500 text-blue-600' : 'hover:bg-gray-100 hover:text-gray-700' }}"
-          href="{{ route('dashboard.tentangKami.layoutTentangKami') }}">
-          <svg class="w-6 h-6 text-gray-800 dark:text-white ml-6" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-            width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
-            <path
-              d="M10.83 5a3.001 3.001 0 0 0-5.66 0H4a1 1 0 1 0 0 2h1.17a3.001 3.001 0 0 0 5.66 0H20a1 1 0 1 0 0-2h-9.17ZM4 11h9.17a3.001 3.001 0 0 1 5.66 0H20a1 1 0 1 1 0 2h-1.17a3.001 3.001 0 0 1-5.66 0H4a1 1 0 1 1 0-2Zm1.17 6H4a1 1 0 1 0 0 2h1.17a3.001 3.001 0 0 0 5.66 0H20a1 1 0 1 0 0-2h-9.17a3.001 3.001 0 0 0-5.66 0Z" />
-          </svg>
-          <span class="ml-2 font-sm">Tentang Kami</span>
-        </a>
+          <a class="flex items-center px-4 py-2 mb-4 text-gray-600 rounded-lg transition-colors duration-300 {{ Request::is('dashboard/TentangKami') ? 'bg-gray-100 border-l-4 border-red-500 text-blue-600' : 'hover:bg-gray-100 hover:text-gray-700' }}"
+            href="{{ route('dashboard.tentangKami.layoutTentangKami') }}">
+            <svg class="w-6 h-6 text-gray-800 dark:text-white ml-6" aria-hidden="true"
+              xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+              <path
+                d="M10.83 5a3.001 3.001 0 0 0-5.66 0H4a1 1 0 1 0 0 2h1.17a3.001 3.001 0 0 0 5.66 0H20a1 1 0 1 0 0-2h-9.17ZM4 11h9.17a3.001 3.001 0 0 1 5.66 0H20a1 1 0 1 1 0 2h-1.17a3.001 3.001 0 0 1-5.66 0H4a1 1 0 1 1 0-2Zm1.17 6H4a1 1 0 1 0 0 2h1.17a3.001 3.001 0 0 0 5.66 0H20a1 1 0 1 0 0-2h-9.17a3.001 3.001 0 0 0-5.66 0Z" />
+            </svg>
+            <span class="ml-2 font-sm">Tentang Kami</span>
+          </a>
         </div>
       </div>
 
@@ -132,23 +132,23 @@
         <div x-show="open === 3" x-cloak class="mt-2 ml-4 space-y-2">
           <a class="flex items-center px-4 py-2 mb-4 text-gray-600 rounded-lg transition-colors duration-300 {{ Request::is('dashboard/inventory/masuk') ? 'bg-gray-100 border-l-4 border-red-500 text-blue-600' : 'hover:bg-gray-100 hover:text-gray-700' }}"
             href="{{route('inventoryMasuk')}}">
-            <svg class="w-6 h-6 ml-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-              width="24" height="24" fill="none" viewBox="0 0 24 24">
+            <svg class="w-6 h-6 ml-6 text-gray-800 dark:text-white" aria-hidden="true"
+              xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
               <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                 d="M4 15v2a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3v-2m-8 1V4m0 12-4-4m4 4 4-4" />
             </svg>
             <span class="ml-2 font-sm">Produk Masuk</span>
           </a>
 
-        <a class="flex items-center px-4 py-2 mb-4 text-gray-600 rounded-lg transition-colors duration-300 {{ Request::is('dashboard/inventory/keluar') ? 'bg-gray-100 border-l-4 border-red-500 text-blue-600' : 'hover:bg-gray-100 hover:text-gray-700' }}"
-          href="{{route('inventoryKeluar')}}">
-          <svg class="w-6 h-6 ml-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-            width="24" height="24" fill="none" viewBox="0 0 24 24">
-            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-              d="M4 15v2a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3v-2M12 4v12m0-12 4 4m-4-4L8 8" />
-          </svg>
-          <span class="ml-2 font-sm">Produk Keluar</span>
-        </a>
+          <a class="flex items-center px-4 py-2 mb-4 text-gray-600 rounded-lg transition-colors duration-300 {{ Request::is('dashboard/inventory/keluar') ? 'bg-gray-100 border-l-4 border-red-500 text-blue-600' : 'hover:bg-gray-100 hover:text-gray-700' }}"
+            href="{{route('inventoryKeluar')}}">
+            <svg class="w-6 h-6 ml-6 text-gray-800 dark:text-white" aria-hidden="true"
+              xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M4 15v2a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3v-2M12 4v12m0-12 4 4m-4-4L8 8" />
+            </svg>
+            <span class="ml-2 font-sm">Produk Keluar</span>
+          </a>
         </div>
       </div>
 
@@ -172,5 +172,19 @@
         <span class="mx-4 font-medium">Data Admin</span>
       </a>
     </nav>
+  </div>
+  <!-- Logout Button -->
+  <div>
+    <form action="{{ route('admin.logout') }}" method="POST">
+      @csrf
+      <button type="submit"
+        class="flex items-center px-4 py-2 text-gray-600 transition-colors duration-300 rounded-lg hover:bg-gray-100 hover:text-gray-700">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h6a2 2 0 012 2v1" />
+        </svg>
+        <span class="mx-4 font-medium">Logout</span>
+      </button>
+    </form>
   </div>
 </aside>
