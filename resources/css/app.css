@@ -77,3 +77,9 @@ body {
   input[type="number"] {
     -moz-appearance: textfield;
   }
+
+  input:focus {
+  outline: none;
+  box-shadow: none; /* Menghapus shadow biru */
+  border-color: red; /* Jika Anda ingin warna border tertentu */
+}

@@ -11,26 +11,24 @@
       </div>
 
       <!-- Filter Options -->
-      <div class="mt-4 md:mt-0 flex items-center space-x-4">
-        <div class="relative w-full md:w-auto">
-          <select id="kategori-filter" name="kategori"
-            class="block w-full md:w-auto bg-white text-gray-700 font-semibold font-telkomsel rounded-lg shadow-sm border-gradient-to-r from-[#CD0A45] to-[#FD2B77] focus:border-gradient-to-r from-[#CD0A45] to-[#FD2B77] focus:ring focus:ring-pink-200 px-4 py-2 appearance-none transition-colors duration-200 ease-in-out">
-            <option value="" class="text-gray-500">Semua Kategori</option>
-            @foreach($kategori as $kat)
+      <div class="relative w-full md:w-auto">
+        <select id="kategori-filter" name="kategori"
+          class="block w-full md:w-auto bg-white text-gray-700 font-semibold rounded-lg shadow-sm border-gray-300 focus:border-red-500 focus:ring focus:ring-red-300 px-4 py-2 appearance-none transition-colors duration-200 ease-in-out">
+          <option value="" class="text-gray-500">Semua Kategori</option>
+          @foreach($kategori as $kat)
         @if($kat->produk->count() > 0) <!-- Tampilkan kategori hanya jika memiliki produk -->
       <option value="{{ $kat->id_kategori }}" {{ request('kategori') == $kat->id_kategori ? 'selected' : '' }}>
-        {{ $kat->nama_kategori }}
+      {{ $kat->nama_kategori }}
       </option>
     @endif
       @endforeach
-          </select>
-          <!-- Ikon panah bawah -->
-          <div class="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
-            <svg class="w-5 h-5 text-pink-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-            </svg>
-          </div>
+        </select>
+        <!-- Ikon panah bawah -->
+        <div class="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none bg black">
+          <svg class="w-5 h-5 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+          </svg>
         </div>
       </div>
     </div>

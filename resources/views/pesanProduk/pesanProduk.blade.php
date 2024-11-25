@@ -16,9 +16,9 @@
 
 </head>
 
-<body>
+<body class="bg-gray-100">
   <!-- Step Indicator -->
-  <div class="fixed top-10 w-full bg-white z-48 py-4">
+  <div class="fixed w-full bg-white z-48 py-10 ">
     <div class="container mx-auto max-w-4xl px-4 flex justify-center">
       <ol class="flex items-center space-x-4 rtl:space-x-reverse">
         <li class="flex items-center text-red-500 space-x-2 rtl:space-x-reverse">
@@ -48,8 +48,9 @@
       </ol>
     </div>
   </div>
+  <br><br>
   
-  <div class="container mx-auto max-w-4xl mt-32 p-5 bg-white shadow-lg rounded-lg mb-42">
+  <div class="container mx-auto max-w-4xl mt-32 p-5 bg-white shadow-2xl shadow-gray-400 rounded-lg ">
     <h2 class="text-center text-2xl font-bold mb-6 font-telkomsel">Cari Lokasi untuk Pemasangan IndiHome</h2>
   
     <!-- Peta -->
@@ -73,7 +74,7 @@
       <div id="autocomplete-list" class="bg-white shadow rounded-lg overflow-y-auto max-h-40 mt-2"></div>
   
       <!-- Alamat lengkap -->
-      <textarea id="alamatLengkap" placeholder="Masukkan alamat lengkap" rows="4"
+      <textarea id="alamatLengkap" placeholder="Masukkan alamat lengkap" rows="2"
         class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500"></textarea>
   
     </div>

@@ -12,9 +12,9 @@
 </head>
 
 
-<body>
+<body class="bg-gray-100">
   <!-- Step Indicator -->
-  <div class="top-40 w-full bg-white z-48 py-4 mt-12">
+  <div class="p-32 w-full bg-white z-48 py-10">
     <div class="container mx-auto max-w-4xl px-4 flex justify-center">
       <ol class="flex items-center space-x-4 rtl:space-x-reverse">
         <li class="flex items-center text-gray-500 space-x-2 rtl:space-x-reverse">
@@ -46,9 +46,9 @@
   </div>
 
   <!-- Formulir Data Diri -->
-  <div class="container mx-auto max-w-4xl mt-6 p-5 bg-white  rounded-lg">
+  <div class="container mx-auto max-w-4xl mt-6 p-5 bg-gray-100  rounded-lg">
 
-    <form id="formDataDiri" method="POST" class="bg-white shadow-md rounded-lg p-8">
+    <form id="formDataDiri" method="POST" class="bg-white shadow-2xl shadow-gray-400 rounded-lg p-8">
       @csrf
       <h2 class="text-center text-2xl font-bold font-telkomsel mb-4">Masukkan Data Diri Anda</h2>
     

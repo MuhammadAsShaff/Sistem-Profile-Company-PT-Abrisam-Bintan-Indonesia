@@ -41,4 +41,7 @@ class PesanProdukController extends Controller
         return view('pesanProduk.isiDataDiri');
     }
 
+    public function verifikasiOTP(){
+        return view('pesanProduk.verifikasiOTP');
+    }
 }
