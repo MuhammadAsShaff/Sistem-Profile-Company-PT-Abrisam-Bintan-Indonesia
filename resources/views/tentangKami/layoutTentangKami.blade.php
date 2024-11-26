@@ -24,7 +24,7 @@
   <div class="w-screen mx-0 flex flex-col justify-between min-h-screen">
 
     <!-- Contact Section -->
-    <div >
+    <div>
       <!-- Kontak berada di tengah -->
       @include('tentangKami.tentangKami')
       @include('tentangKami.baganOrganisasi')

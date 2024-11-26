@@ -45,7 +45,7 @@ Route::prefix('/')->group(function () {
 
     Route::get('/blog/{slug}', [BlogLandingPage::class, 'isiBlog'])->name('isiBlog');
 
-    Route::get('TentangKami', [TentangKamiLandingPage::class, 'index'])
+    Route::get('TentangKami', [LandingPageController::class, 'tampilTentangKami'])
         ->name('tampilTentangKami');
 
     Route::get('FaQ', [LandingPageController::class, 'tampilFaQ'])

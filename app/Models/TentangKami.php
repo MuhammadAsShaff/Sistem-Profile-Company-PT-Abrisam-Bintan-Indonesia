@@ -12,6 +12,7 @@ class TentangKami extends Model
     // Tentukan nama tabel jika berbeda dari default pluralisasi Laravel
     protected $table = 'tentang_kami';
 
+    protected $primaryKey = 'id';
     // Tentukan kolom yang bisa diisi
     protected $fillable = [
         'deskripsi_perusahaan',

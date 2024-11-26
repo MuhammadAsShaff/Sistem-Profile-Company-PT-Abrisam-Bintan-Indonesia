@@ -6,6 +6,9 @@ use App\Models\FaQ;
 use App\Models\Kategori;
 use App\Models\Paket;
 use App\Models\Produk;
+use App\Models\Kegiatan;
+use App\Models\BaganOrganisasi;
+use App\Models\TentangKami;
 use Illuminate\Http\Request;
 
 class LandingPageController extends Controller
@@ -75,4 +78,34 @@ class LandingPageController extends Controller
         $faqs = FaQ::all();
         return view('FaQ.layoutFaQ', compact('faqs'));
     }
+
+    public function tampilTentangKami()
+    {
+        // Ambil semua data dari tabel BaganOrganisasi
+        $bagan = BaganOrganisasi::all();
+
+        // Format data untuk OrgChart
+        $nodes = $bagan->map(function ($item) {
+            return [
+                'id' => $item->id,
+                'pid' => $item->parent_id, // Parent ID (jika ada)
+                'name' => $item->name,     // Nama Node
+                'title' => $item->title,   // Jabatan Node
+                'img' => $item->img_url ? asset('uploads/bagan/' . $item->img_url) : null, // URL gambar
+            ];
+        });
+
+        // Ambil data pertama dari tabel TentangKami
+        $tentangKami = TentangKami::first();
+
+        // Kirim data ke view
+        return view('tentangKami.layoutTentangKami', [
+            'tentangKami' => $tentangKami,
+            'nodes' => $nodes->isEmpty() ? '[]' : $nodes->toJson(), // Konversi ke JSON
+            'countNode' => $nodes->count(), // Jumlah node
+        ]);
+    }
+
+
+
 }
