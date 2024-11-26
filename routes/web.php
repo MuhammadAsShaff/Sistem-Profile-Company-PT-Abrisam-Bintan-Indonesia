@@ -84,13 +84,6 @@ Route::prefix('dashboard')->middleware(['auth:admin', PreventBackHistory::class]
         ->name('dashboard.dashboard.index')
         ->middleware(SavePreviousUrl::class); // Pasang middleware untuk simpan URL
 
-    Route::prefix('TentangKami')->group(function () {
-        Route::get('/', [BaganOrganisasiController::class, 'index'])->name('dashboard.tentangKami.layoutTentangKami');
-        Route::post('/store', [BaganOrganisasiController::class, 'store'])->name('bagan.store');
-        Route::put('/update/{id}', [BaganOrganisasiController::class, 'update'])->name('bagan.update');
-        Route::delete('/destroy/{id}', [BaganOrganisasiController::class, 'destroy'])->name('bagan.destroy');
-    });
-
 
     // Route untuk data pelanggan
     Route::get('dataPelanggan', [Pelanggan::class, 'index'])
@@ -133,14 +126,15 @@ Route::prefix('dashboard')->middleware(['auth:admin', PreventBackHistory::class]
         Route::delete('/delete/{id_produk}', [ProdukController::class, 'destroy'])->name('produk.delete');
     });
 
-
-    //Route untuk tentang kami
-    Route::prefix('tentang-kami')->group(function () {
-        Route::post('/store', [TentangKamiController::class, 'store'])->name('tentangKami.store');
-        Route::put('/update/{id}', [TentangKamiController::class, 'update'])->name('tentangKami.update');
-        Route::delete('/delete/{id}', [TentangKamiController::class, 'destroy'])->name('tentangKami.delete');
+    Route::prefix('TentangKami')->group(function () {
+        Route::get('/', [BaganOrganisasiController::class, 'index'])->name('dashboard.tentangKami.layoutTentangKami');
+        Route::post('/store', [BaganOrganisasiController::class, 'store'])->name('bagan.store');
+        Route::put('/update/{id}', [BaganOrganisasiController::class, 'update'])->name('bagan.update');
+        Route::delete('/destroy/{id}', [BaganOrganisasiController::class, 'destroy'])->name('bagan.destroy');
+        Route::post('tentangKami/store', [TentangKamiController::class, 'store'])->name('tentangKami.store');
+        Route::put('tentangKami/update/{id}', [TentangKamiController::class, 'update'])->name('tentangKami.update');
+        Route::delete('tentangKami/delete/{id}', [TentangKamiController::class, 'destroy'])->name('tentangKami.delete');
     });
-
 
     //Route Kegiatan
     Route::prefix('tentang-kami/kegiatan')->group(function () {

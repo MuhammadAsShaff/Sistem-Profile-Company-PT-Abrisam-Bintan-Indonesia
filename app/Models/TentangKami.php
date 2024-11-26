@@ -18,6 +18,7 @@ class TentangKami extends Model
         'deskripsi_perusahaan',
         'visi',
         'misi',
+        'fotoPerusahaan',
         
     ];
 

@@ -68,24 +68,6 @@ class PromoController extends Controller
         return redirect()->route('dashboard.Promo.Promo')->with('success', 'Promo berhasil ditambahkan.');
     }
 
-
-    public function destroy($id_promo)
-    {
-        // Find the promo by its ID
-        $promo = Promo::findOrFail($id_promo);
-
-        // If there's an associated image, delete it
-        if ($promo->gambar && Storage::disk('public')->exists($promo->gambar)) {
-            Storage::disk('public')->delete($promo->gambar);
-        }
-
-        // Delete the promo record from the database
-        $promo->delete();
-
-        // Redirect with success message
-        return redirect()->route('dashboard.Promo.Promo')->with('success', 'Promo berhasil dihapus.');
-    }
-
     public function update(Request $request, $id_promo)
     {
         // Validasi input
@@ -123,4 +105,23 @@ class PromoController extends Controller
         return redirect()->route('dashboard.Promo.Promo')->with('success', 'Promo berhasil diperbarui.');
     }
 
+
+    public function destroy($id_promo)
+    {
+        // Find the promo by its ID
+        $promo = Promo::findOrFail($id_promo);
+
+        // If there's an associated image, delete it
+        if ($promo->gambar && Storage::disk('public')->exists($promo->gambar)) {
+            Storage::disk('public')->delete($promo->gambar);
+        }
+
+        // Delete the promo record from the database
+        $promo->delete();
+
+        // Redirect with success message
+        return redirect()->route('dashboard.Promo.Promo')->with('success', 'Promo berhasil dihapus.');
+    }
+
+    
 }
