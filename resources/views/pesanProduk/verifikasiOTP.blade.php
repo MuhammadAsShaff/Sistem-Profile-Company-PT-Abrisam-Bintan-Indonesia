@@ -81,20 +81,7 @@
   <!-- Fixed Bottom Bar -->
   <div class="fixed bottom-0 left-0 w-full bg-white border-t border-gray-200 shadow-lg z-50">
     <div class="container mx-auto max-w-4xl flex items-center justify-between p-4">
-      <div class="flex items-center">
-        <div
-          class="flex items-center justify-center w-12 h-12 bg-gradient-to-r from-[#D10A3C] to-[#FF0038] text-white font-bold rounded-lg mr-8 p-8">
-          <span class="font-telkomsel text-lg">20 Mbps</span>
-        </div>
-        <div class="ml-4">
-          <h4 class="text-lg font-bold font-telkomsel">Orbit Star N1 + Philips Smart Lamp</h4>
-          <p class="text-gray-500">Rp 644.000</p>
-        </div>
-      </div>
-      <div class="flex">
-        <button id="kirimOtpBtn" class="w-full p-3 bg-gray-500 text-white rounded-lg hover:bg-red-600">
-          Kirim OTP
-        </button>
+      <div class="h-24">
       </div>
     </div>
   </div>

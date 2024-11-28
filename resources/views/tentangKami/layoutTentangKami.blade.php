@@ -25,9 +25,11 @@
 
     <!-- Contact Section -->
     <div>
-      <!-- Kontak berada di tengah -->
+      @if ($tentangKami)
       @include('tentangKami.tentangKami')
       @include('tentangKami.baganOrganisasi')
+      @include('tentangKami.kegiatan')
+    @endif
     </div>
 
     <!-- Footer Section -->
