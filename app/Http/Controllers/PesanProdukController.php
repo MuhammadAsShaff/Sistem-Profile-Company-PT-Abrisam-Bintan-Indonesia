@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Produk;
 use App\Services\LocationService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
@@ -23,18 +24,25 @@ class PesanProdukController extends Controller
         $longitude = $request->input('longitude', env('DEFAULT_LONGITUDE', 101.447779));
         $address = $this->locationService->getAddressFromCoordinates($latitude, $longitude);
 
+        // Ambil ID produk yang dipilih dari request
+        $produkId = $request->input('product_id');
+
+        // Cari produk berdasarkan ID
+        $produk = Produk::find($produkId);
+
+        // Jika produk ditemukan, simpan ke session
+        if ($produk) {
+            session(['selected_product' => $produk]);
+        } else {
+            return redirect()->route('home')->with('error', 'Produk tidak ditemukan!');
+        }
+
         // Kirim kunci API ke view
         $locationIQApiKey = env('LOCATIONIQ_API_KEY');
 
         return view('pesanProduk.pesanProduk', compact('address', 'locationIQApiKey'));
     }
 
-    public function storeSelection()
-    {
-        // Simpan status di session
-        Session::put('selected_product', true);
-        return redirect()->route('pesanProduk');
-    }
 
     public function isiDataDiri()
     {

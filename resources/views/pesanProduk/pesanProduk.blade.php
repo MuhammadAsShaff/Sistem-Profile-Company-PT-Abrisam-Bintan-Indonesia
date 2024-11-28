@@ -49,56 +49,72 @@
     </div>
   </div>
   <br><br>
-  
+
   <div class="container mx-auto max-w-4xl mt-32 p-5 bg-white shadow-2xl shadow-gray-400 rounded-lg ">
     <h2 class="text-center text-2xl font-bold mb-6 font-telkomsel">Cari Lokasi untuk Pemasangan IndiHome</h2>
-  
+
     <!-- Peta -->
     <div id="map" class="w-full h-64 rounded-lg mb-6"></div>
-    <button id="getCurrentLocationBtn" class="w-full p-3 bg-gradient-to-r from-[#D10A3C] to-[#FF0038] text-white rounded-lg hover:bg-red-600">
+    <button id="getCurrentLocationBtn"
+      class="w-full p-3 bg-gradient-to-r from-[#D10A3C] to-[#FF0038] text-white rounded-lg hover:bg-red-600">
       Gunakan Lokasi Saya Saat Ini
     </button>
-  
+
     <!-- Input Pencarian Lokasi -->
     <div class="space-y-4">
       <!-- Input dan tombol pencarian -->
       <div class="flex">
         <input id="searchBox" type="text" placeholder="Cari nama jalan, kelurahan, gedung, dsb..."
           class="w-full p-3 mt-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500" />
-        <button id="searchBtn" class="p-3 mt-4 ml-2 bg-gradient-to-r from-[#D10A3C] to-[#FF0038] text-white rounded-lg hover:bg-red-600">
+        <button id="searchBtn"
+          class="p-3 mt-4 ml-2 bg-gradient-to-r from-[#D10A3C] to-[#FF0038] text-white rounded-lg hover:bg-red-600">
           Cari
         </button>
       </div>
-  
+
       <!-- Container untuk autocomplete suggestions -->
       <div id="autocomplete-list" class="bg-white shadow rounded-lg overflow-y-auto max-h-40 mt-2"></div>
-  
+
       <!-- Alamat lengkap -->
       <textarea id="alamatLengkap" placeholder="Masukkan alamat lengkap" rows="2"
         class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500"></textarea>
-  
+
     </div>
   </div>
-  
+
   <!-- Fixed Bottom Bar -->
   <div class="fixed bottom-0 left-0 w-full bg-white border-t border-gray-200 shadow-lg z-50">
     <div class="container mx-auto max-w-4xl flex items-center justify-between p-4">
       <div class="flex items-center">
-        <div class="flex items-center justify-center w-12 h-12 bg-gradient-to-r from-[#D10A3C] to-[#FF0038] text-white font-bold rounded-lg mr-8 p-8">
-          <span class="font-telkomsel text-lg">20 Mbps</span>
+        <div
+          class="flex items-center justify-center w-12 h-12 bg-gradient-to-r from-[#D10A3C] to-[#FF0038] text-white font-bold rounded-lg mr-8 p-8">
+          <!-- Menampilkan Kecepatan Produk -->
+          @if(session('selected_product'))
+        <span class="font-telkomsel text-lg">{{ session('selected_product')->kecepatan }} Mbps</span>
+      @else
+      <span class="font-telkomsel text-lg">Kecepatan Tidak Tersedia</span>
+    @endif
         </div>
         <div class="ml-4">
-          <h4 class="text-lg font-bold font-telkomsel">Orbit Star N1 + Philips Smart Lamp</h4>
-          <p class="text-gray-500">Rp 644.000</p>
+          <!-- Menampilkan Nama dan Harga Produk -->
+          @if(session('selected_product'))
+        <h4 class="text-lg font-bold font-telkomsel">{{ session('selected_product')->nama_produk }}</h4>
+        <p class="text-gray-500">
+        Rp{{ number_format(session('selected_product')->harga_produk, 0, ',', '.') }}
+        </p>
+      @else
+      <h4 class="text-lg font-bold font-telkomsel">Produk Belum Dipilih</h4>
+    @endif
         </div>
       </div>
-      <div class="flex">
-        <button id="selectLocationBtn" class="w-full p-3 bg-gray-400 text-white rounded-lg cursor-not-allowed"
-        disabled>Selanjutnya</button>
+        <div class="flex">
+          <button id="selectLocationBtn" class="w-full p-3 bg-gray-400 text-white rounded-lg cursor-not-allowed"
+            @if(!session('selected_product')) disabled @endif>Selanjutnya</button>
+        </div>
       </div>
     </div>
   </div>
-  
+
 
   <script>
     const locationIQApiKey = "{{ $locationIQApiKey }}"; // Ambil kunci API dari controller

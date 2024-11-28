@@ -1,6 +1,5 @@
-
- @if($paket->isNotEmpty())
-     @foreach($paket as $p)
+@if($paket->isNotEmpty())
+    @foreach($paket as $p)
       @if($p->produk->isNotEmpty()) <!-- Cek apakah paket memiliki produk -->
       <h3 class="text-2xl md:text-3xl lg:text-3xl font-semibold text-gray-800 mb-4 font-telkomsel">{{ $p->nama_paket }}</h3>
 
@@ -72,10 +71,11 @@
 
       <!-- Tombol Pilih Paket -->
       <div class="mt-auto">
-      <a href="{{ route('pesanProduk') }}"
+      <a href="{{ route('pesanProduk', ['product_id' => $prod->id_produk]) }}"
       class="bg-gradient-to-r from-[#D10A3C] to-[#FF0038] text-white py-2 px-4 rounded-lg w-full font-telkomsel text-center block">
       Pilih Paket
       </a>
+
       </div>
       </div>
     @endforeach
@@ -83,7 +83,7 @@
 
       <br><br>
     @endif
-    @endforeach
+  @endforeach
 @else
   <p>Produk tidak ditemukan.</p>
 @endif
