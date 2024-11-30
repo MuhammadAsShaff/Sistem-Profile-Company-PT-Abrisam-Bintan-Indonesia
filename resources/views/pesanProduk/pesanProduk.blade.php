@@ -98,155 +98,208 @@
         <div class="ml-4">
           <!-- Menampilkan Nama dan Harga Produk -->
           @if(session('selected_product'))
-        <h4 class="text-lg font-bold font-telkomsel">{{ session('selected_product')->nama_produk }}</h4>
-        <p class="text-gray-500">
-        Rp{{ number_format(session('selected_product')->harga_produk, 0, ',', '.') }}
-        </p>
+
+            <!-- Nama Produk -->
+            <h4 class="text-lg font-bold font-telkomsel">{{ session('selected_product')->nama_produk }}</h4>
+
+            <!-- Menampilkan Harga Produk Asli dan Harga Setelah Diskon -->
+            @php
+  $hargaDiskon = session('selected_product')->harga_produk - (session('selected_product')->harga_produk * session('selected_product')->diskon / 100);
+  $hargaFormatted = number_format($hargaDiskon, 0, ',', '.');
+  $hargaAsli = number_format(session('selected_product')->harga_produk, 0, ',', '.');
+        @endphp
+
+            <div class="flex justify-between items-center">
+            <p class="text-gray-400 text-sm font-telkomsel">
+              <span class="line-through">Rp{{ $hargaAsli }}</span> (Harga Asli)
+            </p>
+
+            <!-- Diskon -->
+            <p class="text-sm text-red-600 font-semibold font-telkomsel">
+              {{ session('selected_product')->diskon }}% Diskon
+            </p>
+
+            </div>
+
+            <p class="text-red-600 font-semibold font-telkomsel">
+            Rp{{ $hargaFormatted }} (Harga Setelah Diskon)
+            </p>
       @else
       <h4 class="text-lg font-bold font-telkomsel">Produk Belum Dipilih</h4>
     @endif
         </div>
+
+
       </div>
-        <div class="flex">
-          <button id="selectLocationBtn" class="w-full p-3 bg-gray-400 text-white rounded-lg cursor-not-allowed"
-            @if(!session('selected_product')) disabled @endif>Selanjutnya</button>
-        </div>
+      <div class="flex">
+        @include('pesanProduk.modalKirimOTP')
       </div>
     </div>
+  </div>
   </div>
 
 
   <script>
+    // Mendapatkan kunci API LocationIQ dari controller untuk digunakan dalam permintaan API
     const locationIQApiKey = "{{ $locationIQApiKey }}"; // Ambil kunci API dari controller
 
-    // Inisialisasi peta
+    // Inisialisasi peta menggunakan Leaflet, dengan titik pusat di koordinat (0.507068, 101.447779) dan zoom level 16
     var map = L.map('map').setView([0.507068, 101.447779], 16);
+
+    // Menambahkan tile peta dari OpenStreetMap
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       maxZoom: 19,
       attribution: '© OpenStreetMap'
     }).addTo(map);
-    var centerMarker = L.marker(map.getCenter(), { draggable: false }).addTo(map);
 
+    // Menggunakan gambar sebagai icon marker
+      var redIcon = L.icon({
+        iconUrl: '{{ asset('images/kordinat.png') }}',  // URL relatif ke gambar
+        iconSize: [41, 55], // Ukuran icon (sesuaikan dengan ukuran gambar Anda)
+        iconAnchor: [16, 32], // Titik anchor (pusat icon)
+        popupAnchor: [0, -32] // Offset popup jika diperlukan
+      });
+
+      // Membuat marker dengan icon merah
+      var centerMarker = L.marker(map.getCenter(), { icon: redIcon }).addTo(map);
+
+
+
+
+    // Fungsi untuk memperbarui alamat berdasarkan posisi tengah peta (setiap kali peta bergerak)
     function updateAddressFromMapCenter() {
-      var center = map.getCenter();
+      var center = map.getCenter(); // Mendapatkan koordinat pusat peta
       var lat = center.lat;
       var lng = center.lng;
 
+      // Melakukan reverse geocoding dengan API LocationIQ untuk mendapatkan alamat berdasarkan lat, lng
       fetch(`https://us1.locationiq.com/v1/reverse.php?key=${locationIQApiKey}&lat=${lat}&lon=${lng}&format=json`)
-        .then(response => response.json())
+        .then(response => response.json()) // Mengambil hasil API dalam format JSON
         .then(data => {
+          // Menampilkan alamat pada kolom input dengan id 'alamatLengkap'
           document.getElementById('alamatLengkap').value = data.display_name || "Alamat tidak ditemukan";
+          // Mengaktifkan tombol setelah alamat ditemukan
           document.getElementById('selectLocationBtn').disabled = false;
           document.getElementById('selectLocationBtn').classList.remove("bg-gray-400", "cursor-not-allowed");
           document.getElementById('selectLocationBtn').classList.add("bg-gradient-to-r", "from-[#D10A3C]", "to-[#FF0038]", "hover:opacity-90");
-
         })
-        .catch(error => console.error('Error:', error));
+        .catch(error => console.error('Error:', error)); // Menangani error jika API gagal
     }
 
+    // Event listener untuk pergerakan peta
     map.on('move', function () {
-      centerMarker.setLatLng(map.getCenter());
+      centerMarker.setLatLng(map.getCenter()); // Memindahkan marker ke posisi tengah peta
     });
+
+    // Event listener untuk setelah pergerakan peta selesai, akan memperbarui alamat
     map.on('moveend', updateAddressFromMapCenter);
 
-    // Fungsi untuk mencari lokasi berdasarkan input pencarian
+    // Fungsi untuk mencari lokasi berdasarkan input dari user (dengan minimal 3 karakter)
     document.getElementById('searchBox').addEventListener('input', function () {
-      const query = this.value;
+      const query = this.value; // Mendapatkan nilai input pencarian
       if (query.length < 3) {
-        clearSuggestions();
+        clearSuggestions(); // Menghapus saran jika input kurang dari 3 karakter
         return;
       }
 
+      // Melakukan pencarian lokasi menggunakan LocationIQ API
       fetch(`https://us1.locationiq.com/v1/search.php?key=${locationIQApiKey}&q=${query}&format=json`)
-        .then(response => response.json())
+        .then(response => response.json()) // Mengambil hasil API dalam format JSON
         .then(data => {
           if (data && data.length > 0) {
-            showSuggestions(data);
+            showSuggestions(data); // Menampilkan saran pencarian jika ditemukan hasil
           } else {
-            clearSuggestions();
+            clearSuggestions(); // Menghapus saran jika tidak ada hasil
           }
         })
         .catch(error => {
-          console.error('Error:', error);
+          console.error('Error:', error); // Menangani error API
           clearSuggestions();
         });
     });
 
-    // Menangani pencarian ketika tombol Cari diklik atau ketika Enter ditekan
+    // Menangani pencarian ketika tombol Cari diklik atau ketika tombol Enter ditekan
     document.getElementById('searchBtn').addEventListener('click', performSearch);
     document.getElementById('searchBox').addEventListener('keypress', function (e) {
-      if (e.key === 'Enter') {
-        e.preventDefault();
+      if (e.key === 'Enter') { // Jika Enter ditekan, melakukan pencarian
+        e.preventDefault(); // Mencegah form dikirim
         performSearch();
       }
     });
 
+    // Fungsi untuk melakukan pencarian lokasi dan memperbarui peta serta alamat
     function performSearch() {
-      const query = document.getElementById('searchBox').value;
-      if (query.length < 3) {
+      const query = document.getElementById('searchBox').value; // Mendapatkan input pencarian
+      if (query.length < 3) { // Validasi minimal 3 karakter
         alert("Masukkan minimal 3 karakter untuk pencarian.");
         return;
       }
 
+      // Melakukan pencarian menggunakan API LocationIQ
       fetch(`https://us1.locationiq.com/v1/search.php?key=${locationIQApiKey}&q=${query}&format=json`)
-        .then(response => response.json())
+        .then(response => response.json()) // Mengambil hasil API
         .then(data => {
           if (data && data.length > 0) {
             var lat = data[0].lat;
             var lon = data[0].lon;
-            map.setView([lat, lon], 16);
-            document.getElementById('alamatLengkap').value = data[0].display_name;
+            map.setView([lat, lon], 16); // Memindahkan peta ke lokasi yang ditemukan
+            document.getElementById('alamatLengkap').value = data[0].display_name; // Menampilkan alamat pada kolom input
           } else {
-            document.getElementById('alamatLengkap').value = "Alamat tidak ditemukan";
+            document.getElementById('alamatLengkap').value = "Alamat tidak ditemukan"; // Jika alamat tidak ditemukan
           }
-          clearSuggestions();
+          clearSuggestions(); // Menghapus saran setelah pencarian selesai
         })
-        .catch(error => console.error('Error:', error));
+        .catch(error => console.error('Error:', error)); // Menangani error pencarian
     }
 
-    // Menampilkan saran pencarian
+    // Fungsi untuk menampilkan saran pencarian berdasarkan hasil API
     function showSuggestions(suggestions) {
-      clearSuggestions();
-      const suggestionBox = document.getElementById('autocomplete-list');
+      clearSuggestions(); // Menghapus saran sebelumnya
+      const suggestionBox = document.getElementById('autocomplete-list'); // Mendapatkan elemen untuk menampilkan saran
 
       suggestions.forEach(item => {
+        // Membuat elemen baru untuk setiap saran pencarian
         const suggestionItem = document.createElement('div');
         suggestionItem.innerHTML = `
-          <i class="autocomplete-icon">📍</i>
-          <span>${item.display_name}</span>
-        `;
+        <i class="autocomplete-icon">📍</i>
+        <span>${item.display_name}</span>
+      `;
+        // Menambahkan event listener untuk memilih saran
         suggestionItem.addEventListener('click', function () {
-          document.getElementById('searchBox').value = item.display_name;
-          map.setView([item.lat, item.lon], 16);
-          document.getElementById('alamatLengkap').value = item.display_name;
-          updateAddressFromMapCenter();
-          clearSuggestions();
+          document.getElementById('searchBox').value = item.display_name; // Mengisi input dengan saran yang dipilih
+          map.setView([item.lat, item.lon], 16); // Memindahkan peta ke lokasi saran
+          document.getElementById('alamatLengkap').value = item.display_name; // Menampilkan alamat pada kolom input
+          updateAddressFromMapCenter(); // Memperbarui alamat berdasarkan koordinat peta
+          clearSuggestions(); // Menghapus saran setelah dipilih
         });
-        suggestionBox.appendChild(suggestionItem);
+        suggestionBox.appendChild(suggestionItem); // Menambahkan saran ke dalam box
       });
     }
 
-    // Menghapus saran pencarian
+    // Fungsi untuk menghapus semua saran pencarian
     function clearSuggestions() {
       const suggestionBox = document.getElementById('autocomplete-list');
-      suggestionBox.innerHTML = '';
+      suggestionBox.innerHTML = ''; // Menghapus konten dalam suggestion box
     }
 
+    // Event listener untuk mendapatkan lokasi pengguna saat tombol 'getCurrentLocationBtn' diklik
     document.getElementById('getCurrentLocationBtn').addEventListener('click', function () {
       if (navigator.geolocation) {
+        // Menggunakan Geolocation API untuk mendapatkan lokasi pengguna
         navigator.geolocation.getCurrentPosition(function (position) {
-          var lat = position.coords.latitude;
-          var lng = position.coords.longitude;
-          map.setView([lat, lng], 18);
-          updateAddressFromMapCenter();
+          var lat = position.coords.latitude; // Mendapatkan latitude pengguna
+          var lng = position.coords.longitude; // Mendapatkan longitude pengguna
+          map.setView([lat, lng], 18); // Memindahkan peta ke lokasi pengguna
+          updateAddressFromMapCenter(); // Memperbarui alamat berdasarkan posisi pengguna
         }, function (error) {
-          console.error('Error mendapatkan lokasi: ' + error.message);
+          console.error('Error mendapatkan lokasi: ' + error.message); // Menangani error jika geolocation gagal
         });
       } else {
-        console.error('Geolocation tidak didukung oleh browser ini.');
+        console.error('Geolocation tidak didukung oleh browser ini.'); // Menangani jika browser tidak mendukung geolocation
       }
     });
   </script>
+
 </body>
 
 </html>

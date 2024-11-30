@@ -54,7 +54,7 @@ Route::prefix('/')->group(function () {
     Route::post('produk/pilih', [PesanProdukController::class, 'pilihProduk'])->name('produk.pilih');
     Route::get('pesanProduk', [PesanProdukController::class, 'showLocation'])->name('pesanProduk');
     Route::get('isiDataDiri', [PesanProdukController::class, 'isiDataDiri'])->name('isiDataDiri');
-    Route::get('verifikasiOTP', [PesanProdukController::class, 'verifikasiOTP'])->name('verifikasiOTP');
+    Route::get('selesai', [PesanProdukController::class, 'selesai'])->name('selesai');
 });
 
 

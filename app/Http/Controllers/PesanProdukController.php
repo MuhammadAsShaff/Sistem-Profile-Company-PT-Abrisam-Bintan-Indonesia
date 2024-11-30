@@ -30,7 +30,7 @@ class PesanProdukController extends Controller
         // Cari produk berdasarkan ID
         $produk = Produk::find($produkId);
 
-        // Jika produk ditemukan, simpan ke session
+        // Jika produk ditemukan, simpan ke session c
         if ($produk) {
             session(['selected_product' => $produk]);
         } else {
@@ -49,7 +49,7 @@ class PesanProdukController extends Controller
         return view('pesanProduk.isiDataDiri');
     }
 
-    public function verifikasiOTP(){
-        return view('pesanProduk.verifikasiOTP');
+    public function selesai(){
+        return view('pesanProduk.selesai');
     }
 }
