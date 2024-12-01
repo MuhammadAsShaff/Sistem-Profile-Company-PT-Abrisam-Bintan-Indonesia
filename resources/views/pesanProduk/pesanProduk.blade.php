@@ -76,8 +76,50 @@
       <div id="autocomplete-list" class="bg-white shadow rounded-lg overflow-y-auto max-h-40 mt-2"></div>
 
       <!-- Alamat lengkap -->
-      <textarea id="alamatLengkap" placeholder="Masukkan alamat lengkap" rows="2"
-        class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500"></textarea>
+      <form id="locationForm" action="{{ route('simpanAlamat') }}" method="POST">
+        @csrf
+        <div>
+          <div>
+            <!-- Input untuk alamat lengkap -->
+            <textarea id="alamatLengkap" name="alamatLengkap" placeholder="Masukkan alamat lengkap" rows="2"
+              class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500">{{ old('alamatLengkap') }}</textarea>
+          </div>
+
+          <!-- Input untuk latitude -->
+          <input id="lat" name="lat" type="hidden" placeholder="Latitude" value="{{ old('lat') }}"
+            class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500">
+        
+          <!-- Input untuk longitude -->
+          <input id="lon" name="lon" type="hidden" placeholder="Longitude" value="{{ old('lon') }}"
+            class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500">
+
+        <!-- Input untuk kelurahan -->
+          <input id="village" name="village" type="hidden" placeholder="Kelurahan" value="{{ old('village') }}"
+            class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500">
+
+        <!-- Input untuk kota -->
+          <input id="city" name="city" type="hidden" placeholder="Kota" value="{{ old('city') }}"
+            class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500">
+
+        <!-- Input untuk kecamatan -->
+          <input id="district" name="district" type="hidden" placeholder="Kecamatan" value="{{ old('district') }}"
+            class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500">
+
+        <!-- Input untuk provinsi -->
+          <input id="state" name="state" type="hidden" placeholder="Provinsi" value="{{ old('state') }}"
+            class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500">
+
+        <!-- Input untuk kode pos -->   
+          <input id="postcode" name="postcode" type="hidden" placeholder="Kode Pos" value="{{ old('postcode') }}"
+            class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500">
+
+        <!-- Input untuk negara -->
+          <input id="country" name="country" type="hidden" placeholder="Negara" value="{{ old('country') }}"
+            class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500">
+
+        <!-- Input untuk country_code (hidden) -->
+        <input id="country_code" name="country_code" type="hidden" value="{{ old('country_code') }}">
+      </form>
 
     </div>
   </div>
@@ -89,50 +131,44 @@
         <div
           class="flex items-center justify-center w-12 h-12 bg-gradient-to-r from-[#D10A3C] to-[#FF0038] text-white font-bold rounded-lg mr-8 p-8">
           <!-- Menampilkan Kecepatan Produk -->
-          @if(session('selected_product'))
-        <span class="font-telkomsel text-lg">{{ session('selected_product')->kecepatan }} Mbps</span>
+          @if(isset($produk) && !empty($produk))
+        <span class="font-telkomsel text-lg">{{ $produk['kecepatan'] }} Mbps</span>
       @else
       <span class="font-telkomsel text-lg">Kecepatan Tidak Tersedia</span>
     @endif
         </div>
         <div class="ml-4">
           <!-- Menampilkan Nama dan Harga Produk -->
-          @if(session('selected_product'))
+          @if(isset($produk) && !empty($produk))
+        <!-- Nama Produk -->
+        <h4 class="text-lg font-bold font-telkomsel">{{ $produk['nama_produk'] }}</h4>
 
-            <!-- Nama Produk -->
-            <h4 class="text-lg font-bold font-telkomsel">{{ session('selected_product')->nama_produk }}</h4>
+        <!-- Menampilkan Harga Produk Asli dan Harga Setelah Diskon -->
+        <div class="flex justify-between items-center">
+        <p class="text-gray-400 text-sm font-telkomsel">
+          <span class="line-through">Rp{{ $produk['harga_produk'] }}</span> (Harga Asli)
+        </p>
 
-            <!-- Menampilkan Harga Produk Asli dan Harga Setelah Diskon -->
-            @php
-  $hargaDiskon = session('selected_product')->harga_produk - (session('selected_product')->harga_produk * session('selected_product')->diskon / 100);
-  $hargaFormatted = number_format($hargaDiskon, 0, ',', '.');
-  $hargaAsli = number_format(session('selected_product')->harga_produk, 0, ',', '.');
-        @endphp
+        <!-- Diskon -->
+        <p class="text-sm text-red-600 font-semibold font-telkomsel">
+          {{ $produk['diskon'] }}% Diskon
+        </p>
+        </div>
 
-            <div class="flex justify-between items-center">
-            <p class="text-gray-400 text-sm font-telkomsel">
-              <span class="line-through">Rp{{ $hargaAsli }}</span> (Harga Asli)
-            </p>
-
-            <!-- Diskon -->
-            <p class="text-sm text-red-600 font-semibold font-telkomsel">
-              {{ session('selected_product')->diskon }}% Diskon
-            </p>
-
-            </div>
-
-            <p class="text-red-600 font-semibold font-telkomsel">
-            Rp{{ $hargaFormatted }} (Harga Setelah Diskon)
-            </p>
+        <p class="text-red-600 font-semibold font-telkomsel">
+        Rp{{ number_format($produk['harga_produk'] - ($produk['harga_produk'] * $produk['diskon'] / 100), 0, ',', '.') }}
+        (Harga Setelah Diskon)
+        </p>
       @else
       <h4 class="text-lg font-bold font-telkomsel">Produk Belum Dipilih</h4>
     @endif
         </div>
-
-
       </div>
       <div class="flex">
-        @include('pesanProduk.modalKirimOTP')
+        <a id="selectLocationBtn" href="#" class="w-full p-3 bg-gray-500 text-white rounded-lg cursor-not-allowed"
+          onclick="submitForm(event)">
+          Lanjut Isi Data Diri
+        </a>
       </div>
     </div>
   </div>
@@ -153,38 +189,84 @@
     }).addTo(map);
 
     // Menggunakan gambar sebagai icon marker
-      var redIcon = L.icon({
-        iconUrl: '{{ asset('images/kordinat.png') }}',  // URL relatif ke gambar
-        iconSize: [41, 55], // Ukuran icon (sesuaikan dengan ukuran gambar Anda)
-        iconAnchor: [16, 32], // Titik anchor (pusat icon)
-        popupAnchor: [0, -32] // Offset popup jika diperlukan
-      });
+    var redIcon = L.icon({
+      iconUrl: '{{ asset('images/kordinat.png') }}',  // URL relatif ke gambar
+      iconSize: [41, 55], // Ukuran icon (sesuaikan dengan ukuran gambar Anda)
+      iconAnchor: [16, 32], // Titik anchor (pusat icon)
+      popupAnchor: [0, -32] // Offset popup jika diperlukan
+    });
 
-      // Membuat marker dengan icon merah
-      var centerMarker = L.marker(map.getCenter(), { icon: redIcon }).addTo(map);
-
-
-
+    // Membuat marker dengan icon merah
+    var centerMarker = L.marker(map.getCenter(), { icon: redIcon }).addTo(map);
 
     // Fungsi untuk memperbarui alamat berdasarkan posisi tengah peta (setiap kali peta bergerak)
     function updateAddressFromMapCenter() {
-      var center = map.getCenter(); // Mendapatkan koordinat pusat peta
-      var lat = center.lat;
-      var lng = center.lng;
+    var center = map.getCenter(); // Mendapatkan koordinat pusat peta
+    var lat = center.lat;
+    var lng = center.lng;
 
-      // Melakukan reverse geocoding dengan API LocationIQ untuk mendapatkan alamat berdasarkan lat, lng
-      fetch(`https://us1.locationiq.com/v1/reverse.php?key=${locationIQApiKey}&lat=${lat}&lon=${lng}&format=json`)
+    // Mengupdate nilai input lat dan lon
+    document.getElementById('lat').value = lat; // Menampilkan latitude
+    document.getElementById('lon').value = lng; // Menampilkan longitude
+
+    // Melakukan reverse geocoding dengan API LocationIQ untuk mendapatkan alamat berdasarkan lat, lng
+    fetch(`https://us1.locationiq.com/v1/reverse.php?key=${locationIQApiKey}&lat=${lat}&lon=${lng}&format=json`)
         .then(response => response.json()) // Mengambil hasil API dalam format JSON
         .then(data => {
-          // Menampilkan alamat pada kolom input dengan id 'alamatLengkap'
-          document.getElementById('alamatLengkap').value = data.display_name || "Alamat tidak ditemukan";
-          // Mengaktifkan tombol setelah alamat ditemukan
-          document.getElementById('selectLocationBtn').disabled = false;
-          document.getElementById('selectLocationBtn').classList.remove("bg-gray-400", "cursor-not-allowed");
-          document.getElementById('selectLocationBtn').classList.add("bg-gradient-to-r", "from-[#D10A3C]", "to-[#FF0038]", "hover:opacity-90");
+            console.log(data); // Debugging: Cek data yang diterima
+            document.getElementById('alamatLengkap').value = data.display_name || "Alamat tidak ditemukan";
+
+            // Mengupdate input lainnya berdasarkan data dari API
+            document.getElementById('village').value = data.address.village || "";
+            document.getElementById('city').value = data.address.city || "";
+            document.getElementById('district').value = data.address.district || "";
+            document.getElementById('state').value = data.address.state || "";
+            document.getElementById('postcode').value = data.address.postcode || "";
+            document.getElementById('country').value = data.address.country || "";
+            document.getElementById('country_code').value = data.address.country_code || "";
+
+            // Jika alamat ditemukan, aktifkan tombol dan ubah tampilannya
+            if (data.display_name) {
+                enableLocationBtn(); // Mengaktifkan tombol
+            } else {
+                disableLocationBtn(); // Menonaktifkan tombol jika alamat tidak ditemukan
+            }
         })
-        .catch(error => console.error('Error:', error)); // Menangani error jika API gagal
+        .catch(error => {
+            console.error('Error:', error);
+            disableLocationBtn(); // Menonaktifkan tombol jika error terjadi
+        });
+}
+
+    // Fungsi untuk mengaktifkan tombol
+    function enableLocationBtn() {
+      const btn = document.getElementById('selectLocationBtn');
+      btn.removeAttribute("disabled"); // Mengaktifkan tombol
+      btn.classList.remove("bg-gray-500", "cursor-not-allowed"); // Menghapus kelas disabled
+      btn.classList.add("bg-gradient-to-r", "from-[#D10A3C]", "to-[#FF0038]", "hover:opacity-90"); // Menambahkan kelas aktif
     }
+
+    // Fungsi untuk menonaktifkan tombol
+    function disableLocationBtn() {
+      const btn = document.getElementById('selectLocationBtn');
+      btn.setAttribute("disabled", true); // Menonaktifkan tombol
+      btn.classList.add("bg-gray-500", "cursor-not-allowed"); // Menambahkan kelas disabled
+      btn.classList.remove("bg-gradient-to-r", "from-[#D10A3C]", "to-[#FF0038]", "hover:opacity-90"); // Menghapus kelas aktif
+    }
+
+    // Fungsi untuk mengirimkan form
+    function submitForm(event) {
+      event.preventDefault(); // Mencegah default action dari link (misalnya redirect)
+
+      // Ambil form
+      const form = document.getElementById('locationForm');
+
+      // Jika tombol dalam keadaan aktif, submit form
+      if (!document.getElementById('selectLocationBtn').hasAttribute("disabled")) {
+        form.submit(); // Mengirim form
+      }
+    }
+
 
     // Event listener untuk pergerakan peta
     map.on('move', function () {
@@ -261,9 +343,9 @@
         // Membuat elemen baru untuk setiap saran pencarian
         const suggestionItem = document.createElement('div');
         suggestionItem.innerHTML = `
-        <i class="autocomplete-icon">📍</i>
-        <span>${item.display_name}</span>
-      `;
+          <i class="autocomplete-icon">📍</i>
+          <span>${item.display_name}</span>
+        `;
         // Menambahkan event listener untuk memilih saran
         suggestionItem.addEventListener('click', function () {
           document.getElementById('searchBox').value = item.display_name; // Mengisi input dengan saran yang dipilih

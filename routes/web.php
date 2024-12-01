@@ -52,8 +52,17 @@ Route::prefix('/')->group(function () {
         ->name('tampilFaQ');
 
     Route::post('produk/pilih', [PesanProdukController::class, 'pilihProduk'])->name('produk.pilih');
-    Route::get('pesanProduk', [PesanProdukController::class, 'showLocation'])->name('pesanProduk');
+    Route::post('showLocation', [PesanProdukController::class, 'showLocation'])->name('showLocation');
+    // Menambahkan route untuk halaman pesan produk
+    Route::get('pesanProduk', [PesanProdukController::class, 'pesanProduk'])->name('pesanProduk');
+
+    Route::post('/save-location-session', [PesanProdukController::class, 'saveLocationSession']);
+
     Route::get('isiDataDiri', [PesanProdukController::class, 'isiDataDiri'])->name('isiDataDiri');
+
+    Route::post('simpanAlamat', [PesanProdukController::class, 'simpanAlamat'])->name('simpanAlamat');
+
+
     Route::get('selesai', [PesanProdukController::class, 'selesai'])->name('selesai');
 });
 

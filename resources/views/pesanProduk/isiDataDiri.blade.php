@@ -96,44 +96,55 @@
       <div class="mb-4">
         <label for="provinsi" class="block text-sm font-semibold text-gray-700">Provinsi</label>
         <input type="text" id="provinsi" name="provinsi" required placeholder="Masukkan provinsi Anda"
+          value="{{ $state }}"
           class="w-full mt-2 p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500">
       </div>
 
       <!-- Kota -->
       <div class="mb-4">
         <label for="kota" class="block text-sm font-semibold text-gray-700">Kota</label>
-        <input type="text" id="kota" name="kota" required placeholder="Masukkan kota Anda"
+        <input type="text" id="kota" name="kota" required placeholder="Masukkan kota Anda" value="{{ $city }}"
           class="w-full mt-2 p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500">
       </div>
 
       <!-- Kecamatan -->
       <div class="mb-4">
-        <label for="provinsi" class="block text-sm font-semibold text-gray-700">Kecamatan</label>
-        <input type="text" id="provinsi" name="kecamatan" required placeholder="Masukkan kecamatan Anda"
+        <label for="kecamatan" class="block text-sm font-semibold text-gray-700">Kecamatan</label>
+        <input type="text" id="kecamatan" name="kecamatan" required placeholder="Masukkan kecamatan Anda"
+          value="{{ $district }}"
           class="w-full mt-2 p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500">
       </div>
 
-      <!-- Kode kelurahan -->
+      <!-- Kelurahan -->
       <div class="mb-4">
-        <label for="kecamatan" class="block text-sm font-semibold text-gray-700">Kelurahan</label>
-        <input type="text" id="provinsi" name="kecamatan" required placeholder="Masukkan keluarahan Anda"
+        <label for="kelurahan" class="block text-sm font-semibold text-gray-700">Kelurahan</label>
+        <input type="text" id="kelurahan" name="kelurahan" required placeholder="Masukkan kelurahan Anda"
+          value="{{ $village }}"
           class="w-full mt-2 p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500">
       </div>
 
       <!-- Kode Post -->
       <div class="mb-4">
-        <label for="kodepost" class="block text-sm font-semibold text-gray-700">Kode Post</label>
-        <input type="text" id="provinsi" name="kode post" required placeholder="Masukkan kode post Anda"
+        <label for="kodepos" class="block text-sm font-semibold text-gray-700">Kode Post</label>
+        <input type="text" id="kodepos" name="kodepos" required placeholder="Masukkan kode pos Anda"
+          value="{{ $postcode }}"
           class="w-full mt-2 p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500">
       </div>
 
       <!-- Alamat -->
       <div class="mb-4">
+        
         <label for="alamat" class="block text-sm font-semibold text-gray-700">Alamat</label>
         <textarea id="alamat" name="alamat" rows="4" required placeholder="Masukkan alamat lengkap Anda"
-          class="w-full mt-2 p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500"></textarea>
+          class="w-full mt-2 p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500"
+          style="box-sizing: border-box;">
+            {{ $alamat }}
+        </textarea>
+
+
         <p class="mt-2 text-sm text-red-600">* Anda Menyetujui Data Yang Anda Inputkan Akan Kami Gunakan Untuk
-          Pendaftaran Paket Internet.</p>
+          Pendaftaran
+          Paket Internet.</p>
       </div>
     </form>
   </div>
@@ -145,54 +156,45 @@
         <div
           class="flex items-center justify-center w-12 h-12 bg-gradient-to-r from-[#D10A3C] to-[#FF0038] text-white font-bold rounded-lg mr-8 p-8">
           <!-- Menampilkan Kecepatan Produk -->
-          @if(session('selected_product'))
-        <span class="font-telkomsel text-lg">{{ session('selected_product')->kecepatan }} Mbps</span>
+          @if(isset($produk) && !empty($produk))
+        <span class="font-telkomsel text-lg">{{ $produk['kecepatan'] }} Mbps</span>
       @else
       <span class="font-telkomsel text-lg">Kecepatan Tidak Tersedia</span>
     @endif
         </div>
         <div class="ml-4">
           <!-- Menampilkan Nama dan Harga Produk -->
-          @if(session('selected_product'))
+          @if(isset($produk) && !empty($produk))
+        <!-- Nama Produk -->
+        <h4 class="text-lg font-bold font-telkomsel">{{ $produk['nama_produk'] }}</h4>
 
-            <!-- Nama Produk -->
-            <h4 class="text-lg font-bold font-telkomsel">{{ session('selected_product')->nama_produk }}</h4>
+        <!-- Menampilkan Harga Produk Asli dan Harga Setelah Diskon -->
+        <div class="flex justify-between items-center">
+        <p class="text-gray-400 text-sm font-telkomsel">
+          <span class="line-through">Rp{{ $produk['harga_produk'] }}</span> (Harga Asli)
+        </p>
 
-            <!-- Menampilkan Harga Produk Asli dan Harga Setelah Diskon -->
-            @php
-        $hargaDiskon = session('selected_product')->harga_produk - (session('selected_product')->harga_produk * session('selected_product')->diskon / 100);
-        $hargaFormatted = number_format($hargaDiskon, 0, ',', '.');
-        $hargaAsli = number_format(session('selected_product')->harga_produk, 0, ',', '.');
-        @endphp
+        <!-- Diskon -->
+        <p class="text-sm text-red-600 font-semibold font-telkomsel">
+          {{ $produk['diskon'] }}% Diskon
+        </p>
+        </div>
 
-            <div class="flex justify-between items-center">
-            <p class="text-gray-400 text-sm font-telkomsel">
-              <span class="line-through">Rp{{ $hargaAsli }}</span> (Harga Asli)
-            </p>
-
-            <!-- Diskon -->
-            <p class="text-sm text-red-600 font-semibold font-telkomsel">
-              {{ session('selected_product')->diskon }}% Diskon
-            </p>
-
-            </div>
-
-            <p class="text-red-600 font-semibold font-telkomsel">
-            Rp{{ $hargaFormatted }} (Harga Setelah Diskon)
-            </p>
+        <p class="text-red-600 font-semibold font-telkomsel">
+        Rp{{ number_format($produk['harga_produk'] - ($produk['harga_produk'] * $produk['diskon'] / 100), 0, ',', '.') }}
+        (Harga Setelah Diskon)
+        </p>
       @else
       <h4 class="text-lg font-bold font-telkomsel">Produk Belum Dipilih</h4>
     @endif
         </div>
-
-
       </div>
       <div class="flex">
         @include('pesanProduk.modalKirimOTP')
       </div>
     </div>
   </div>
-  </div>
+
 
   <br><br><br><br><br>
   <script>
