@@ -88,37 +88,37 @@
           <!-- Input untuk latitude -->
           <input id="lat" name="lat" type="hidden" placeholder="Latitude" value="{{ old('lat') }}"
             class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500">
-        
+
           <!-- Input untuk longitude -->
           <input id="lon" name="lon" type="hidden" placeholder="Longitude" value="{{ old('lon') }}"
             class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500">
 
-        <!-- Input untuk kelurahan -->
+          <!-- Input untuk kelurahan -->
           <input id="village" name="village" type="hidden" placeholder="Kelurahan" value="{{ old('village') }}"
             class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500">
 
-        <!-- Input untuk kota -->
+          <!-- Input untuk kota -->
           <input id="city" name="city" type="hidden" placeholder="Kota" value="{{ old('city') }}"
             class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500">
 
-        <!-- Input untuk kecamatan -->
+          <!-- Input untuk kecamatan -->
           <input id="district" name="district" type="hidden" placeholder="Kecamatan" value="{{ old('district') }}"
             class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500">
 
-        <!-- Input untuk provinsi -->
+          <!-- Input untuk provinsi -->
           <input id="state" name="state" type="hidden" placeholder="Provinsi" value="{{ old('state') }}"
             class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500">
 
-        <!-- Input untuk kode pos -->   
+          <!-- Input untuk kode pos -->
           <input id="postcode" name="postcode" type="hidden" placeholder="Kode Pos" value="{{ old('postcode') }}"
             class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500">
 
-        <!-- Input untuk negara -->
+          <!-- Input untuk negara -->
           <input id="country" name="country" type="hidden" placeholder="Negara" value="{{ old('country') }}"
             class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500">
 
-        <!-- Input untuk country_code (hidden) -->
-        <input id="country_code" name="country_code" type="hidden" value="{{ old('country_code') }}">
+          <!-- Input untuk country_code (hidden) -->
+          <input id="country_code" name="country_code" type="hidden" value="{{ old('country_code') }}">
       </form>
 
     </div>
@@ -201,42 +201,42 @@
 
     // Fungsi untuk memperbarui alamat berdasarkan posisi tengah peta (setiap kali peta bergerak)
     function updateAddressFromMapCenter() {
-    var center = map.getCenter(); // Mendapatkan koordinat pusat peta
-    var lat = center.lat;
-    var lng = center.lng;
+      var center = map.getCenter(); // Mendapatkan koordinat pusat peta
+      var lat = center.lat;
+      var lng = center.lng;
 
-    // Mengupdate nilai input lat dan lon
-    document.getElementById('lat').value = lat; // Menampilkan latitude
-    document.getElementById('lon').value = lng; // Menampilkan longitude
+      // Mengupdate nilai input lat dan lon
+      document.getElementById('lat').value = lat; // Menampilkan latitude
+      document.getElementById('lon').value = lng; // Menampilkan longitude
 
-    // Melakukan reverse geocoding dengan API LocationIQ untuk mendapatkan alamat berdasarkan lat, lng
-    fetch(`https://us1.locationiq.com/v1/reverse.php?key=${locationIQApiKey}&lat=${lat}&lon=${lng}&format=json`)
+      // Melakukan reverse geocoding dengan API LocationIQ untuk mendapatkan alamat berdasarkan lat, lng
+      fetch(`https://us1.locationiq.com/v1/reverse.php?key=${locationIQApiKey}&lat=${lat}&lon=${lng}&format=json`)
         .then(response => response.json()) // Mengambil hasil API dalam format JSON
         .then(data => {
-            console.log(data); // Debugging: Cek data yang diterima
-            document.getElementById('alamatLengkap').value = data.display_name || "Alamat tidak ditemukan";
+          console.log(data); // Debugging: Cek data yang diterima
+          document.getElementById('alamatLengkap').value = data.display_name || "Alamat tidak ditemukan";
 
-            // Mengupdate input lainnya berdasarkan data dari API
-            document.getElementById('village').value = data.address.village || "";
-            document.getElementById('city').value = data.address.city || "";
-            document.getElementById('district').value = data.address.district || "";
-            document.getElementById('state').value = data.address.state || "";
-            document.getElementById('postcode').value = data.address.postcode || "";
-            document.getElementById('country').value = data.address.country || "";
-            document.getElementById('country_code').value = data.address.country_code || "";
+          // Mengupdate input lainnya berdasarkan data dari API
+          document.getElementById('village').value = data.address.village || "";
+          document.getElementById('city').value = data.address.city || "";
+          document.getElementById('district').value = data.address.district || "";
+          document.getElementById('state').value = data.address.state || "";
+          document.getElementById('postcode').value = data.address.postcode || "";
+          document.getElementById('country').value = data.address.country || "";
+          document.getElementById('country_code').value = data.address.country_code || "";
 
-            // Jika alamat ditemukan, aktifkan tombol dan ubah tampilannya
-            if (data.display_name) {
-                enableLocationBtn(); // Mengaktifkan tombol
-            } else {
-                disableLocationBtn(); // Menonaktifkan tombol jika alamat tidak ditemukan
-            }
+          // Jika alamat ditemukan, aktifkan tombol dan ubah tampilannya
+          if (data.display_name) {
+            enableLocationBtn(); // Mengaktifkan tombol
+          } else {
+            disableLocationBtn(); // Menonaktifkan tombol jika alamat tidak ditemukan
+          }
         })
         .catch(error => {
-            console.error('Error:', error);
-            disableLocationBtn(); // Menonaktifkan tombol jika error terjadi
+          console.error('Error:', error);
+          disableLocationBtn(); // Menonaktifkan tombol jika error terjadi
         });
-}
+    }
 
     // Fungsi untuk mengaktifkan tombol
     function enableLocationBtn() {

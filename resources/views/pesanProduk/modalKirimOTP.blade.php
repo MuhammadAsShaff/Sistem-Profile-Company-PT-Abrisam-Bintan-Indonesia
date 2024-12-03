@@ -1,6 +1,4 @@
-<!-- Button to trigger the modal -->
-<button id="kirimOtpBtn" class="w-full p-3 bg-gray-500 text-white rounded-lg hover:bg-red-600 cursor-not-allowed"
-  @if(!session('selected_product')) disabled @endif>Kirim OTP</button>
+
 
 <!-- Modal Structure -->
 <dialog id="otpModal" class="rounded-lg shadow-2xl shadow-gray-400 w-full max-w-md p-6 modal-hide">

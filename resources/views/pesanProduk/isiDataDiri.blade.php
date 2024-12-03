@@ -48,7 +48,8 @@
   <!-- Formulir Data Diri -->
   <div class="container mx-auto max-w-4xl mt-6 p-5 bg-gray-100  rounded-lg">
 
-    <form id="formDataDiri" method="POST" class="bg-white shadow-2xl shadow-gray-400 rounded-lg p-8">
+    <form id="formDataDiri" method="POST" action="{{ route('simpanDataDiri') }}"
+      class="bg-white shadow-2xl shadow-gray-400 rounded-lg p-8">
       @csrf
       <h2 class="text-center text-2xl font-bold font-telkomsel mb-4">Masukkan Data Diri Anda</h2>
 
@@ -92,6 +93,8 @@
           class="w-full mt-2 p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500">
       </div>
 
+      <p class="mt-2 text-sm text-red-600 mb-4">* Sesuaikan Kembali Data Alamat Anda Di Bawah Ini Yang Sudah Anda Pilih
+        Lokasi Sebelumnya.</p>
       <!-- Provinsi -->
       <div class="mb-4">
         <label for="provinsi" class="block text-sm font-semibold text-gray-700">Provinsi</label>
@@ -131,9 +134,14 @@
           class="w-full mt-2 p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500">
       </div>
 
+      <!-- ID Produk -->
+      <input type="text" id="idProduk" name="idProduk" required placeholder="Masukkan ID Produk"
+        value="{{ $produk['id_produk'] ?? '' }}"
+        class="w-full mt-2 p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500">
+
       <!-- Alamat -->
       <div class="mb-4">
-        
+
         <label for="alamat" class="block text-sm font-semibold text-gray-700">Alamat</label>
         <textarea id="alamat" name="alamat" rows="4" required placeholder="Masukkan alamat lengkap Anda"
           class="w-full mt-2 p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500"
@@ -190,50 +198,78 @@
         </div>
       </div>
       <div class="flex">
-        @include('pesanProduk.modalKirimOTP')
+        <a id="simpanDataDiri" class="w-full p-3 bg-gray-500 text-white rounded-lg cursor-not-allowed"
+          onclick="submitForm(event)">
+          Daftar
+        </a>
       </div>
     </div>
+    
   </div>
 
 
   <br><br><br><br><br>
   <script>
-    document.getElementById('kirimOtpBtn').addEventListener('click', function () {
-      document.getElementById('formDataDiri').submit(); // Kirim form
-    });
+    // Fungsi untuk mengirimkan form
+    function submitForm(event) {
+      event.preventDefault(); // Mencegah default action dari link (misalnya redirect)
 
-    // Ambil elemen-elemen input
-    const form = document.getElementById('formDataDiri');
-    const kirimOtpBtn = document.getElementById('kirimOtpBtn');
-    const inputs = form.querySelectorAll('input, select, textarea');
+      // Ambil form
+      const form = document.getElementById('formDataDiri');
+
+      // Jika tombol dalam keadaan aktif, submit form
+      if (!document.getElementById('simpanDataDiri').hasAttribute("disabled")) {
+        form.submit(); // Mengirim form
+      }
+    }
 
     // Fungsi untuk mengecek apakah semua input terisi
     function validateForm() {
+      const form = document.getElementById('formDataDiri');
+      const kirimOtpBtn = document.getElementById('simpanDataDiri');
+      const inputs = form.querySelectorAll('input, select');
+
+      // Cek apakah semua input sudah terisi
       let allFilled = true;
       inputs.forEach(input => {
-        if (!input.value.trim() || (input.tagName === 'SELECT' && input.value === "")) {
+        if (!input.value.trim()) {
           allFilled = false;
         }
       });
 
+      // Aktifkan tombol jika semua input terisi
       if (allFilled) {
-        kirimOtpBtn.disabled = false;
-        kirimOtpBtn.classList.remove('bg-gray-400', 'cursor-not-allowed');
-        kirimOtpBtn.classList.add('bg-gradient-to-r', 'from-[#D10A3C]', 'to-[#FF0038]', 'hover:opacity-90');
+        enableLocationBtn();
       } else {
-        kirimOtpBtn.disabled = true;
-        kirimOtpBtn.classList.add('bg-gray-400', 'cursor-not-allowed');
-        kirimOtpBtn.classList.remove('bg-gradient-to-r', 'from-[#D10A3C]', 'to-[#FF0038]', 'hover:opacity-90');
+        disableLocationBtn();
       }
     }
 
-    // Tambahkan event listener untuk setiap input
-    inputs.forEach(input => {
-      input.addEventListener('input', validateForm);
+    // Fungsi untuk mengaktifkan tombol
+    function enableLocationBtn() {
+      const btn = document.getElementById('simpanDataDiri');
+      btn.removeAttribute("disabled"); // Mengaktifkan tombol
+      btn.classList.remove("bg-gray-500", "cursor-not-allowed"); // Menghapus kelas disabled
+      btn.classList.add("bg-gradient-to-r", "from-[#D10A3C]", "to-[#FF0038]", "hover:opacity-90"); // Menambahkan kelas aktif
+    }
+
+    // Fungsi untuk menonaktifkan tombol
+    function disableLocationBtn() {
+      const btn = document.getElementById('simpanDataDiri');
+      btn.setAttribute("disabled", true); // Menonaktifkan tombol
+      btn.classList.add("bg-gray-500", "cursor-not-allowed"); // Menambahkan kelas disabled
+      btn.classList.remove("bg-gradient-to-r", "from-[#D10A3C]", "to-[#FF0038]", "hover:opacity-90"); // Menghapus kelas aktif
+    }
+
+    // Menambahkan event listener untuk setiap input untuk memeriksa validitas
+    document.querySelectorAll('#formDataDiri input, #formDataDiri select').forEach(input => {
+      input.addEventListener('input', validateForm); // Setiap kali ada perubahan input, cek form
     });
 
-    // Panggil fungsi validasi awal untuk memastikan tombol disabled
+    // Panggil fungsi validateForm saat pertama kali load halaman untuk memeriksa status awal
     validateForm();
+
+
   </script>
 </body>
 

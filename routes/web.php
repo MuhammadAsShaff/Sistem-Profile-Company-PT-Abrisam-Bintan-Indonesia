@@ -20,6 +20,7 @@ use App\Http\Controllers\BaganOrganisasiController;
 use App\Http\Controllers\InventoryController;
 use App\Http\Controllers\KegiatanController;
 use App\Http\Controllers\PesanProdukController;
+use App\Http\Controllers\OTPController;
 use App\Http\Controllers\TentangKamiLandingPage;
 use Illuminate\Support\Facades\Route;
 use App\Http\Middleware\SavePreviousUrl;
@@ -62,6 +63,13 @@ Route::prefix('/')->group(function () {
 
     Route::post('simpanAlamat', [PesanProdukController::class, 'simpanAlamat'])->name('simpanAlamat');
 
+    Route::post('simpanDataDiri', [OTPController::class, 'simpanDataDiri'])->name('simpanDataDiri');
+
+    Route::get('verifikasiOTP', [PesanProdukController::class, 'verifikasiOTP'])->name('verifikasiOTP');
+
+    Route::get('/send-otp', [OTPController::class, 'sendOTP'])->name('sendOTP');
+
+    Route::post('/verify-otp', [OTPController::class, 'verifyOTP'])->name('verifikasiOTP');
 
     Route::get('selesai', [PesanProdukController::class, 'selesai'])->name('selesai');
 });

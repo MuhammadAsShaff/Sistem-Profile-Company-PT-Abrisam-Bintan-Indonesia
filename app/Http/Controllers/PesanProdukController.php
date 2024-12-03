@@ -89,9 +89,6 @@ class PesanProdukController extends Controller
         return redirect()->route('isiDataDiri')->cookie($cookie);
     }
 
-
-
-
     public function pesanProduk(Request $request)
     {
         // Ambil data produk dari cookie atau session
@@ -100,15 +97,13 @@ class PesanProdukController extends Controller
         // Cek apakah produk tersedia
         if (!$produk) {
             // Jika produk tidak tersedia, bisa arahkan ke halaman lain atau tampilkan pesan error
-            return redirect()->route('selesai')->with('error', 'Produk belum dipilih');
+            return redirect()->view('/')->with('error', 'Produk belum dipilih');
         }
 
         // Mengirimkan data produk dan API key ke view
         $locationIQApiKey = env('LOCATIONIQ_API_KEY');
         return view('pesanProduk.pesanProduk', compact('produk', 'locationIQApiKey'));
     }
-
-
 
     public function isiDataDiri(Request $request)
     {
@@ -145,38 +140,88 @@ class PesanProdukController extends Controller
         }
     }
 
+    public function simpanDataDiri(Request $request)
+    {
+        // Ambil data dari inputan form
+        $nik = $request->input('nik');
+        $namaLengkap = $request->input('namaLengkap');
+        $jenisKelamin = $request->input('jenisKelamin');
+        $email = $request->input('email');
+        $nomorHandphone = $request->input('nomorHandphone');
+        $provinsi = $request->input('provinsi');
+        $kota = $request->input('kota');
+        $kecamatan = $request->input('kecamatan');
+        $kelurahan = $request->input('kelurahan');
+        $kodepos = $request->input('kodepos');
+        $idProduk = $request->input('idProduk');
+        $alamat = $request->input('alamat');
+
+        // Validasi jika data penting tidak ada
+        if (!$nik || !$namaLengkap || !$email || !$nomorHandphone || !$alamat) {
+            return redirect()->back()->withErrors('Data yang wajib diisi belum lengkap.');
+        }
+
+        // Mengemas data form ke dalam array
+        $data = [
+            'nik' => $nik,
+            'namaLengkap' => $namaLengkap,
+            'jenisKelamin' => $jenisKelamin,
+            'email' => $email,
+            'nomorHandphone' => $nomorHandphone,
+            'provinsi' => $provinsi,
+            'kota' => $kota,
+            'kecamatan' => $kecamatan,
+            'kelurahan' => $kelurahan,
+            'kodepos' => $kodepos,
+            'idProduk' => $idProduk,
+            'alamat' => $alamat,
+        ];
+
+        // Simpan data ke dalam cookies selama 60 menit
+        $cookie = cookie('data', json_encode($data), 60); // Durasi cookie 60 menit
+
+        // Mengarahkan pengguna ke halaman verifikasi OTP dengan membawa cookies
+        return redirect()->route('verifikasiOTP')->withCookie($cookie);
+    }
+
+    public function verifikasiOTP(Request $request)
+    {
+        // Cek apakah data lokasi ada di cookie
+        $data = json_decode($request->cookie('data'), true);
+
+        // Ambil data produk dari cookie atau session
+        $produk = json_decode($request->cookie('selected_product'), true);
+
+        // Cek apakah data lokasi ada di cookie
+        $locationData = json_decode($request->cookie('location_data'), true);
+
+        // Jika produk tidak ada di cookie, arahkan ke halaman selesai dengan pesan error
+        if (!$data) {
+            return redirect()->route('selesai')->with('error', 'Produk belum dipilih');
+        }
+
+        // Kirim data produk dan lokasi ke view
+        return view('pesanProduk.verifikasiOTP', [
+            'nik' => $data['nik'] ?? null,
+            'namaLengkap' => $data['namaLengkap'] ?? null,
+            'jenisKelamin' => $data['jenisKelamin'] ?? null,
+            'email' => $data['email'] ?? null,
+            'nomorHandphone' => $data['nomorHandphone'] ?? null,
+            'provinsi' => $data['provinsi'] ?? null,
+            'kota' => $data['kota'] ?? null,
+            'kecamatan' => $data['kecamatan'] ?? null,
+            'kelurahan' => $data['kelurahan'] ?? null,
+            'kodepos' => $data['kodepos'] ?? null,
+            'produk' => $produk,
+            'alamat' => $data['alamat'] ?? null,
+            'latitude' => $locationData['latitude'],
+            'longitude' => $locationData['longitude'],
+        ]);
+    }
 
 
-    // public function simpanAlamat(Request $request)
-    // {
-    //     // Validasi data
-    //     $request->validate([
-    //         'latitude' => 'required|numeric',
-    //         'longitude' => 'required|numeric',
-    //         'alamat' => 'required|string',
-    //     ]);
-
-    //     // Ambil data dari form
-    //     $latitude = $request->input('latitude');
-    //     $longitude = $request->input('longitude');
-    //     $alamat = $request->input('alamat');
-
-    //     // Simpan data ke cookies
-    //     $geolocationData = [
-    //         'latitude' => $latitude,
-    //         'longitude' => $longitude,
-    //         'alamat' => $alamat,
-    //     ];
-
-    //     // Set cookie dengan data geolocation
-    //     Cookie::queue('geolocation_data', json_encode($geolocationData), 60); // 1 jam
-
-    //     // Redirect atau tampilkan pesan sukses
-    //     return redirect()->route('isiDataDiri')->with('success', 'Alamat berhasil disimpan!');
-    // }
-
-
-    public function selesai(){
+    public function selesai()
+    {
         return view('pesanProduk.selesai');
     }
 }

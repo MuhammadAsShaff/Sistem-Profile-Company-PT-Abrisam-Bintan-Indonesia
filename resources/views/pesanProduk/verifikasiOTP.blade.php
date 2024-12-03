@@ -46,7 +46,17 @@
   </div>
 
 <div class="container bg-white mx-auto max-w-md p-6 rounded-lg shadow-2xl shadow-gray-400 mt-32">
-  <div class="bg-white p-8 rounded-lg ">
+  <div class="bg-white p-8 rounded-lg relative">
+    <!-- Modal header with close button -->
+    <button id="closeModalButton" type="button"
+      class="absolute top-4 right-4 text-gray-400 hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 inline-flex items-center"
+      onclick="closeOtpModal()">
+      <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"
+        xmlns="http://www.w3.org/2000/svg">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"></path>
+      </svg>
+    </button>
+  
     <h2 class="text-xl font-bold text-center text-gray-800 mb-4">Verifikasi OTP</h2>
     <p class="text-sm text-center text-gray-600 mb-6">
       Kami telah mengirimkan kode OTP ke email <span class="font-semibold">as22si@mahasiswa.pcr.ac.id</span>.
@@ -67,8 +77,8 @@
       Kirim
     </button>
     <div class="text-sm text-center text-gray-600 mt-6">
-      Tidak menerima kode? <button class="text-red-500 font-medium hover:text-red-700 transition underline">Kirim
-        ulang kode</button>
+      Tidak menerima kode? <button class="text-red-500 font-medium hover:text-red-700 transition underline">Kirim ulang
+        kode</button>
     </div>
     <p class="text-xs text-center text-gray-400 mt-2">
       Anda dapat mengirim ulang kode dalam <span class="font-semibold text-gray-500">00:29</span>.
