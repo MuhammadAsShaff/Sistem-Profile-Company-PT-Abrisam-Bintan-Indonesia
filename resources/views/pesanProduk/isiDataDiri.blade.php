@@ -135,7 +135,7 @@
       </div>
 
       <!-- ID Produk -->
-      <input type="text" id="idProduk" name="idProduk" required placeholder="Masukkan ID Produk"
+      <input type="hidden" id="idProduk" name="idProduk" required placeholder="Masukkan ID Produk"
         value="{{ $produk['id_produk'] ?? '' }}"
         class="w-full mt-2 p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500">
 

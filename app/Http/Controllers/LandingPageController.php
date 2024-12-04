@@ -40,7 +40,7 @@ class LandingPageController extends Controller
                 ->get();
 
             // Ambil paket yang memiliki produk pada kategori yang dipilih
-            $paket = Paket::whereHas('produk', function($query) use ($kategoriDipilih) {
+            $paket = Paket::whereHas('produk', function ($query) use ($kategoriDipilih) {
                 $query->where('id_kategori', $kategoriDipilih);
             })->get();
         }
@@ -66,7 +66,8 @@ class LandingPageController extends Controller
         return view('landingPage.layoutLandingPage', compact('kategori', 'produk', 'promos', 'paket'));
     }
 
-    public function tampilKontak(){
+    public function tampilKontak()
+    {
 
         return view('kontak.layoutKontak');
 
@@ -84,6 +85,11 @@ class LandingPageController extends Controller
         // Ambil semua data dari tabel BaganOrganisasi
         $bagan = BaganOrganisasi::all();
 
+        $kegiatan = Kegiatan::all();
+
+        // Ambil data pertama dari tabel TentangKami
+        $tentangKami = TentangKami::first();
+
         // Format data untuk OrgChart
         $nodes = $bagan->map(function ($item) {
             return [
@@ -95,17 +101,12 @@ class LandingPageController extends Controller
             ];
         });
 
-        // Ambil data pertama dari tabel TentangKami
-        $tentangKami = TentangKami::first();
-
         // Kirim data ke view
         return view('tentangKami.layoutTentangKami', [
+            'kegiatan' => $kegiatan,
             'tentangKami' => $tentangKami,
             'nodes' => $nodes->isEmpty() ? '[]' : $nodes->toJson(), // Konversi ke JSON
             'countNode' => $nodes->count(), // Jumlah node
         ]);
     }
-
-
-
 }

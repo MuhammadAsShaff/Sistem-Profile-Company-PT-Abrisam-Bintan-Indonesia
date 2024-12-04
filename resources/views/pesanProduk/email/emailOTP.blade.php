@@ -71,10 +71,6 @@
 
 <body>
     <div class="email-container">
-        <!-- Header -->
-        <div class="header">
-            <img src="https://via.placeholder.com/100" alt="Logo" />
-        </div>
 
         <!-- Main Content -->
         <div class="main-content">

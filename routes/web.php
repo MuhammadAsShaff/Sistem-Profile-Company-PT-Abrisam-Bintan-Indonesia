@@ -53,6 +53,7 @@ Route::prefix('/')->group(function () {
         ->name('tampilFaQ');
 
     Route::post('produk/pilih', [PesanProdukController::class, 'pilihProduk'])->name('produk.pilih');
+    
     Route::post('showLocation', [PesanProdukController::class, 'showLocation'])->name('showLocation');
     // Menambahkan route untuk halaman pesan produk
     Route::get('pesanProduk', [PesanProdukController::class, 'pesanProduk'])->name('pesanProduk');
@@ -68,8 +69,6 @@ Route::prefix('/')->group(function () {
     Route::get('verifikasiOTP', [PesanProdukController::class, 'verifikasiOTP'])->name('verifikasiOTP');
 
     Route::get('/send-otp', [OTPController::class, 'sendOTP'])->name('sendOTP');
-
-    Route::post('/verify-otp', [OTPController::class, 'verifyOTP'])->name('verifikasiOTP');
 
     Route::get('selesai', [PesanProdukController::class, 'selesai'])->name('selesai');
 });

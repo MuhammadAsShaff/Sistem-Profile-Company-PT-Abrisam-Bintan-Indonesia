@@ -12,6 +12,8 @@ class Kegiatan extends Model
     // Tentukan nama tabel jika tidak mengikuti konvensi Laravel
     protected $table = 'kegiatan';
 
+    protected $primaryKey = 'id';
+
     // Tentukan kolom yang dapat diisi melalui mass assignment
     protected $fillable = [
         'nama',

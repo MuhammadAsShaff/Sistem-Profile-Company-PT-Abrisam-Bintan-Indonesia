@@ -1,4 +1,5 @@
-<div class="container mx-auto mt-8 p-6 bg-white rounded-lg ">
+@if ($tentangKami)
+  <div class="container mx-auto mt-8 p-6 bg-white rounded-lg ">
     <!-- Header Section -->
     <div class="container mx-auto  bg-gray-50 rounded-lg bg-white mb-[-20]">
     <h1 class="text-3xl font-bold text-gray-800 text-left ml-6 font-telkomsel mt-20">PT Abrisam Bintan Indonesia</h1>
@@ -39,4 +40,6 @@
       </div>
     </div>
     </div>
-</div>
+  </div>
+@endif
+

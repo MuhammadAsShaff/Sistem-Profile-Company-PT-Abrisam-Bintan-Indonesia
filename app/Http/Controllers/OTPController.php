@@ -67,7 +67,7 @@ class OTPController extends Controller
         $email = $data['email'] ?? null;
 
         if (!$email) {
-            return response()->json(['success' => false, 'message' => 'Email tidak ditemukan'], 400);
+            return redirect()->back()->withErrors('Email tidak ditemukan.');
         }
 
         // Generate OTP 4 digit
@@ -79,7 +79,8 @@ class OTPController extends Controller
         // Kirim OTP ke email
         $this->sendEmailWithGmailApi($email, $otp);
 
-        return response()->json(['success' => true, 'message' => 'OTP berhasil dikirim ke email!']);
+        // Redirect ke halaman verifikasi OTP dengan pesan sukses
+        return redirect()->route('verifikasiOTP')->with('success', 'OTP berhasil dikirim ke email!');
     }
 
     private function sendEmailWithGmailApi($to, $otp)
@@ -98,27 +99,55 @@ class OTPController extends Controller
 
         // Refresh token jika token expired
         if ($client->isAccessTokenExpired()) {
-            // Refresh token code
+            $refreshToken = $client->getRefreshToken();
+            if ($refreshToken) {
+                $accessToken = $client->fetchAccessTokenWithRefreshToken($refreshToken);
+                file_put_contents($tokenPath, json_encode($accessToken));
+            } else {
+                throw new \Exception('Autentikasi gagal. Silahkan coba lagi.');
+            }
         }
 
+        // Gmail Service
         $gmailService = new Gmail($client);
         $message = new Message();
-        $message->setRaw($this->createMessageBody($to, $otp));
+
+        // Render template email ke dalam HTML dari Blade Template
+        $htmlContent = view('pesanProduk.email.emailOTP', compact('otp'))->render();
+
+        // Buat MIME message dengan format HTML
+        $subject = "Verifikasi OTP Anda";
+        $rawMessage = $this->createMimeMessage(env('MAIL_FROM_ADDRESS'), $to, $subject, $htmlContent, true);
+
+        // Encode pesan menjadi base64url
+        $rawMessageEncoded = rtrim(strtr(base64_encode($rawMessage), '+/', '-_'), '=');
+        $message->setRaw($rawMessageEncoded);
+
+        // Kirim email menggunakan Gmail API
         $gmailService->users_messages->send('me', $message);
     }
 
     // Membuat body untuk email yang berisi OTP
-    private function createMessageBody($to, $otp)
+    private function createMimeMessage($from, $to, $subject, $message, $isHtml = false)
     {
-        $subject = "OTP Anda";
-        $body = "Kode OTP Anda adalah: $otp";
+        $fromName = env('MAIL_FROM_NAME', 'PT Abrisam Bintan Indonesia');
 
-        $mime = "To: <$to>\r\n";
+        // Menyertakan nama pengirim sebelum alamat email
+        $from = $fromName . ' <' . $from . '>';
+        
+        $mime = "From: <$from>\r\n";
+        $mime .= "To: <$to>\r\n";
         $mime .= "Subject: $subject\r\n";
         $mime .= "MIME-Version: 1.0\r\n";
-        $mime .= "Content-Type: text/plain; charset=UTF-8\r\n\r\n";
-        $mime .= "$body\r\n";
 
-        return base64_encode($mime);
+        if ($isHtml) {
+            $mime .= "Content-Type: text/html; charset=UTF-8\r\n\r\n";
+        } else {
+            $mime .= "Content-Type: text/plain; charset=UTF-8\r\n\r\n";
+        }
+
+        $mime .= "$message\r\n";
+
+        return $mime;
     }
 }
