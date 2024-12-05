@@ -36,4 +36,9 @@ class Produk extends Model
     {
         return $this->belongsTo(Paket::class, 'id_paket');
     }
+
+    public function berlangganan()
+    {
+        return $this->hasMany(Berlangganan::class, 'id_produk');
+    }
 }

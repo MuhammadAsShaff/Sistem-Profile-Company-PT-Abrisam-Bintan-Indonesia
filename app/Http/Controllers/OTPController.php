@@ -5,18 +5,16 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Session;
-use Illuminate\Support\Facades\Mail;
-use Google\Client as GoogleClient;
-use Google\Service\Gmail;
-use Google\Service\Gmail\Message;
-use Illuminate\Support\Str;
+use SendinBlue\Client\Configuration;
+use SendinBlue\Client\Api\TransactionalEmailsApi;
+use GuzzleHttp\Client;
+
 
 class OTPController extends Controller
 {
     // Method untuk menyimpan data pengguna dan menyimpannya di cookies
     public function simpanDataDiri(Request $request)
     {
-        // Ambil data dari inputan form
         $nik = $request->input('nik');
         $namaLengkap = $request->input('namaLengkap');
         $jenisKelamin = $request->input('jenisKelamin');
@@ -35,7 +33,6 @@ class OTPController extends Controller
             return redirect()->back()->withErrors('Data yang wajib diisi belum lengkap.');
         }
 
-        // Mengemas data form ke dalam array
         $data = [
             'nik' => $nik,
             'namaLengkap' => $namaLengkap,
@@ -51,103 +48,52 @@ class OTPController extends Controller
             'alamat' => $alamat,
         ];
 
-        // Simpan data dalam cookies dengan waktu hidup 1 jam
-        Cookie::queue('data', json_encode($data), 60);  // 60 menit = 1 jam
+        // Simpan data ke cookies (hidup selama 60 menit)
+        Cookie::queue('data', json_encode($data), 60);
 
-        return redirect()->route('sendOTP');  // Arahkan ke halaman pengiriman OTP
+        return redirect()->route('sendOTP');
     }
 
-    // Method untuk mengirim OTP ke email yang tersimpan di cookies
+    // Method untuk mengirim OTP ke email
     public function sendOTP(Request $request)
     {
-        // Ambil data dari cookies
         $data = json_decode($request->cookie('data'), true);
-
-        // Cek apakah email ada di cookies
         $email = $data['email'] ?? null;
 
         if (!$email) {
             return redirect()->back()->withErrors('Email tidak ditemukan.');
         }
 
-        // Generate OTP 4 digit
+        // Generate OTP 4 digit dan simpan ke session
         $otp = rand(1000, 9999);
-
-        // Simpan OTP di session
         Session::put('otp', $otp);
 
-        // Kirim OTP ke email
-        $this->sendEmailWithGmailApi($email, $otp);
+        try {
+            // Render template email dan kirim melalui Brevo
+            $htmlContent = view('pesanProduk.email.emailOTP', compact('otp'))->render();
+            $this->sendEmailWithBrevo($email, $htmlContent);
 
-        // Redirect ke halaman verifikasi OTP dengan pesan sukses
-        return redirect()->route('verifikasiOTP')->with('success', 'OTP berhasil dikirim ke email!');
+            return redirect()->route('verifikasiOTP')->with('success', 'OTP berhasil dikirim ke email!');
+        } catch (\Exception $e) {
+            return redirect()->back()->withErrors('Gagal mengirim email OTP: ' . $e->getMessage());
+        }
     }
 
-    private function sendEmailWithGmailApi($to, $otp)
+    private function sendEmailWithBrevo($to, $htmlContent)
     {
-        $client = new GoogleClient();
-        $client->setAuthConfig(storage_path('app/google/credentials.json'));
-        $client->addScope(Gmail::MAIL_GOOGLE_COM);
-        $client->setAccessType('offline');
+        // Konfigurasi Brevo API
+        $config = Configuration::getDefaultConfiguration()->setApiKey('api-key', env('BREVO_API_KEY'));
+        $apiInstance = new TransactionalEmailsApi(new Client(), $config);
 
-        // Cek jika token sudah ada
-        $tokenPath = storage_path('app/google/token.json');
-        if (file_exists($tokenPath)) {
-            $accessToken = json_decode(file_get_contents($tokenPath), true);
-            $client->setAccessToken($accessToken);
-        }
+        // Data email
+        $emailContent = [
+            'subject' => 'Kode Verifikasi OTP Anda',
+            'htmlContent' => $htmlContent,  // Konten HTML dari Blade template
+            'sender' => ['email' => env('MAIL_FROM_ADDRESS'), 'name' => env('MAIL_FROM_NAME')],
+            'to' => [['email' => $to, 'name' => $to]]
+        ];
 
-        // Refresh token jika token expired
-        if ($client->isAccessTokenExpired()) {
-            $refreshToken = $client->getRefreshToken();
-            if ($refreshToken) {
-                $accessToken = $client->fetchAccessTokenWithRefreshToken($refreshToken);
-                file_put_contents($tokenPath, json_encode($accessToken));
-            } else {
-                throw new \Exception('Autentikasi gagal. Silahkan coba lagi.');
-            }
-        }
-
-        // Gmail Service
-        $gmailService = new Gmail($client);
-        $message = new Message();
-
-        // Render template email ke dalam HTML dari Blade Template
-        $htmlContent = view('pesanProduk.email.emailOTP', compact('otp'))->render();
-
-        // Buat MIME message dengan format HTML
-        $subject = "Verifikasi OTP Anda";
-        $rawMessage = $this->createMimeMessage(env('MAIL_FROM_ADDRESS'), $to, $subject, $htmlContent, true);
-
-        // Encode pesan menjadi base64url
-        $rawMessageEncoded = rtrim(strtr(base64_encode($rawMessage), '+/', '-_'), '=');
-        $message->setRaw($rawMessageEncoded);
-
-        // Kirim email menggunakan Gmail API
-        $gmailService->users_messages->send('me', $message);
-    }
-
-    // Membuat body untuk email yang berisi OTP
-    private function createMimeMessage($from, $to, $subject, $message, $isHtml = false)
-    {
-        $fromName = env('MAIL_FROM_NAME', 'PT Abrisam Bintan Indonesia');
-
-        // Menyertakan nama pengirim sebelum alamat email
-        $from = $fromName . ' <' . $from . '>';
-        
-        $mime = "From: <$from>\r\n";
-        $mime .= "To: <$to>\r\n";
-        $mime .= "Subject: $subject\r\n";
-        $mime .= "MIME-Version: 1.0\r\n";
-
-        if ($isHtml) {
-            $mime .= "Content-Type: text/html; charset=UTF-8\r\n\r\n";
-        } else {
-            $mime .= "Content-Type: text/plain; charset=UTF-8\r\n\r\n";
-        }
-
-        $mime .= "$message\r\n";
-
-        return $mime;
+        // Kirim email
+        $apiInstance->sendTransacEmail($emailContent);
     }
 }

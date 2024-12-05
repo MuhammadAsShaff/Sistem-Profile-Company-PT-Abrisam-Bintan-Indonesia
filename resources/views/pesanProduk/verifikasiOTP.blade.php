@@ -47,26 +47,17 @@
 
   <div class="container bg-white mx-auto max-w-md p-6 rounded-lg shadow-2xl shadow-gray-400 mt-32">
     <div class="bg-white p-8 rounded-lg relative">
-      <!-- Modal header dengan tombol close -->
-      <button id="closeModalButton" type="button"
-        class="absolute top-4 right-4 text-gray-400 hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 inline-flex items-center"
-        onclick="closeOtpModal()">
-        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"
-          xmlns="http://www.w3.org/2000/svg">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"></path>
-        </svg>
-      </button>
+      
 
       <h2 class="text-xl font-bold text-center text-gray-800 mb-4">Verifikasi OTP</h2>
       <p class="text-sm text-center text-gray-600 mb-6">
         Kami telah mengirimkan kode OTP ke email <span class="font-semibold">{{ $email }}</span>.
         Silakan masukkan kode tersebut untuk melanjutkan.
       </p>
-      <form action="" method="POST">
+      <form action="{{route('simpanDataPemesanan')}}" method="POST">
         @csrf
-
         <div class="flex justify-center gap-4 mb-6">
-          <input type="hidden" name="nik" value="{{ $nik ?? '' }}">
+          <input type="text" name="nik" value="{{ $nik ?? '' }}">
           <input type="hidden" name="id_produk" value="{{ $produk['id_produk'] ?? '' }}">
           <input type="hidden" name="namaLengkap" value="{{ $namaLengkap ?? '' }}">
           <input type="hidden" name="jenisKelamin" value="{{ $jenisKelamin ?? '' }}">
@@ -80,14 +71,13 @@
           <input type="hidden" name="alamat" value="{{ $alamat ?? '' }}">
           <input type="hidden" name="latitude" value="{{ $latitude ?? '' }}">
           <input type="hidden" name="longitude" value="{{ $longitude ?? '' }}">
-
-          <input type="text" name="otp[]" maxlength="1" required
+          <input type="text" name="otp" maxlength="1" required
             class="w-12 h-12 text-center border-2 border-gray-300 rounded-md focus:border-red-500 focus:ring focus:ring-red-200 outline-none text-lg font-semibold text-gray-800" />
-          <input type="text" name="otp[]" maxlength="1" required
+          <input type="text" name="otp" maxlength="1" required
             class="w-12 h-12 text-center border-2 border-gray-300 rounded-md focus:border-red-500 focus:ring focus:ring-red-200 outline-none text-lg font-semibold text-gray-800" />
-          <input type="text" name="otp[]" maxlength="1" required
+          <input type="text" name="otp" maxlength="1" required
             class="w-12 h-12 text-center border-2 border-gray-300 rounded-md focus:border-red-500 focus:ring focus:ring-red-200 outline-none text-lg font-semibold text-gray-800" />
-          <input type="text" name="otp[]" maxlength="1" required
+          <input type="text" name="otp" maxlength="1" required
             class="w-12 h-12 text-center border-2 border-gray-300 rounded-md focus:border-red-500 focus:ring focus:ring-red-200 outline-none text-lg font-semibold text-gray-800" />
         </div>
         <button type="submit"

@@ -8,13 +8,12 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use App\Models\Admin;
-use Google\Client as GoogleClient;
-use Google\Service\Gmail;
-use Google\Service\Gmail\Message;
+use GuzzleHttp\Client as HttpClient;
 
 class ResetPasswordController extends Controller
 {
     use ValidatesRequests;
+
     public function showLinkRequestForm()
     {
         $admin = Admin::first();
@@ -23,104 +22,70 @@ class ResetPasswordController extends Controller
 
     public function sendResetLinkEmail(Request $request)
     {
-        // Validasi email menggunakan $request->validate()
         $request->validate([
-            'email_admin' => 'required|email|exists:admins,email_admin'
+            'email_admin' => 'required|email|exists:admins,email_admin',
         ]);
 
         $email = $request->email_admin;
         $token = Str::random(60);
 
-        // Hapus entri token sebelumnya
         DB::table('password_reset_tokens')->where('email', $email)->delete();
 
-        // Masukkan token baru
         DB::table('password_reset_tokens')->insert([
             'email' => $email,
             'token' => $token,
             'created_at' => now(),
         ]);
 
-        // Kirim email reset password menggunakan Gmail API
         try {
-            $this->sendEmailWithGmailApi($email, $token);
+            $this->sendEmailWithBrevoApi($email, $token);
             return back()->with('status', 'Link reset password telah dikirim ke email Anda.');
         } catch (\Exception $e) {
             return back()->withErrors(['email_admin' => 'Gagal mengirim email reset password.']);
         }
     }
 
-
-    private function sendEmailWithGmailApi($to, $token)
+    private function sendEmailWithBrevoApi($to, $token)
     {
-        $client = new GoogleClient();
-        $client->setAuthConfig(storage_path('app/google/credentials.json'));
-        $client->addScope(Gmail::MAIL_GOOGLE_COM);
-        $client->setAccessType('offline');
-
-        // Cek jika token sudah ada
-        $tokenPath = storage_path('app/google/token.json');
-        if (file_exists($tokenPath)) {
-            $accessToken = json_decode(file_get_contents($tokenPath), true);
-            $client->setAccessToken($accessToken);
-        }
-
-        // Refresh token jika token expired
-        if ($client->isAccessTokenExpired()) {
-            $refreshToken = $client->getRefreshToken();
-            if ($refreshToken) {
-                $accessToken = $client->fetchAccessTokenWithRefreshToken($refreshToken);
-                file_put_contents($tokenPath, json_encode($accessToken));
-            } else {
-                throw new \Exception('Autentikasi gagal. Silahkan coba lagi.');
-            }
-        }
-
-        // Gmail Service
-        $gmail = new Gmail($client);
-        $message = new Message();
-
-        // Ambil data admin berdasarkan email
         $admin = Admin::where('email_admin', $to)->first();
-
-        // Render template email ke dalam HTML dari Blade Template
         $htmlContent = view('auth.emails.reset-password', compact('admin', 'token'))->render();
 
-        // Membuat MIME message dengan format HTML
-        $subject = "Reset Password";
-        $rawMessage = $this->createMimeMessage(env('MAIL_FROM_ADDRESS'), $to, $subject, $htmlContent, true);
-        $message->setRaw($rawMessage);
+        // API key Brevo diambil dari .env
+        $apiKey = env('BREVO_API_KEY');
+        if (!$apiKey) {
+            throw new \Exception('API key Brevo tidak ditemukan. Silahkan tambahkan di file .env');
+        }
 
-        // Kirim email menggunakan Gmail API
-        $gmail->users_messages->send('me', $message);
+        $client = new HttpClient();
 
+        // Request ke endpoint Brevo untuk mengirim email
+        $response = $client->post('https://api.brevo.com/v3/smtp/email', [
+            'headers' => [
+                'accept' => 'application/json',
+                'api-key' => $apiKey,
+                'content-type' => 'application/json',
+            ],
+            'json' => [
+                'sender' => [
+                    'name' => env('MAIL_FROM_NAME', 'PT Abrisam Bintan Indonesia'),
+                    'email' => env('MAIL_FROM_ADDRESS'),
+                ],
+                'to' => [
+                    ['email' => $to, 'name' => $admin->name ?? 'User'],
+                ],
+                'subject' => 'Reset Password',
+                'htmlContent' => $htmlContent,
+            ],
+        ]);
+
+        // Periksa status response
+        if ($response->getStatusCode() !== 201) {
+            throw new \Exception('Gagal mengirim email melalui Brevo.');
+        }
     }
-
-    private function createMimeMessage($from, $to, $subject, $messageText, $isHtml = false)
-    {
-        $contentType = $isHtml ? 'text/html' : 'text/plain';
-
-        // Mengambil nama pengirim dari file .env
-        $fromName = env('MAIL_FROM_NAME', 'PT Abrisam Bintan Indonesia');
-
-        // Menyertakan nama pengirim sebelum alamat email
-        $from = $fromName . ' <' . $from . '>';
-
-        $rawMessageString = "From: $from\r\n";
-        $rawMessageString .= "To: $to\r\n";
-        $rawMessageString .= "Subject: $subject\r\n";
-        $rawMessageString .= "MIME-Version: 1.0\r\n";
-        $rawMessageString .= "Content-Type: $contentType; charset=utf-8\r\n";
-        $rawMessageString .= "Content-Transfer-Encoding: 7bit\r\n\r\n";
-        $rawMessageString .= "$messageText";
-
-        return rtrim(strtr(base64_encode($rawMessageString), '+/', '-_'), '=');
-    }
-
 
     public function showResetForm($token)
     {
-        // Cek validitas token
         $resetToken = DB::table('password_reset_tokens')->where('token', $token)->first();
 
         if (!$resetToken) {
@@ -132,31 +97,26 @@ class ResetPasswordController extends Controller
 
     public function reset(Request $request)
     {
-        // Validasi input
         $request->validate([
             'token' => 'required',
             'email_admin' => 'required|email|exists:admins,email_admin',
             'password' => 'required|confirmed|min:8',
         ]);
 
-        // Cari token
         $resetToken = DB::table('password_reset_tokens')->where('email', $request->email_admin)->where('token', $request->token)->first();
 
         if (!$resetToken) {
             return back()->withErrors(['token' => 'Link reset password tidak valid atau sudah pernah digunakan.']);
         }
 
-        // Cari admin berdasarkan email
         $admin = Admin::where('email_admin', $request->email_admin)->first();
         if (!$admin) {
             return back()->withErrors(['email_admin' => 'Email tidak terdaftar.']);
         }
 
-        // Update password admin
         $admin->password = bcrypt($request->password);
         $admin->save();
 
-        // Hapus token dari database
         DB::table('password_reset_tokens')->where('email', $request->email_admin)->delete();
 
         return redirect()->route('password.success')->with('status', 'Password berhasil direset.');
