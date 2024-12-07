@@ -94,16 +94,17 @@ class PesanProdukController extends Controller
         // Ambil data produk dari cookie atau session
         $produk = json_decode($request->cookie('selected_product'), true);
 
-        // Cek apakah produk tersedia
+        // Cek apakah produk tersedia di cookie
         if (!$produk) {
-            // Jika produk tidak tersedia, bisa arahkan ke halaman lain atau tampilkan pesan error
-            return redirect()->view('/')->with('error', 'Produk belum dipilih');
+            // Jika produk tidak tersedia, arahkan kembali ke halaman sebelumnya dengan pesan error
+            return redirect()->back()->with('error', 'Produk belum dipilih');
         }
 
-        // Mengirimkan data produk dan API key ke view
+        // Jika produk ada, kirimkan data produk dan API key ke view
         $locationIQApiKey = env('LOCATIONIQ_API_KEY');
         return view('pesanProduk.pesanProduk', compact('produk', 'locationIQApiKey'));
     }
+
 
     public function isiDataDiri(Request $request)
     {
@@ -115,7 +116,7 @@ class PesanProdukController extends Controller
 
         // Jika produk tidak ada di cookie, arahkan ke halaman selesai dengan pesan error
         if (!$produk) {
-            return redirect()->route('selesai')->with('error', 'Produk belum dipilih');
+            return redirect()->back()->with('error', 'Produk belum dipilih');
         }
 
         // Jika data lokasi ada di cookie, kirim ke view
@@ -197,10 +198,13 @@ class PesanProdukController extends Controller
 
         // Jika produk tidak ada di cookie, arahkan ke halaman selesai dengan pesan error
         if (!$data) {
-            return redirect()->route('selesai')->with('error', 'Produk belum dipilih');
+            return redirect()->back()->with('error', 'Produk belum dipilih');
         }
 
-        // Kirim data produk dan lokasi ke view
+        // Ambil OTP dari session
+        $otpSession = Session::get('otp');
+
+        // Kirim data produk, lokasi, dan OTP ke view
         return view('pesanProduk.verifikasiOTP', [
             'nik' => $data['nik'] ?? null,
             'namaLengkap' => $data['namaLengkap'] ?? null,
@@ -216,9 +220,9 @@ class PesanProdukController extends Controller
             'alamat' => $data['alamat'] ?? null,
             'latitude' => $locationData['latitude'],
             'longitude' => $locationData['longitude'],
+            'otp' => $otpSession, // Kirim OTP ke view
         ]);
     }
-
 
     public function selesai()
     {

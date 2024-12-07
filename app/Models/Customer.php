@@ -17,6 +17,8 @@ class Customer extends Model
         'status_customer',
         'jenis_kelamin',
         'provinsi',
+        'latitude',
+        'longitude',
         'kota',
         'kelurahan',
         'kode_pos',
@@ -30,4 +32,10 @@ class Customer extends Model
     {
         return $this->hasMany(Berlangganan::class, 'id_customer');
     }
+
+    public function produk()
+    {
+        return $this->belongsToMany(Produk::class, 'berlangganan', 'id_customer', 'id_produk');
+    }
+
 }

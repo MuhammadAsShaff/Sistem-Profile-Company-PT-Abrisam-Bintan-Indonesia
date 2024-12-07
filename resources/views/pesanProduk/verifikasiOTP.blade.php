@@ -53,11 +53,28 @@
       <p class="text-sm text-center text-gray-600 mb-6">
         Kami telah mengirimkan kode OTP ke email <span class="font-semibold">{{ $email }}</span>.
         Silakan masukkan kode tersebut untuk melanjutkan.
+        <p><strong>NIK:</strong> {{ $nik ?? '' }}</p>
+        <p><strong>ID Produk:</strong> {{ $produk['id_produk'] ?? '' }}</p>
+        <p><strong>Nama Lengkap:</strong> {{ $namaLengkap ?? '' }}</p>
+        <p><strong>Jenis Kelamin:</strong> {{ $jenisKelamin ?? '' }}</p>
+        <p><strong>Email:</strong> {{ $email ?? '' }}</p>
+        <p><strong>Nomor Handphone:</strong> {{ $nomorHandphone ?? '' }}</p>
+        <p><strong>Provinsi:</strong> {{ $provinsi ?? '' }}</p>
+        <p><strong>Kota:</strong> {{ $kota ?? '' }}</p>
+        <p><strong>Kecamatan:</strong> {{ $kecamatan ?? '' }}</p>
+        <p><strong>Kelurahan:</strong> {{ $kelurahan ?? '' }}</p>
+        <p><strong>Kode Pos:</strong> {{ $kodepos ?? '' }}</p>
+        <p><strong>Alamat:</strong> {{ $alamat ?? '' }}</p>
+        <p><strong>Latitude:</strong> {{ $latitude ?? '' }}</p>
+        <p><strong>Longitude:</strong> {{ $longitude ?? '' }}</p>
+        <p>OTP yang dikirimkan: {{ $otp ?? 'OTP tidak ditemukan.' }}</p>
+
       </p>
       <form action="{{route('simpanDataPemesanan')}}" method="POST">
         @csrf
         <div class="flex justify-center gap-4 mb-6">
-          <input type="text" name="nik" value="{{ $nik ?? '' }}">
+          
+          <input type="hidden" name="nik" value="{{ $nik ?? '' }}">
           <input type="hidden" name="id_produk" value="{{ $produk['id_produk'] ?? '' }}">
           <input type="hidden" name="namaLengkap" value="{{ $namaLengkap ?? '' }}">
           <input type="hidden" name="jenisKelamin" value="{{ $jenisKelamin ?? '' }}">
@@ -69,16 +86,10 @@
           <input type="hidden" name="kelurahan" value="{{ $kelurahan ?? '' }}">
           <input type="hidden" name="kodepos" value="{{ $kodepos ?? '' }}">
           <input type="hidden" name="alamat" value="{{ $alamat ?? '' }}">
-          <input type="hidden" name="latitude" value="{{ $latitude ?? '' }}">
-          <input type="hidden" name="longitude" value="{{ $longitude ?? '' }}">
-          <input type="text" name="otp" maxlength="1" required
-            class="w-12 h-12 text-center border-2 border-gray-300 rounded-md focus:border-red-500 focus:ring focus:ring-red-200 outline-none text-lg font-semibold text-gray-800" />
-          <input type="text" name="otp" maxlength="1" required
-            class="w-12 h-12 text-center border-2 border-gray-300 rounded-md focus:border-red-500 focus:ring focus:ring-red-200 outline-none text-lg font-semibold text-gray-800" />
-          <input type="text" name="otp" maxlength="1" required
-            class="w-12 h-12 text-center border-2 border-gray-300 rounded-md focus:border-red-500 focus:ring focus:ring-red-200 outline-none text-lg font-semibold text-gray-800" />
-          <input type="text" name="otp" maxlength="1" required
-            class="w-12 h-12 text-center border-2 border-gray-300 rounded-md focus:border-red-500 focus:ring focus:ring-red-200 outline-none text-lg font-semibold text-gray-800" />
+          <input type="text" name="latitude" value="{{ $latitude ?? '' }}">
+          <input type="text" name="longitude" value="{{ $longitude ?? '' }}">
+          <input type="text" name="otp" maxlength="4" required
+            class="w-48 h-12 text-center border-2 border-gray-300 rounded-md focus:border-red-500 focus:ring focus:ring-red-200 outline-none text-lg font-semibold text-gray-800" />
         </div>
         <button type="submit"
           class="w-full py-3 bg-gradient-to-r from-[#D10A3C] to-[#FF0038] text-white font-semibold text-lg rounded-md hover:bg-red-600 transition-all duration-300">

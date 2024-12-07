@@ -8,7 +8,8 @@ use Illuminate\Support\Facades\Session;
 use SendinBlue\Client\Configuration;
 use SendinBlue\Client\Api\TransactionalEmailsApi;
 use GuzzleHttp\Client;
-
+use App\Models\Customer;
+use App\Models\Berlangganan;
 
 class OTPController extends Controller
 {
@@ -95,5 +96,69 @@ class OTPController extends Controller
 
         // Kirim email
         $apiInstance->sendTransacEmail($emailContent);
+    }
+
+    public function simpanDataPemesanan(Request $request)
+    {
+        // Cek apakah OTP ada di session
+        $otpSession = Session::get('otp');
+        if (!$otpSession) {
+            // Jika OTP tidak ada di session, arahkan kembali ke halaman sebelumnya
+            return redirect()->back()->withErrors('OTP belum diverifikasi. Silakan verifikasi OTP terlebih dahulu.');
+        }
+
+        // Validasi input
+        $validated = $request->validate([
+            'nik' => 'required|string|max:255',
+            'email' => 'required|email|max:255',
+            'namaLengkap' => 'required|string|max:255',
+            'alamat' => 'required|string|max:255',
+            'nomorHandphone' => 'required|string|max:20',
+            'provinsi' => 'required|string|max:255',
+            'kota' => 'required|string|max:255',
+            'kelurahan' => 'required|string|max:255',
+            'kodepos' => 'required|string|max:10',
+            'jenisKelamin' => 'required|string|max:10',
+            'latitude' => 'required|numeric',
+            'longitude' => 'required|numeric',
+            'id_produk' => 'required|exists:produk,id_produk',  // Sesuaikan dengan kolom primary key di tabel produk
+            'otp' => 'required|string|size:4',  // Pastikan format OTP valid
+        ]);
+
+        // Gabungkan OTP dari setiap input menjadi satu string
+        $otpEntered = $request->otp;
+
+        // Verifikasi OTP yang dimasukkan dengan yang ada di session
+        if ($otpEntered != $otpSession) {
+            return redirect()->route('verifikasiOTP')->withErrors('OTP yang dimasukkan salah.');
+        }
+
+        // Proses penyimpanan data ke tabel Customer
+        $customer = Customer::create([
+            'nik' => $validated['nik'],
+            'email_customer' => $validated['email'],
+            'nama_customer' => $validated['namaLengkap'],
+            'alamat_customer' => $validated['alamat'],
+            'nomor_hp_customer' => $validated['nomorHandphone'],
+            'provinsi' => $validated['provinsi'],
+            'kota' => $validated['kota'],
+            'kelurahan' => $validated['kelurahan'],
+            'kode_pos' => $validated['kodepos'],
+            'jenis_kelamin' => $validated['jenisKelamin'],
+            'latitude' => $validated['latitude'] ?? null,  // Menggunakan null jika tidak ada
+            'longitude' => $validated['longitude'] ?? null,  // Menggunakan null jika tidak ada
+        ]);
+
+        // Simpan data ke tabel Berlangganan
+        Berlangganan::create([
+            'id_customer' => $customer->id_customer,
+            'id_produk' => $validated['id_produk'],
+        ]);
+
+        // Hapus OTP dari session setelah pemesanan berhasil
+        Session::forget('otp');
+
+        // Redirect ke halaman sukses atau lainnya...
+        return redirect()->route('selesai')->with('success', 'Pemesanan berhasil');
     }
 }

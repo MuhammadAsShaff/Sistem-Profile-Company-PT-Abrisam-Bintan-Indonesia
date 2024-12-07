@@ -68,7 +68,7 @@ Route::prefix('/')->group(function () {
 
     Route::get('verifikasiOTP', [PesanProdukController::class, 'verifikasiOTP'])->name('verifikasiOTP');
 
-    Route::post('simpanDataPemesanan', [PesanProdukController::class, 'simpanDataPemesanan'])->name('simpanDataPemesanan');
+    Route::post('simpanDataPemesanan', [OTPController::class, 'simpanDataPemesanan'])->name('simpanDataPemesanan');
 
     Route::get('/send-otp', [OTPController::class, 'sendOTP'])->name('sendOTP');
 
