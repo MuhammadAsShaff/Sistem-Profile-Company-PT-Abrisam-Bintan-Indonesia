@@ -1,4 +1,4 @@
-<a href="#"
+<a href="{{route('inventoryKeluar')}}"
   class="block w-full h-full p-4 border border-gray-200 rounded-lg shadow bg-white flex items-center space-x-4 min-h-[120px]">
   <!-- Ikon -->
   <svg class="w-12 h-12 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"

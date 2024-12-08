@@ -28,11 +28,15 @@
 </div>
 
 <div class="flex flex-wrap lg:flex-nowrap justify-start gap-8 px-4 mx-auto overflow-hidden">
-  <div class="w-full md:w-1/2 lg:w-1/2">
-    @include('dashboard.dashboard.chartPerbulanCustomer')
+  <div class="w-full md:w-1/3 lg:w-1/3">
+    @include('dashboard.dashboard.grafikPerbulanCustomer')
   </div>
 
-  <div class="w-full md:w-1/2 lg:w-1/2">
+  <div class="w-full md:w-1/3 lg:w-1/3">
+    @include('dashboard.dashboard.grafikPerbandinganProdukTerjual')
+  </div>
+
+  <div class="w-full md:w-1/3 lg:w-1/3">
     @include('dashboard.dashboard.grafikProdukTerbanyak')
   </div>
 </div>
