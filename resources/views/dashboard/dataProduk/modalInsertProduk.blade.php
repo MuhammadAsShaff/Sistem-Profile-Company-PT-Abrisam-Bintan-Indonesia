@@ -27,7 +27,7 @@
       </div>
 
       <!-- Modal body -->
-      <form action="{{ route('produk.store') }}" method="POST">
+      <form action="{{ route('produk.store') }}" method="POST" enctype="multipart/form-data" id="produkForm">
         @csrf
         <!-- Menggunakan 'gap-6' untuk menjaga jarak konsisten antar elemen grid -->
         <div class="grid grid-cols-2 gap-6">
@@ -47,45 +47,13 @@
               placeholder="Harga Produk" value="{{ old('harga_produk') }}" required oninput="formatCurrency(this)">
           </div>
 
-          <div class="col-span-1 relative">
-            <label for="benefit" class="block text-sm font-medium text-gray-700">Aplikasi Streaming</label>
-
-            <!-- Input field untuk menampilkan hasil pilihan -->
-            <input type="text" id="selectedBenefitsInsert" readonly
-              class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm cursor-pointer bg-white"
-              placeholder="Pilih Benefit" value="">
-            <p class="mt-2 text-xs text-red-600 mb-[-20px]">* Biarkan kosong jika tidak ada Aplikasi Streaming.</p>
-
-            <!-- Dropdown checkbox -->
-            <div id="checkboxDropdownInsert" class="absolute z-10 mt-1 w-full bg-white rounded-md shadow-lg hidden">
-              <ul class="py-1 text-sm text-gray-700 max-h-48 overflow-y-auto">
-                <li class="flex items-center px-4 py-2 hover:bg-gray-100">
-                  <input id="disney" name="benefit[]" type="checkbox" value="Disney+"
-                    class="mr-2 focus:ring-blue-500 h-4 w-4 text-blue-600 border-gray-300 rounded">
-                  <label for="disney" class="cursor-pointer">Disney+</label>
-                </li>
-                <li class="flex items-center px-4 py-2 hover:bg-gray-100">
-                  <input id="netflix" name="benefit[]" type="checkbox" value="Netflix"
-                    class="mr-2 focus:ring-blue-500 h-4 w-4 text-blue-600 border-gray-300 rounded">
-                  <label for="netflix" class="cursor-pointer">Netflix</label>
-                </li>
-                <li class="flex items-center px-4 py-2 hover:bg-gray-100">
-                  <input id="amazon" name="benefit[]" type="checkbox" value="Amazon Prime"
-                    class="mr-2 focus:ring-blue-500 h-4 w-4 text-blue-600 border-gray-300 rounded">
-                  <label for="amazon" class="cursor-pointer">Amazon Prime</label>
-                </li>
-                <li class="flex items-center px-4 py-2 hover:bg-gray-100">
-                  <input id="hook" name="benefit[]" type="checkbox" value="Hook"
-                    class="mr-2 focus:ring-blue-500 h-4 w-4 text-blue-600 border-gray-300 rounded">
-                  <label for="hook" class="cursor-pointer">Hook</label>
-                </li>
-                <li class="flex items-center px-4 py-2 hover:bg-gray-100">
-                  <input id="hbo" name="benefit[]" type="checkbox" value="HBO Max"
-                    class="mr-2 focus:ring-blue-500 h-4 w-4 text-blue-600 border-gray-300 rounded">
-                  <label for="hbo" class="cursor-pointer">HBO Max</label>
-                </li>
-              </ul>
-            </div>
+          <!-- Diskon Produk -->
+          <div class="col-span-1">
+            <label for="diskon" class="block text-sm font-medium text-gray-700">Diskon (%)</label>
+            <input type="number" name="diskon" id="diskon"
+              class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+              placeholder="Diskon Produk" value="{{ old('diskon') }}">
+            <p class="mt-2 text-xs text-red-600 mb-[-20px]">* Biarkan kosong jika tidak ada diskon.</p>
           </div>
 
           <!-- Kecepatan Produk -->
@@ -102,7 +70,7 @@
             <input type="number" name="kuota" id="kuota"
               class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
               placeholder="Kuota Produk" value="{{ old('kuota') }}">
-              <p class="mt-2 text-xs text-red-600 mb-[-20px]">* Biarkan kosong jika tidak ada Kuota Unlimited.</p>
+            <p class="mt-2 text-xs text-red-600 mb-[-20px]">* Biarkan kosong jika tidak ada Kuota Unlimited.</p>
           </div>
 
           <!-- Biaya Pasang -->
@@ -153,20 +121,18 @@
           <!-- Deskripsi Produk -->
           <div class="col-span-1">
             <label for="deskripsi" class="block text-sm font-medium text-gray-700">Deskripsi Produk</label>
-            <textarea name="deskripsi" id="deskripsi" required
+            <textarea name="deskripsi" id="deskripsi" required rows="3"
               class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
               placeholder="Deskripsi Produk">{{ old('deskripsi') }}</textarea>
           </div>
-
-          <!-- Diskon Produk -->
-          <div class="col-span-1">
-            <label for="diskon" class="block text-sm font-medium text-gray-700">Diskon (%)</label>
-            <input type="number" name="diskon" id="diskon"
+          
+          <div class="mb-4">
+            <label for="benefit" class="block text-sm font-medium text-gray-700">Benefit</label>
+            <textarea name="benefit" id="benefit" rows="3"
               class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
-              placeholder="Diskon Produk" value="{{ old('diskon') }}">
-            <p class="mt-2 text-xs text-red-600 mb-[-20px]">* Biarkan kosong jika tidak ada diskon.</p>
+              placeholder="Masukkan Benefit (Pisahkan dengan enter)" oninput="insertBenefit()" required></textarea>
+              <p class="mt-2 text-xs text-red-600 mb-[-20px]">* Biarkan kosong jika tidak ada Aplikasi Streaming.</p>
           </div>
-
         </div>
 
         <!-- Pesan Error -->
@@ -188,45 +154,46 @@
     @endif
         </div>
       </form>
+
+
       <script>
-        // Fungsi untuk menampilkan atau menyembunyikan dropdown checkbox khusus untuk insert
-        document.getElementById('selectedBenefitsInsert').addEventListener('click', function (event) {
-          event.stopPropagation(); // Mencegah event bubbling
-          var dropdown = document.getElementById('checkboxDropdownInsert');
-          dropdown.classList.toggle('hidden'); // Toggle kelas hidden
-        });
+        function insertBenefit() {
+          const textarea = document.getElementById('benefit');
+          const lines = textarea.value.split('\n'); // Pisahkan setiap baris dengan enter
 
-        // Mengambil semua checkbox yang ada di dropdown khusus insert
-        var checkboxesInsert = document.querySelectorAll('#checkboxDropdownInsert input[type="checkbox"]');
-        var selectedBenefitsInputInsert = document.getElementById('selectedBenefitsInsert');
+          let numberedLines = lines.map((line, index) => {
+            // Hapus nomor yang sudah ada jika ada, lalu tambahkan nomor baru
+            const cleanLine = line.replace(/^\d+\.\s*/, '');
 
-        // Fungsi untuk meng-update input field dengan nilai yang dipilih untuk insert
-        function updateSelectedBenefitsInsert() {
-          var selectedBenefitsInsert = [];
-          checkboxesInsert.forEach(function (cb) {
-            if (cb.checked) {
-              selectedBenefitsInsert.push(cb.value);
+            // Hanya tambahkan nomor jika baris tidak kosong
+            if (cleanLine.trim() !== '') {
+              return (index + 1) + '. ' + cleanLine;
             }
+            return '';
           });
-          selectedBenefitsInputInsert.value = selectedBenefitsInsert.join(', '); // Menampilkan hasil pilihan di input field
+
+          // Update tampilan textarea dengan baris yang dinomori
+          textarea.value = numberedLines.join('\n');
         }
 
-        // Event listener untuk setiap checkbox insert
-        checkboxesInsert.forEach(function (checkbox) {
-          checkbox.addEventListener('change', function () {
-            updateSelectedBenefitsInsert();
+        // Fungsi untuk mengirim data yang benar dalam format array
+        document.getElementById('produkForm').addEventListener('submit', function (e) {
+          const textarea = document.getElementById('benefit');
+
+          // Ambil setiap baris dari textarea dan bersihkan nomor di awal
+          const lines = textarea.value.split('\n').map(line => line.replace(/^\d+\.\s*/, '').trim()).filter(line => line !== '');
+
+          // Siapkan hidden input untuk mengirimkan array
+          lines.forEach((line, index) => {
+            const hiddenInput = document.createElement('input');
+            hiddenInput.type = 'hidden';
+            hiddenInput.name = `benefit[${index}]`;  // Ini akan dikirim sebagai array
+            hiddenInput.value = line;  // Setiap baris sebagai nilai array
+            this.appendChild(hiddenInput);
           });
         });
-
-        // Menutup dropdown jika pengguna mengklik di luar dropdown khusus untuk insert
-        document.addEventListener('click', function (event) {
-          var dropdownInsert = document.getElementById('checkboxDropdownInsert');
-          var inputInsert = document.getElementById('selectedBenefitsInsert');
-          if (!inputInsert.contains(event.target) && !dropdownInsert.contains(event.target)) {
-            dropdownInsert.classList.add('hidden'); // Menyembunyikan dropdown jika klik di luar elemen
-          }
-        });
       </script>
+
 
     </div>
   </div>

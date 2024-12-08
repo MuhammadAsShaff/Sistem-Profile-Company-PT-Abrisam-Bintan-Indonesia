@@ -50,61 +50,15 @@
               oninput="formatCurrency(this)">
           </div>
 
-          <!-- Benefit Dropdown -->
-          <div class="col-span-1 relative">
-            <label for="benefit" class="block text-sm font-medium text-gray-700">Aplikasi Streaming</label>
-
-            <!-- Input field untuk menampilkan hasil pilihan -->
-            <input type="text" id="selectedBenefitsUpdate-{{ $produk->id_produk }}" data-id="{{ $produk->id_produk }}" readonly
-              class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm cursor-pointer bg-white"
-              placeholder="Pilih Benefit"
-              value="{{ isset($produk->benefit) ? implode(', ', json_decode($produk->benefit, true)) : '' }}">
-
-            <p class="mt-2 text-xs text-red-600 mb-[-20px]">* Biarkan kosong jika tidak ada Aplikasi Streaming.</p>
-
-            <!-- Dropdown checkbox -->
-            <div id="checkboxDropdownUpdate-{{ $produk->id_produk }}" class="absolute z-10 mt-1 w-full bg-white rounded-md shadow-lg hidden">
-              <ul class="py-1 text-sm text-gray-700 max-h-48 overflow-y-auto">
-                <li class="flex items-center px-4 py-2 hover:bg-gray-100">
-                  <input id="disney-{{ $produk->id_produk }}" name="benefit[]" type="checkbox" value="Disney+"
-                    class="mr-2 focus:ring-blue-500 h-4 w-4 text-blue-600 border-gray-300 rounded" 
-                    {{ in_array('Disney+', json_decode($produk->benefit, true) ?? []) ? 'checked' : '' }}>
-                  <label for="disney-{{ $produk->id_produk }}" class="cursor-pointer">Disney+</label>
-                </li>
-                <li class="flex items-center px-4 py-2 hover:bg-gray-100">
-                  <input id="netflix-{{ $produk->id_produk }}" name="benefit[]" type="checkbox" value="Netflix"
-                    class="mr-2 focus:ring-blue-500 h-4 w-4 text-blue-600 border-gray-300 rounded" 
-                    {{ in_array('Netflix', json_decode($produk->benefit, true) ?? []) ? 'checked' : '' }}>
-                  <label for="netflix-{{ $produk->id_produk }}" class="cursor-pointer">Netflix</label>
-                </li>
-
-                <!-- Amazon Prime Checkbox -->
-                <li class="flex items-center px-4 py-2 hover:bg-gray-100">
-                  <input id="amazon-{{ $produk->id_produk }}" name="benefit[]" type="checkbox" value="Amazon Prime"
-                    class="mr-2 focus:ring-blue-500 h-4 w-4 text-blue-600 border-gray-300 rounded" 
-                    {{ in_array('Amazon Prime', json_decode($produk->benefit, true) ?? []) ? 'checked' : '' }}>
-                  <label for="amazon-{{ $produk->id_produk }}" class="cursor-pointer">Amazon Prime</label>
-                </li>
-
-                <!-- Hook Checkbox -->
-                <li class="flex items-center px-4 py-2 hover:bg-gray-100">
-                  <input id="hook-{{ $produk->id_produk }}" name="benefit[]" type="checkbox" value="Hook"
-                    class="mr-2 focus:ring-blue-500 h-4 w-4 text-blue-600 border-gray-300 rounded"
-                     {{ in_array('Hook', json_decode($produk->benefit, true) ?? []) ? 'checked' : '' }}>
-                  <label for="hook-{{ $produk->id_produk }}" class="cursor-pointer">Hook</label>
-                </li>
-
-                <!-- HBO Max Checkbox -->
-                <li class="flex items-center px-4 py-2 hover:bg-gray-100">
-                  <input id="hbo-{{ $produk->id_produk }}" name="benefit[]" type="checkbox" value="HBO Max"
-                    class="mr-2 focus:ring-blue-500 h-4 w-4 text-blue-600 border-gray-300 rounded" 
-                    {{ in_array('HBO Max', json_decode($produk->benefit, true) ?? []) ? 'checked' : '' }}>
-                  <label for="hbo-{{ $produk->id_produk }}" class="cursor-pointer">HBO Max</label>
-                </li>
-              </ul>
-            </div>
-
+          <!-- Diskon Produk -->
+          <div class="col-span-1">
+            <label for="diskon" class="block text-sm font-medium text-gray-700">Diskon (%)</label>
+            <input type="number" name="diskon" id="diskon" step="0.01"
+              class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+              placeholder="Diskon Produk" value="{{ $produk->diskon }}">
+            <p class="mt-2 text-xs text-red-600 mb-[-20px]">* Jika tidak ada biaya pasang, biarkan kosong.</p>
           </div>
+
 
           <!-- Kecepatan Produk -->
           <div class="col-span-1">
@@ -162,18 +116,28 @@
           <!-- Deskripsi Produk -->
           <div class="col-span-1">
             <label for="deskripsi" class="block text-sm font-medium text-gray-700">Deskripsi Produk</label>
-            <textarea name="deskripsi" id="deskripsi" required
+            <textarea name="deskripsi" id="deskripsi" required rows="3"
               class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
               placeholder="Deskripsi Produk">{{ $produk->deskripsi }}</textarea>
           </div>
 
-          <!-- Diskon Produk -->
           <div class="col-span-1">
-            <label for="diskon" class="block text-sm font-medium text-gray-700">Diskon (%)</label>
-            <input type="number" name="diskon" id="diskon" step="0.01"
+            @php
+// Menambahkan nomor ke setiap baris benefit
+$benefitList = is_string($produk->benefit) ? json_decode($produk->benefit, true) : $produk->benefit;
+$benefitWithNumbers = '';
+if ($benefitList) {
+  foreach ($benefitList as $index => $benefit) {
+    $benefitWithNumbers .= ($index + 1) . '. ' . $benefit . "\n";
+  }
+}
+        @endphp
+            <label for="benefit-{{ $produk->id_produk }}"
+              class="block text-sm font-medium text-gray-700">Benefit</label>
+            <textarea name="benefit" id="benefit-{{ $produk->id_produk }}" rows="3" required
               class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
-              placeholder="Diskon Produk" value="{{ $produk->diskon }}">
-            <p class="mt-2 text-xs text-red-600 mb-[-20px]">* Jika tidak ada biaya pasang, biarkan kosong.</p>
+              placeholder="Masukkan Benefit">{{ $benefitWithNumbers }}</textarea>
+            <p class="mt-2 text-xs text-red-600">* Biarkan kosong jika tidak ada benefit.</p>
           </div>
         </div>
 
@@ -189,52 +153,22 @@
   </div>
 </dialog>
 <script>
- // Event listener for toggling the dropdown
-  document.addEventListener('click', function (event) {
-    const clickedElement = event.target;
+  // Fungsi untuk otomatis menambahkan nomor pada setiap baris teks
+  function updateBenefit(id_produk) {
+    const textarea = document.getElementById('benefit-' + id_produk);
+    const lines = textarea.value.split('\n');
 
-    // Check if the clicked element is the benefit input field
-    if (clickedElement.matches("[id^='selectedBenefitsUpdate']")) {
-      event.stopPropagation();  // Prevent event from bubbling up
-      const dropdownId = 'checkboxDropdownUpdate-' + clickedElement.getAttribute('data-id');
-      const dropdown = document.getElementById(dropdownId);
-
-      // Hide all dropdowns before showing the relevant one
-      document.querySelectorAll("[id^='checkboxDropdownUpdate']").forEach(dropdown => {
-        dropdown.classList.add('hidden');
-      });
-
-      // Show the correct dropdown
-      if (dropdown) {
-        dropdown.classList.toggle('hidden');
-      }
-    }
-
-    // If the click is outside any dropdown/input, hide all dropdowns
-    if (!clickedElement.matches("[id^='selectedBenefitsUpdate']") && !clickedElement.closest("[id^='checkboxDropdownUpdate']")) {
-      document.querySelectorAll("[id^='checkboxDropdownUpdate']").forEach(dropdown => {
-        dropdown.classList.add('hidden');
-      });
-    }
-  });
-
-  // Event listener for checkboxes inside dropdowns
-  document.querySelectorAll("[id^='checkboxDropdownUpdate']").forEach(function (dropdown) {
-    const checkboxes = dropdown.querySelectorAll("input[type='checkbox']");
-    const dropdownId = dropdown.id.split('-')[1];  // Extract product ID from dropdown ID
-    const inputField = document.getElementById('selectedBenefitsUpdate-' + dropdownId);
-
-    // Update input field when checkbox state changes
-    checkboxes.forEach(function (checkbox) {
-      checkbox.addEventListener('change', function () {
-        const selectedBenefits = Array.from(checkboxes)
-          .filter(cb => cb.checked)
-          .map(cb => cb.value);
-
-        // Update the input field with the selected values
-        inputField.value = selectedBenefits.join(', ');
-      });
+    // Tambahkan nomor untuk setiap baris tidak kosong
+    const numberedLines = lines.map((line, index) => {
+      const cleanLine = line.replace(/^\d+\.\s*/, ''); // Bersihkan nomor lama
+      return cleanLine.trim() !== '' ? (index + 1) + '. ' + cleanLine : ''; // Tambahkan nomor baru
     });
-  });
 
+    textarea.value = numberedLines.join('\n'); // Update isi textarea
+  }
+
+  // Event listener untuk memperbarui nomor saat ada perubahan di textarea
+  document.getElementById('benefit-{{ $produk->id_produk }}').addEventListener('input', function () {
+    updateBenefit('{{ $produk->id_produk }}');
+  });
 </script>

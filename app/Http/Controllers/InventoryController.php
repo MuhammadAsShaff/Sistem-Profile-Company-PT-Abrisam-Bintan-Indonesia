@@ -29,9 +29,10 @@ class InventoryController extends Controller
     }
 
 
+
     public function showInventoryKeluar()
     {
-        // Ambil data Inventory Keluar
+        // Ambil data Inventory Keluar dengan relasi ke stocks dan pagination
         $inventoryKeluar = InventoryKeluar::with('stocks')->paginate(10);
 
         // Hitung jumlah stok keluar berdasarkan kategoriProduk
@@ -49,6 +50,7 @@ class InventoryController extends Controller
             'stok' => $stok,
         ]);
     }
+
 
 
 

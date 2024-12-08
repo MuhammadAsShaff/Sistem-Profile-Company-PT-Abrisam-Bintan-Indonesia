@@ -63,14 +63,14 @@
                 Syarat dan Ketentuan
               </label>
               @php
-$syaratKetentuan = is_string($kategori->syarat_ketentuan) ? json_decode($kategori->syarat_ketentuan, true) : $kategori->syarat_ketentuan;
-$syaratKetentuanWithNumbers = '';
-if ($syaratKetentuan) {
-  foreach ($syaratKetentuan as $index => $syarat) {
-    $syaratKetentuanWithNumbers .= ($index + 1) . '. ' . $syarat . "\n";
-  }
-}
-      @endphp
+        $syaratKetentuan = is_string($kategori->syarat_ketentuan) ? json_decode($kategori->syarat_ketentuan, true) : $kategori->syarat_ketentuan;
+        $syaratKetentuanWithNumbers = '';
+        if ($syaratKetentuan) {
+          foreach ($syaratKetentuan as $index => $syarat) {
+          $syaratKetentuanWithNumbers .= ($index + 1) . '. ' . $syarat . "\n";
+          }
+        }
+        @endphp
               <textarea name="syarat_ketentuan[]" id="syarat_ketentuan-{{ $kategori->id_kategori }}" rows="3"
                 class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-5/6 p-2.5"
                 placeholder="Syarat dan Ketentuan Kategori">{{ $syaratKetentuanWithNumbers }}</textarea>
@@ -91,7 +91,7 @@ if ($syaratKetentuan) {
 </dialog>
 
 <script>
- // Fungsi untuk otomatis menambahkan nomor pada textarea dan menjaga kursor di posisi akhir
+  // Fungsi untuk otomatis menambahkan nomor pada textarea dan menjaga kursor di posisi akhir
   function updateSyaratKetentuan(id_kategori) {
     const textarea = document.getElementById('syarat_ketentuan-' + id_kategori);
     const lines = textarea.value.split('\n');

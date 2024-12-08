@@ -74,7 +74,7 @@
                 <!-- Jumlah Stok -->
                 <td class="px-4 py-4 text-sm text-gray-500 dark:text-gray-300">
                   @php
-            $jumlah = $jumlahStockMasukPerKategori->firstWhere('kategoriProduk', $item->kategoriProduk)->jumlah ?? 0;
+  $jumlah = $jumlahStockMasukPerKategori->firstWhere('kategoriProduk', $item->kategoriProduk)->jumlah ?? 0;
           @endphp
                   {{ $jumlah }}
                 </td>
@@ -103,5 +103,7 @@
       </div>
     </div>
   </div>
+  <!-- Pagination -->
+  @include('dashboard.inventory.inventoryMasuk.pagination')
 </section>
 @endsection

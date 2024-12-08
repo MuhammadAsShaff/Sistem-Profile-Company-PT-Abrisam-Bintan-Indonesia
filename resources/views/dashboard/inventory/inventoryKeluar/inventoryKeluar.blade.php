@@ -105,5 +105,7 @@
       </div>
     </div>
   </div>
+  <!-- Pagination -->
+  @include('dashboard.inventory.inventoryKeluar.pagination')
 </section>
 @endsection
