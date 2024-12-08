@@ -21,6 +21,7 @@ class Customer extends Model
         'longitude',
         'kota',
         'kelurahan',
+        'kecamatan',
         'kode_pos',
     ];
 

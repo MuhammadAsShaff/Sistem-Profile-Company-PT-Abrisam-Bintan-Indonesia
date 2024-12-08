@@ -77,7 +77,7 @@ class InventoryCategorySheetExport implements FromCollection, WithHeadings, With
 
                 $totalRows = $this->collection()->count();
                 $lastRow = $totalRows + 3; // Header + Data
-
+    
                 // Tambahkan judul di baris pertama
                 $sheet->setCellValue('A1', 'Data Inventory ' . $this->type);
                 $sheet->mergeCells('A1:E1'); // Gabungkan kolom A sampai E

@@ -117,6 +117,7 @@ class OTPController extends Controller
             'provinsi' => 'required|string|max:255',
             'kota' => 'required|string|max:255',
             'kelurahan' => 'required|string|max:255',
+            'kecamatan' => 'required|string|max:255',
             'kodepos' => 'required|string|max:10',
             'jenisKelamin' => 'required|string|max:10',
             'latitude' => 'required|numeric',
@@ -143,6 +144,7 @@ class OTPController extends Controller
             'provinsi' => $validated['provinsi'],
             'kota' => $validated['kota'],
             'kelurahan' => $validated['kelurahan'],
+            'kecamatan' => $validated['kecamatan'],
             'kode_pos' => $validated['kodepos'],
             'jenis_kelamin' => $validated['jenisKelamin'],
             'latitude' => $validated['latitude'] ?? null,  // Menggunakan null jika tidak ada
@@ -157,6 +159,9 @@ class OTPController extends Controller
 
         // Hapus OTP dari session setelah pemesanan berhasil
         Session::forget('otp');
+        Cookie::forget('data');
+        Cookie::forget('selected_product');
+        Cookie::forget('locationData');
 
         // Redirect ke halaman sukses atau lainnya...
         return redirect()->route('selesai')->with('success', 'Pemesanan berhasil');

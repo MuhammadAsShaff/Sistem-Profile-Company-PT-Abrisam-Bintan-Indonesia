@@ -1,5 +1,6 @@
 <?php
 use App\Exports\InventoryExport;
+use App\Exports\CustomerExport;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\Dashboard;
@@ -21,6 +22,7 @@ use App\Http\Controllers\InventoryController;
 use App\Http\Controllers\KegiatanController;
 use App\Http\Controllers\PesanProdukController;
 use App\Http\Controllers\OTPController;
+use App\Http\Controllers\PelangganController;
 use App\Http\Controllers\TentangKamiLandingPage;
 use Illuminate\Support\Facades\Route;
 use App\Http\Middleware\SavePreviousUrl;
@@ -53,7 +55,7 @@ Route::prefix('/')->group(function () {
         ->name('tampilFaQ');
 
     Route::post('produk/pilih', [PesanProdukController::class, 'pilihProduk'])->name('produk.pilih');
-    
+
     Route::post('showLocation', [PesanProdukController::class, 'showLocation'])->name('showLocation');
     // Menambahkan route untuk halaman pesan produk
     Route::get('pesanProduk', [PesanProdukController::class, 'pesanProduk'])->name('pesanProduk');
@@ -104,9 +106,15 @@ Route::prefix('dashboard')->middleware(['auth:admin', PreventBackHistory::class]
 
 
     // Route untuk data pelanggan
-    Route::get('dataPelanggan', [Pelanggan::class, 'index'])
+    Route::get('dataPelanggan', [PelangganController::class, 'index'])
         ->name('dashboard.dataPelanggan.dataPelanggan')
         ->middleware(SavePreviousUrl::class);
+    Route::put('dataPelanggan/customer/{id_customer}/update-status', [PelangganController::class, 'updateStatus'])->name('updateStatus');
+    Route::delete('/customer/{id_customer}/delete', [PelangganController::class, 'delete'])->name('customer.delete');
+    Route::get('/export-customers', function () {
+        return Excel::download(new CustomerExport(), 'customers.xlsx');
+    })->name('customers.export');
+    
 
     // Route untuk FaQ
     Route::prefix('faq')->group(function () {
