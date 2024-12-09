@@ -65,18 +65,17 @@
   <div class="grid grid-cols-2 md:grid-cols-3 gap-4 p-10 ">
     @foreach ($kegiatan->take(3) as $index => $item) <!-- Ambil hanya 3 gambar pertama -->
     <div class="relative group">
-      <img class="h-56 w-full rounded-lg" src="{{ asset('uploads/kegiatan/' . $item->gambar) }}" alt="">
-
+      <img id="kegiatan" class="h-56 w-full rounded-lg" src="{{ asset('uploads/kegiatan/' . $item->gambar) }}" alt="">
       <!-- Overlay hitam dan teks -->
       <div
       class="overlay absolute inset-0 bg-black bg-opacity-50 opacity-0 flex items-center justify-center text-white transition-all duration-300 ease-in-out">
       <div class="text-center px-4 py-2">
-        <h3 class="text-xl font-semibold">{{ $item->nama }}</h3>
-        <p class="mt-2">{{ $item->keterangan }}</p>
+      <h3 class="text-xl font-semibold">{{ $item->nama }}</h3>
+      <p class="mt-2">{{ $item->keterangan }}</p>
       </div>
       </div>
     </div>
-  @endforeach
+    @endforeach
   </div>
 
   <style>
@@ -151,31 +150,33 @@
 </div>
 <script>
   document.addEventListener("DOMContentLoaded", function () {
-    // Ambil semua elemen gambar dalam grid
-    const images = document.querySelectorAll('.grid img');
+      // Ambil elemen dengan ID kegiatan
+      const kegiatanImg = document.getElementById('kegiatan');
 
-    let currentIndex = 0;
-    const totalImages = images.length;
+      // Daftar gambar yang ingin diganti (diambil dari Blade)
+      const gambarList = @json($kegiatan->pluck('gambar')); // Ambil nama gambar dari Blade
 
-    // Daftar gambar yang ingin diganti
-    const gambarList = @json($kegiatan->pluck('gambar'));  // Ambil nama gambar dari Blade
+      let currentIndex = 0;
+      const totalImages = gambarList.length;
 
-    // Fungsi untuk mengganti gambar
-    function changeImages() {
-      images.forEach((img, index) => {
-        const nextIndex = (currentIndex + index) % totalImages; // Rotasi indeks gambar
-        img.src = `{{ asset('uploads/kegiatan/') }}/${gambarList[nextIndex]}`; // Ganti gambar
-      });
+      // Fungsi untuk mengganti gambar
+      function changeImage() {
+        if (kegiatanImg) {
+          // Hitung indeks gambar berikutnya
+          const nextIndex = (currentIndex + 1) % totalImages;
 
-      currentIndex = (currentIndex + 1) % totalImages; // Pindahkan ke gambar berikutnya
-    }
+          // Update atribut src elemen gambar
+          kegiatanImg.src = `{{ asset('uploads/kegiatan/') }}/${gambarList[nextIndex]}`;
 
-    // Panggil fungsi changeImages setiap 5 detik untuk berganti gambar
-    setInterval(changeImages, 5000); // Berganti setiap 5 detik
+          // Update indeks saat ini
+          currentIndex = nextIndex;
+        }
+      }
 
-    // Inisialisasi pertama kali
-    changeImages();
-  });
+      // Panggil fungsi changeImage setiap 5 detik
+      setInterval(changeImage, 5000);
+    });
+
 
   document.addEventListener("DOMContentLoaded", function () {
     const carouselItems = document.querySelectorAll('.carousel-item'); // Ambil semua item carousel

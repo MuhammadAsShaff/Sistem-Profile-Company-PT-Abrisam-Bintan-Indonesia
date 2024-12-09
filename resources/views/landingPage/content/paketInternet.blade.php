@@ -3,7 +3,8 @@
     <!-- Header Section -->
     <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-6">
       <div>
-        <h2 class="text-xl md:text-2xl lg:text-3xl font-bold font-telkomsel mb-1 text-[color:#001A41]">Berlangganan Sekarang</h2>
+        <h2 class="text-xl md:text-2xl lg:text-3xl font-bold font-telkomsel mb-1 text-[color:#001A41]">Berlangganan
+          Sekarang</h2>
         <p class="text-gray-600">
           Penawaran ini berlaku untuk semua yang ingin menikmati internet cepat. <br>Dapatkan promo menarik dan harga
           terjangkau sekarang juga. <br>Jangan lewatkan potongan harga spesial!
@@ -37,14 +38,14 @@
   <!-- Tab Navigation -->
   <div class="flex flex-wrap justify-center space-x-4 border-b mb-4">
     @foreach($paket as $pk)
-      @if($pk->produk->count() > 0) <!-- Hanya tampilkan paket yang memiliki produk -->
-      <button
+    @if($pk->produk->count() > 0) <!-- Hanya tampilkan paket yang memiliki produk -->
+    <button
       class="px-4 py-2 font-bold paket-button {{ request('paket') == $pk->id_paket ? 'text-white bg-gradient-to-r from-[#D10A3C] to-[#FF0038] active' : 'text-gray-700' }} rounded-tl-lg rounded-tr-lg"
       data-id-paket="{{ $pk->id_paket }}">
       {{ $pk->nama_paket }}
-      </button>
-    @endif
-    @endforeach
+    </button>
+  @endif
+  @endforeach
   </div>
 
   <div id="produk-container" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 py-6 justify-center">
@@ -52,8 +53,7 @@
   </div>
   <!-- View All Button -->
   <div class="text-center mt-6">
-    <button id="toggle-produk-button"
-      class="text-red-500 py-2 px-4 rounded-lg w-full mt-auto"
+    <button id="toggle-produk-button" class="text-red-500 py-2 px-4 rounded-lg w-full mt-auto"
       style="display: none;">Tampilkan Semua Produk</button>
   </div>
 </div>
@@ -99,7 +99,15 @@
             : '<span style="visibility:hidden;">No benefit</span>'}
     </div>
   </ul>
-  <button class="bg-gradient-to-r from-[#D10A3C] to-[#FF0038] text-white py-2 px-4 rounded-lg w-full mt-auto">Pilih Paket</button>
+  <div class="mt-auto">
+    <form action="{{ route('showLocation') }}" method="POST">
+      @csrf
+      <input type="hidden" name="product_id" value="${prod.id_produk}">
+      <button type="submit" class="bg-gradient-to-r from-[#D10A3C] to-[#FF0038] text-white py-2 px-4 rounded-lg w-full font-telkomsel text-center block">
+        Pilih Paket
+      </button>
+    </form>
+  </div>
 </div>
 
         `;

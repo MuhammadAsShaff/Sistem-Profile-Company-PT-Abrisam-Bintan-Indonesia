@@ -2,6 +2,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Promo;
+use App\Models\Blog;
 use App\Models\FaQ;
 use App\Models\Kategori;
 use App\Models\Paket;
@@ -18,6 +19,7 @@ class LandingPageController extends Controller
         // Ambil semua paket dan kategori
         $paket = Paket::all();
         $kategori = Kategori::all();
+        $blogs = Blog::latest()->take(9)->get();
         // Ambil semua promo
         $promos = Promo::all();
 
@@ -62,8 +64,10 @@ class LandingPageController extends Controller
             ]);
         }
 
+
+
         // Return ke view dengan data kategori, produk, promos, dan paket
-        return view('landingPage.layoutLandingPage', compact('kategori', 'produk', 'promos', 'paket'));
+        return view('landingPage.layoutLandingPage', compact('kategori', 'produk', 'promos', 'paket','blogs'));
     }
 
     public function tampilKontak()

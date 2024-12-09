@@ -26,6 +26,7 @@
         @include('landingPage.content.slider')
         @include('landingPage.content.transisi')
         @include('landingPage.content.paketInternet')
+        @include('landingPage.content.blogTerbaru')
         @include('landingPage.content.kategoriProduk')
         @include('landingPage.content.hubungiKami')
       </div>
