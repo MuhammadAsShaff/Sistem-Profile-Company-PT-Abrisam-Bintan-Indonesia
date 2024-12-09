@@ -1,5 +1,5 @@
 <section class="bg-white">
-  <div class="relative flex">
+  <div class="relative flex mt-[-10]">
     <div class="min-h-screen lg:w-2/3"></div>
     <div class="hidden w-3/4 min-h-screen lg:block"></div>
 

@@ -7,41 +7,41 @@
     <div class="blog-carousel-container overflow-hidden relative">
       <div id="blog-carousel" class="flex transition-transform duration-500 ease-in-out">
         @foreach($blogs as $blog)
-      <div class="blog-card flex-shrink-0 w-full md:w-1/2 lg:w-1/3 px-3 mb-6">
+        <div class="blog-card flex-shrink-0 w-full md:w-1/2 lg:w-1/3 px-3 mb-6">
         <a href="{{ route('isiBlog', ['slug' => $blog->slug]) }}"
         class="block bg-white shadow-lg rounded-lg overflow-hidden hover:shadow-xl transition-shadow duration-300">
         <div class="relative h-48 overflow-hidden">
           @if($blog->gambar_cover)
         <img src="{{ asset('uploads/blogs/' . $blog->gambar_cover) }}" alt="{{ $blog->judul_blog }}"
         class="w-full h-full object-cover transform hover:scale-110 transition-transform duration-300">
-      @else
-      <div class="w-full h-full bg-gray-200 flex items-center justify-center text-gray-500">
-      Tidak ada gambar
-      </div>
-    @endif
+        @else
+        <div class="w-full h-full bg-gray-200 flex items-center justify-center text-gray-500">
+        Tidak ada gambar
+        </div>
+        @endif
           <div class="absolute ml-4 top-3 left-3 bg-red-500 text-white px-3 py-1 rounded-full text-xs font-semibold">
           {{ strtoupper($blog->kategori) }}
           </div>
         </div>
 
         <div class="p-5">
-          <h3 class="text-lg font-bold mb-2 text-gray-800 line-clamp-2">
-          {{ $blog->judul_blog }}
+          <h3 class="text-lg font-telkomsel font-bold mb-2 text-gray-800 line-clamp-2">
+          {{ Str::limit(strip_tags($blog->judul_blog), 40) }}
           </h3>
           <p class="text-gray-600 text-sm mb-4 line-clamp-3">
-          {{ Str::limit(strip_tags($blog->isi_blog), 100) }}
+          {{ Str::limit(strip_tags($blog->isi_blog), 40) }}
           </p>
           <div class="flex justify-between items-center">
           <span class="text-xs text-gray-500">
-            {{ \Carbon\Carbon::parse($blog->created_at)->format('d F Y') }}
+          {{ \Carbon\Carbon::parse($blog->created_at)->format('d F Y') }}
           </span>
-          <span class="text-red-500 hover:underline text-sm">
-            Baca Selengkapnya
+          <span class="text-red-500 font-telkomsel hover:underline text-sm">
+          Baca Selengkapnya
           </span>
           </div>
         </div>
         </a>
-      </div>
+        </div>
     @endforeach
       </div>
     </div>
@@ -63,7 +63,7 @@
     </div>
 
     <div class="container mx-auto px-4">
-      <a href="{{ route('tampilBlog') }}" class="text-red-500 hover:underline hover:text-red-600 flex items-center">
+      <a href="{{ route('tampilBlog') }}" class="text-red-500 hover:underline hover:text-red-600 flex items-center font-telkomsel">
         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
           <path fill-rule="evenodd"
             d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-8.707l-3-3a1 1 0 00-1.414 1.414L10.586 9H7a1 1 0 100 2h3.586l-1.293 1.293a1 1 0 101.414 1.414l3-3a1 1 0 000-1.414z"
