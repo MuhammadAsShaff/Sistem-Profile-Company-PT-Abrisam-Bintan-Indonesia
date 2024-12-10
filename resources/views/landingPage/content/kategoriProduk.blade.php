@@ -1,142 +1,119 @@
-<section class="bg-white">
-  <div class="relative flex mt-[-10]">
-    <div class="min-h-screen lg:w-2/3"></div>
-    <div class="hidden w-3/4 min-h-screen lg:block"></div>
+<div class="flex justify-center items-center mt-6 mb-6">
+  <h2 class="text-3xl font-telkomsel font-bold text-gray-800">Produk Yang Ada Di PT Abrisam Bintan Indonesia</h2>
+</div>
 
-    <!-- Bagian Container yang akan ngeslide -->
-    <div class="container flex flex-col justify-center w-full px-6 py-10 mx-auto lg:absolute lg:inset-x-0">
-      <h1
-        class="text-2xl font-semibold text-gray-800 capitalize lg:text-3xl dark:text-white text-center font-telkomsel">
-        Produk Yang Kami Sediakan
-      </h1>
+<div id="kategori-carousel" class="relative max-w-4xl mx-auto">
+  @foreach($kategori as $index => $item)
+  <div
+  class="carousel-item {{ $index == 0 ? 'block' : 'hidden' }} bg-white rounded-lg shadow-lg p-6 flex items-center space-x-8 min-h-[300px]">
+  <div class="flex-shrink-0">
+    <img alt="{{ $item->nama_kategori }}" class="w-24 h-24 object-cover" height="150"
+    src="{{ asset('uploads/kategori/' . $item->gambar_kategori) }}" width="150" />
+  </div>
+  <div class="flex flex-col justify-between h-full flex-grow">
+    <div>
+    <h2 class="text-xl font-bold font-telkomsel text-red-600 mb-2">
+    {{ $item->nama_kategori }}
+    </h2>
+    <p class="text-gray-600 mb-4">
+    {{ $item->deskripsi }}
+    </p>
 
-      <!-- Wrapper Produk -->
-      <div id="produk-wrapper" class="relative mt-10 flex items-center p-10 bg-gray-100 rounded-3xl">
-        <div class="flex items-center space-x-6">
-          <img id="produk-gambar" class="object-cover object-center w-82 lg:w-[8rem] rounded-lg h-48 lg:h-[12rem]"
-            src="" alt="Produk">
+    @php
+  $syaratKetentuan = is_string($item->syarat_ketentuan)
+  ? json_decode($item->syarat_ketentuan, true)
+  : $item->syarat_ketentuan;
+  @endphp
 
-          <div>
-            <h1 id="produk-nama" class="text-xl font-semibold text-gray-800 lg:w-72">
-              Nama Produk
-            </h1>
-            <p id="produk-deskripsi" class="max-w-lg mt-6 text-gray-500">
-              Deskripsi Produk
-            </p>
-            <div id="syarat-ketentuan" class="mt-4"></div>
-          </div>
-        </div>
-      </div>
+    @if(!empty($syaratKetentuan) && is_array($syaratKetentuan))
+    <div>
+    <h3 class="font-bold font-telkomsel mb-2">Syarat dan Ketentuan:</h3>
+    <ul class="list-disc pl-5 space-y-1">
+    @foreach(array_slice($syaratKetentuan, 0, 2) as $syarat)
+    <li class="text-reguler text-gray-700">{{ $syarat }}</li>
+  @endforeach
 
-      <!-- Navigasi -->
-      <div class="flex items-center justify-center mt-8 space-x-4">
-        <button id="prevBtn" class="p-2 bg-white rounded-full w-10 h-10 flex items-center justify-center 
-                       focus:outline-none hover:bg-gray-200 transition duration-300 shadow-xl">
-          <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-            stroke-width="4">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
-          </svg>
-        </button>
-
-        <!-- Indikator Slide -->
-        <div id="slide-indicators" class="flex space-x-2">
-          <!-- Indikator akan dihasilkan secara dinamis -->
-        </div>
-
-        <button id="nextBtn" class="p-2 bg-white rounded-full w-10 h-10 flex items-center justify-center 
-                       focus:outline-none hover:bg-gray-200 transition duration-300 shadow-xl">
-          <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-            stroke-width="4">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
-          </svg>
-        </button>
-      </div>
+    @if(count($syaratKetentuan) > 2)
+    <li class="text-reguler text-red-600 mt-4 font-telkomsel">
+   Selengkapnya
+    </li>
+  @endif
+    </ul>
+    </div>
+  @endif
     </div>
   </div>
-</section>
+  </div>
+  @endforeach
+
+  <div class="flex justify-center items-center space-x-6 mt-4">
+    <button id="prevBtn" class="bg-white rounded-full p-2 w-10 h-10 shadow-md">
+      <i class="fas fa-arrow-left text-blue-900"></i>
+    </button>
+    <div id="carousel-dots" class="flex space-x-2">
+      @foreach($kategori as $index => $item)
+      <span class="w-2 h-2 {{ $index == 0 ? 'bg-blue-900' : 'bg-gray-300' }} rounded-full cursor-pointer"
+      data-index="{{ $index }}"></span>
+    @endforeach
+    </div>
+    <button id="nextBtn" class="bg-white rounded-full w-10 h-10 p-2 shadow-md">
+      <i class="fas fa-arrow-right text-blue-900"></i>
+    </button>
+  </div>
+</div>
 
 <script>
-  // Data produk generated from PHP
-  const produkData = [
-    <?php foreach ($kategori as $produk): ?>
-  {
-      gambar_kategori: "<?= $produk->gambar_kategori ?>",
-      nama_kategori: "<?= $produk->nama_kategori ?>",
-      deskripsi: "<?= $produk->deskripsi ?>",
-      syarat_ketentuan: <?= $produk->syarat_ketentuan ?> // Pastikan ini adalah JSON valid
-    },
-    <?php endforeach; ?>
-  ];
+  document.addEventListener('DOMContentLoaded', function () {
+    const carousel = document.getElementById('kategori-carousel');
+    const items = carousel.querySelectorAll('.carousel-item');
+    const dots = carousel.querySelectorAll('#carousel-dots span');
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
 
-  let currentIndex = 0;
-  const slideIndicators = document.getElementById('slide-indicators');
+    let currentIndex = 0;
+    const totalItems = items.length;
 
-  function buatIndikator() {
-    slideIndicators.innerHTML = ''; // Bersihkan indikator sebelumnya
-    produkData.forEach((_, index) => {
-      const indicator = document.createElement('button');
-      indicator.classList.add(
-        'w-3', 'h-3', 'rounded-full',
-        index === currentIndex ? 'bg-red-500' : 'bg-gray-300'
-      );
-      indicator.addEventListener('click', () => {
-        currentIndex = index;
-        tampilkanProduk(currentIndex);
+    function showItem(index) {
+      // Hide all items
+      items.forEach(item => {
+        item.classList.add('hidden');
+        item.classList.remove('block');
       });
-      slideIndicators.appendChild(indicator);
-    });
-  }
 
-  function tampilkanProduk(index) {
-    const produk = produkData[index];
+      // Show selected item
+      items[index].classList.remove('hidden');
+      items[index].classList.add('block');
 
-    // Tampilkan gambar, nama, dan deskripsi
-    document.getElementById('produk-gambar').src = "/uploads/kategori/" + produk.gambar_kategori;
-    document.getElementById('produk-nama').textContent = produk.nama_kategori;
-    document.getElementById('produk-deskripsi').textContent = produk.deskripsi;
+      // Update dots
+      dots.forEach((dot, i) => {
+        if (i === index) {
+          dot.classList.remove('bg-gray-300');
+          dot.classList.add('bg-blue-900');
+        } else {
+          dot.classList.remove('bg-blue-900');
+          dot.classList.add('bg-gray-300');
+        }
+      });
+    }
 
-    // Tampilkan syarat & ketentuan
-    const syaratKetentuan = JSON.parse(produk.syarat_ketentuan);
-    const syaratKetetuanContainer = document.getElementById('syarat-ketentuan');
-
-    // Bersihkan kontainer sebelumnya
-    syaratKetetuanContainer.innerHTML = '';
-
-    // Tambahkan syarat & ketentuan dengan nomor urut
-    syaratKetentuan.forEach((syarat, idx) => {
-      const syaratItem = document.createElement('div');
-      syaratItem.classList.add('flex', 'items-start', 'mb-2');
-
-      syaratItem.innerHTML = `
-      <span class="mr-2 font-bold text-red-500">${idx + 1}.</span>
-      <p class="text-gray-600">${syarat}</p>
-    `;
-
-      syaratKetetuanContainer.appendChild(syaratItem);
+    // Next button
+    nextBtn.addEventListener('click', () => {
+      currentIndex = (currentIndex + 1) % totalItems;
+      showItem(currentIndex);
     });
 
-    // Update indikator
-    buatIndikator();
-  }
+    // Previous button
+    prevBtn.addEventListener('click', () => {
+      currentIndex = (currentIndex - 1 + totalItems) % totalItems;
+      showItem(currentIndex);
+    });
 
-  // Tombol navigasi
-  document.getElementById('nextBtn').addEventListener('click', () => {
-    currentIndex = (currentIndex + 1) % produkData.length;
-    tampilkanProduk(currentIndex);
+    // Dot navigation
+    dots.forEach(dot => {
+      dot.addEventListener('click', () => {
+        currentIndex = parseInt(dot.getAttribute('data-index'));
+        showItem(currentIndex);
+      });
+    });
   });
-
-  document.getElementById('prevBtn').addEventListener('click', () => {
-    currentIndex = (currentIndex - 1 + produkData.length) % produkData.length;
-    tampilkanProduk(currentIndex);
-  });
-
-  // Tampilkan produk pertama saat halaman dimuat
-  tampilkanProduk(currentIndex);
-  buatIndikator();
-
-  // Geser otomatis setiap 5 detik
-  setInterval(() => {
-    currentIndex = (currentIndex + 1) % produkData.length;
-    tampilkanProduk(currentIndex);
-  }, 5000);
 </script>

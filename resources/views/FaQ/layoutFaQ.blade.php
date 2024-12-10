@@ -16,7 +16,7 @@
   @vite('resources/css/app.css')
 </head>
 
-<body class="font-poppins bg-white text-gray-900 overflow-x-hidden">
+<body class="font-poppins bg-white overflow-x-hidden">
   <!-- Navbar Section -->
   @include('landingPage.navbar')
 

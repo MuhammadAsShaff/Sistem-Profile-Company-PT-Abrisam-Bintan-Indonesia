@@ -1,5 +1,5 @@
-<h2 class="mt-8  text-xl font-bold">Grafik Inventori Masuk Dan Keluar</h2>
-<div class="w-full bg-white rounded-lg  mb-8 shadow dark:bg-gray-800 p-4 md:p-6 flex flex-col justify-between">
+<h2 class="mt-8 mb-2 text-xl font-bold">Grafik Inventori Masuk Dan Keluar</h2>
+<div class="w-full bg-white rounded-lg  mb-8 shadow-md shadow dark:bg-gray-800 p-4 md:p-6 flex flex-col justify-between">
   <div class="flex justify-between pb-4 border-b border-gray-200 dark:border-gray-700">
    
      <p class="text-gray-600">Keterangan Inventori Masuk Dan Keluar</p>

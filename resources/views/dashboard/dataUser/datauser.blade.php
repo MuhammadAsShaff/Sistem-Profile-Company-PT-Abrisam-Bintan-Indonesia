@@ -61,8 +61,7 @@
                                 <th scope="col"
                                     class="py-3.5 px-4 text-sm font-normal text-left text-gray-500 dark:text-gray-400 w-1/6">
                                     <div class="flex items-center gap-x-3">
-                                        <input type="checkbox"
-                                            class="text-blue-500 border-gray-300 rounded dark:bg-gray-900 dark:ring-offset-gray-900 dark:border-gray-700">
+                                        
                                         <span>Name</span>
                                     </div>
                                 </th>
@@ -92,8 +91,7 @@
                                 <tr>
                                     <td class="px-4 py-4 text-sm font-medium text-gray-700 whitespace-nowrap">
                                         <div class="inline-flex items-center gap-x-3">
-                                            <input type="checkbox"
-                                                class="text-blue-500 border-gray-300 rounded dark:bg-gray-900 dark:ring-offset-gray-900 dark:border-gray-700">
+                                            
                                             <div class="flex items-center gap-x-2">
                                                 <img class="object-cover w-10 h-10 rounded-full"
                                                     src="{{ $admin->foto_admin ? asset('uploads/admins/' . $admin->foto_admin) : asset('images/blankProfile.jpg') }}"

@@ -28,8 +28,7 @@
         @include('landingPage.content.paketInternet')
         @include('landingPage.content.blogTerbaru')
         @include('landingPage.content.kontakPerusahaan')
-        @include('landingPage.content.kategoriProduk')
-        @include('landingPage.content.hubungiKami')
+       
       </div>
     </div>
 

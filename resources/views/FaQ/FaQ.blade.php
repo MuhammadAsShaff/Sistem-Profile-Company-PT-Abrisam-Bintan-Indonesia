@@ -1,4 +1,4 @@
-<div class="min-h-screen bg-gray-100 flex items-center justify-center">
+<div class="min-h-screen  flex items-center justify-center">
   <div class="container mx-auto p-5">
     <div class="flex flex-col md:flex-row items-center">
       <div class="md:w-1/3 flex flex-col items-center text-center mt-[-240px]">

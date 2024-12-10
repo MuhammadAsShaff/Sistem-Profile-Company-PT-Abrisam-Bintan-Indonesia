@@ -1,4 +1,4 @@
-<div class="flex items-center space-x-4 p-4 bg-white border border-gray-200 rounded-lg shadow">
+<div class="flex items-center space-x-4 p-4 bg-white shadow-md rounded-lg shadow">
   <!-- Gambar di sebelah kiri -->
   <div class="w-auto">
     <img src="{{ asset('images/welcomeIlustrasi.png') }}" alt="Welcome Illustration" class="w-48 h-auto rounded-lg">
