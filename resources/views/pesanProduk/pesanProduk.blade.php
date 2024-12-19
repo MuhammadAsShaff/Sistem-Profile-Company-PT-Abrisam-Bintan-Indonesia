@@ -13,28 +13,64 @@
   <!-- Tambahkan Leaflet CSS dan JavaScript -->
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
   <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+  <style>
+    /* Pastikan desktop step indicator selalu tampil di desktop */
+    @media (min-width: 768px) {
+      .desktop-step-indicator {
+        display: flex !important;
+      }
 
+      .mobile-step-indicator {
+        display: none !important;
+      }
+    }
+
+    /* Pastikan mobile step indicator selalu tampil di mobile */
+    @media (max-width: 767px) {
+      .desktop-step-indicator {
+        display: none !important;
+      }
+
+      .mobile-step-indicator {
+        display: flex !important;
+      }
+    }
+
+       @media (max-width: 767px) {
+      .desktop-view {
+        display: none !important;
+      }
+    }
+  
+    @media (min-width: 768px) {
+      .mobile-view {
+        display: none !important;
+      }
+    }
+  </style>
 </head>
 
 <body class="bg-gray-100">
   <!-- Step Indicator -->
-  <div class="fixed w-full bg-white z-48 py-10 ">
-    <div class="container mx-auto max-w-4xl px-4 flex justify-center">
-      <ol class="flex items-center space-x-4 rtl:space-x-reverse">
-        <li class="flex items-center text-red-500 space-x-2 rtl:space-x-reverse">
+  <div class="fixed w-full bg-white z-48 py-4 md:py-10">
+    <div class="container mx-auto max-w-4xl px-4 ">
+      <!-- Step Desktop -->
+      <ol class="desktop-step-indicator hidden md:flex items-center space-x-4 rtl:space-x-reverse">
+        <li class="flex items-center gradient-text space-x-2 rtl:space-x-reverse">
           <span
-            class="flex items-center justify-center w-8 h-8 border border-red-500 rounded-full shrink-0 dark:border-gray-400">1</span>
+            class="flex items-center justify-center w-8 h-8 border border-red-500 rounded-full shrink-0 dark:border-red-400">1</span>
           <span>
-            <h3 class="font-bold font-telkomsel gradient-text leading-tight">Pilih Lokasi & Paket</h3>
-            <p class="text-sm gradient-text">Tentukan lokasi pemasangan kamu dan pilih paket Internet</p>
+            <h3 class="font-bold font-telkomsel leading-tight gradient-text leading-tight">Pilih Lokasi & Paket</h3>
+            <p class="text-sm dark:text-red-400">Tentukan lokasi pemasangan kamu dan pilih paket Internet</p>
           </span>
         </li>
-        <li class="flex items-center text-gray-500 space-x-2 rtl:space-x-reverse">
+        <li class="flex items-center text-gray-500 dark:text-gray-400 space-x-2 rtl:space-x-reverse">
           <span
-            class="flex items-center justify-center w-8 h-8 border border-gray-500 rounded-full shrink-0 dark:border-red-400">2</span>
+            class="flex items-center justify-center w-8 h-8 border border-gray-500 rounded-full shrink-0 dark:border-gray-400">2</span>
           <span>
             <h3 class="font-bold font-telkomsel leading-tight">Isi Data Diri</h3>
-            <p class="text-sm dark:text-red-400">Siapkan identitas, isi data diri dan Lakukan Konfirmasi Data Anda</p>
+            <p class="text-sm text-gray-500 dark:text-gray-400">Siapkan identitas, isi data diri dan Lakukan Konfirmasi
+              Data Anda</p>
           </span>
         </li>
         <li class="flex items-center text-gray-500 dark:text-gray-400 space-x-2 rtl:space-x-reverse">
@@ -46,34 +82,64 @@
           </span>
         </li>
       </ol>
+
+      <!-- Step Mobile -->
+      <div class="mobile-step-indicator block md:hidden flex justify-between items-center">
+        <!-- Step 1 -->
+        <span class="flex flex-col items-center gradient-text">
+          <div class="w-8 h-8 flex items-center justify-center border border-red-500 rounded-full">1</div>
+          <p class="text-xs font-bold font-telkomsel">Pilih Lokasi</p>
+          <p class="text-[10px] gradient-text text-center">Lokasi dan Paket</p>
+        </span>
+
+        <!-- Line Separator -->
+        <div class="w-8 border-t-2 border-gray-300"></div>
+
+        <!-- Step 2 -->
+        <span class="flex flex-col items-center text-gray-500">
+          <div class="w-8 h-8 flex items-center justify-center border border-gray-500 rounded-full">2</div>
+          <p class="text-xs font-bold font-telkomsel">Isi Data</p>
+          <p class="text-[10px] text-gray-500 text-center">Konfirmasi Data</p>
+        </span>
+
+        <!-- Line Separator -->
+        <div class="w-8 border-t-2 border-gray-300"></div>
+
+        <!-- Step 3 -->
+        <span class="flex flex-col items-center text-gray-500">
+          <div class="w-8 h-8 flex items-center justify-center border border-gray-500 rounded-full">3</div>
+          <p class="text-xs font-bold font-telkomsel">Selesai</p>
+          <p class="text-[10px] text-gray-500 text-center">Tunggu Call Center</p>
+        </span>
+      </div>
     </div>
   </div>
-  <br><br>
+  <br><br><br><br class="hidden md:block">
 
-  <div class="container mx-auto max-w-4xl mt-32 p-5 bg-white shadow-2xl shadow-gray-400 rounded-lg ">
-    <h2 class="text-center text-2xl font-bold mb-6 font-telkomsel">Cari Lokasi untuk Pemasangan IndiHome</h2>
+  <!-- Form & Peta -->
+  <div class="container mx-auto max-w-4xl mt-20 md:mt-20 p-4 md:p-5 bg-white shadow-2xl rounded-lg">
+    <h2 class="text-center text-lg md:text-2xl font-bold mb-4 md:mb-6 font-telkomsel">Cari Lokasi untuk Pemasangan</h2>
 
     <!-- Peta -->
-    <div id="map" class="w-full h-64 rounded-lg mb-6"></div>
+    <div id="map" class="w-full h-64 md:h-64 rounded-lg mb-4 md:mb-6"></div>
     <button id="getCurrentLocationBtn"
-      class="w-full p-3 bg-gradient-to-r from-[#D10A3C] to-[#FF0038] text-white rounded-lg hover:bg-red-600">
-      Gunakan Lokasi Saya Saat Ini
+      class="w-full p-2 md:p-3 bg-gradient-to-r from-[#D10A3C] to-[#FF0038] text-white rounded-lg hover:bg-red-600">
+      Gunakan Lokasi Saya
     </button>
 
     <!-- Input Pencarian Lokasi -->
-    <div class="space-y-4">
-      <!-- Input dan tombol pencarian -->
+    <div class="space-y-2 md:space-y-4 mt-4">
       <div class="flex">
-        <input id="searchBox" type="text" placeholder="Cari nama jalan, kelurahan, gedung, dsb..."
-          class="w-full p-3 mt-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500" />
+        <input id="searchBox" type="text" placeholder="Cari lokasi..."
+          class="w-full p-2 md:p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500" />
         <button id="searchBtn"
-          class="p-3 mt-4 ml-2 bg-gradient-to-r from-[#D10A3C] to-[#FF0038] text-white rounded-lg hover:bg-red-600">
+          class="p-2 md:p-3 ml-2 bg-gradient-to-r from-[#D10A3C] to-[#FF0038] text-white rounded-lg hover:bg-red-600">
           Cari
         </button>
       </div>
 
       <!-- Container untuk autocomplete suggestions -->
-      <div id="autocomplete-list" class="bg-white shadow rounded-lg overflow-y-auto max-h-40 mt-2"></div>
+      <div id="autocomplete-list" class="bg-white shadow rounded-lg overflow-y-auto max-h-40 mt-4"></div>
 
       <!-- Alamat lengkap -->
       <form id="locationForm" action="{{ route('simpanAlamat') }}" method="POST">
@@ -123,9 +189,9 @@
 
     </div>
   </div>
-
-  <!-- Fixed Bottom Bar -->
-  <div class="fixed bottom-0 left-0 w-full bg-white border-t border-gray-200 shadow-lg z-50">
+  
+  <!-- Versi Desktop -->
+  <div class="desktop-view fixed bottom-0 left-0 w-full bg-white border-t border-gray-200 shadow-lg z-50">
     <div class="container mx-auto max-w-4xl flex items-center justify-between p-4">
       <div class="flex items-center">
         <div
@@ -166,6 +232,40 @@
       </div>
       <div class="flex">
         <a id="selectLocationBtn" href="#" class="w-full p-3 bg-gray-500 text-white rounded-lg cursor-not-allowed"
+          onclick="submitForm(event)">
+          Lanjut Isi Data Diri
+        </a>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Versi Mobile -->
+  <div class="mobile-view fixed bottom-0 left-0 w-full bg-white border-t border-gray-200 shadow-lg z-50">
+    <div class="container mx-auto max-w-4xl flex items-center justify-between p-4">
+      <div class="flex items-center">
+        <div
+          class="flex items-center justify-center w-10 h-10 bg-gradient-to-r from-[#D10A3C] to-[#FF0038] text-white font-bold rounded-lg mr-4 p-6">
+          <!-- Menampilkan Kecepatan Produk -->
+          @if(isset($produk) && !empty($produk))
+        <span class="font-telkomsel text-sm">{{ $produk['kecepatan'] }} Mbps</span>
+      @else
+      <span class="font-telkomsel text-sm">N/A</span>
+    @endif
+        </div>
+        <div>
+          <!-- Menampilkan Nama dan Harga Produk -->
+          @if(isset($produk) && !empty($produk))
+        <h4 class="text-sm font-bold font-telkomsel">{{ $produk['nama_produk'] }}</h4>
+        <p class="text-xs text-red-600 font-telkomsel">
+        Rp{{ number_format($produk['harga_produk'] - ($produk['harga_produk'] * $produk['diskon'] / 100), 0, ',', '.') }}
+        </p>
+      @else
+      <h4 class="text-sm font-bold font-telkomsel">Produk Belum Dipilih</h4>
+    @endif
+        </div>
+      </div>
+      <div class="flex">
+        <a id="selectLocationMobileBtn" href="#" class="w-full p-3 bg-gray-500 text-white rounded-lg cursor-not-allowed"
           onclick="submitForm(event)">
           Lanjut Isi Data Diri
         </a>
@@ -238,20 +338,42 @@
         });
     }
 
-    // Fungsi untuk mengaktifkan tombol
+   // Fungsi untuk mengaktifkan tombol
     function enableLocationBtn() {
-      const btn = document.getElementById('selectLocationBtn');
-      btn.removeAttribute("disabled"); // Mengaktifkan tombol
-      btn.classList.remove("bg-gray-500", "cursor-not-allowed"); // Menghapus kelas disabled
-      btn.classList.add("bg-gradient-to-r", "from-[#D10A3C]", "to-[#FF0038]", "hover:opacity-90"); // Menambahkan kelas aktif
+      // Tombol Desktop
+      const btnDesktop = document.getElementById('selectLocationBtn');
+      if (btnDesktop) {
+        btnDesktop.removeAttribute("disabled");
+        btnDesktop.classList.remove("bg-gray-500", "cursor-not-allowed");
+        btnDesktop.classList.add("bg-gradient-to-r", "from-[#D10A3C]", "to-[#FF0038]", "hover:opacity-90");
+      }
+
+      // Tombol Mobile
+      const btnMobile = document.getElementById('selectLocationMobileBtn');
+      if (btnMobile) {
+        btnMobile.removeAttribute("disabled");
+        btnMobile.classList.remove("bg-gray-500", "cursor-not-allowed");
+        btnMobile.classList.add("bg-gradient-to-r", "from-[#D10A3C]", "to-[#FF0038]", "hover:opacity-90");
+      }
     }
 
     // Fungsi untuk menonaktifkan tombol
     function disableLocationBtn() {
-      const btn = document.getElementById('selectLocationBtn');
-      btn.setAttribute("disabled", true); // Menonaktifkan tombol
-      btn.classList.add("bg-gray-500", "cursor-not-allowed"); // Menambahkan kelas disabled
-      btn.classList.remove("bg-gradient-to-r", "from-[#D10A3C]", "to-[#FF0038]", "hover:opacity-90"); // Menghapus kelas aktif
+      // Tombol Desktop
+      const btnDesktop = document.getElementById('selectLocationBtn');
+      if (btnDesktop) {
+        btnDesktop.setAttribute("disabled", true);
+        btnDesktop.classList.add("bg-gray-500", "cursor-not-allowed");
+        btnDesktop.classList.remove("bg-gradient-to-r", "from-[#D10A3C]", "to-[#FF0038]", "hover:opacity-90");
+      }
+
+      // Tombol Mobile
+      const btnMobile = document.getElementById('selectLocationMobileBtn');
+      if (btnMobile) {
+        btnMobile.setAttribute("disabled", true);
+        btnMobile.classList.add("bg-gray-500", "cursor-not-allowed");
+        btnMobile.classList.remove("bg-gradient-to-r", "from-[#D10A3C]", "to-[#FF0038]", "hover:opacity-90");
+      }
     }
 
     // Fungsi untuk mengirimkan form
@@ -261,12 +383,16 @@
       // Ambil form
       const form = document.getElementById('locationForm');
 
-      // Jika tombol dalam keadaan aktif, submit form
-      if (!document.getElementById('selectLocationBtn').hasAttribute("disabled")) {
+      // Periksa status tombol desktop atau mobile
+      const btnDesktop = document.getElementById('selectLocationBtn');
+      const btnMobile = document.getElementById('selectLocationMobileBtn');
+
+      // Jika salah satu tombol dalam keadaan aktif, submit form
+      if ((btnDesktop && !btnDesktop.hasAttribute("disabled")) ||
+        (btnMobile && !btnMobile.hasAttribute("disabled"))) {
         form.submit(); // Mengirim form
       }
     }
-
 
     // Event listener untuk pergerakan peta
     map.on('move', function () {

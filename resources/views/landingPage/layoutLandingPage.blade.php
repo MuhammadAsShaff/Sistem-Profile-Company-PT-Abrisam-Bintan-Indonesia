@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,10 +10,11 @@
 
   <!-- Font Poppins -->
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
-  
+
   <!-- Vite Tailwind CSS -->
   @vite('resources/css/app.css')
 </head>
+
 <body class="font-poppins bg-white text-gray-900 overflow-x-hidden">
   <!-- Navbar -->
   @include('landingPage.navbar')
@@ -21,20 +23,28 @@
   <div class="w-screen mx-0">
     <!-- Main Content Area -->
     <div class="py-12">
-      <div class="w-screen mt-[40px]">
+      <div class="w-full mt-[40px]">
         <!-- Slider Content -->
         @include('landingPage.content.slider')
         @include('landingPage.content.transisi')
         @include('landingPage.content.paketInternet')
-        @include('landingPage.content.blogTerbaru')
+        @include('landingPage.content.kategoriProduk')
         @include('landingPage.content.kontakPerusahaan')
-       
+        @include('landingPage.content.blogTerbaru')
       </div>
     </div>
 
+    <!-- Bubble Chat -->
+  <a href="https://wa.me/6281370304777" target="_blank" class="fixed bottom-5 right-10 z-50 p-2">
+    <div
+      class="flex items-center justify-center w-16 h-16 bg-green-500 rounded-full shadow-lg hover:bg-green-600 transition duration-300">
+      <i class="fab fa-whatsapp text-white text-3xl"></i>
+    </div>
+  </a>
+
     <!-- Footer Section -->
-    <footer class="text-white py-6 ">
-        @include('landingPage.footer')
+    <footer class="bg-gradient-to-r from-[#001a41] to-[#0e336c] text-gray-200 w-full">
+      @include('landingPage.footer')
     </footer>
   </div>
 

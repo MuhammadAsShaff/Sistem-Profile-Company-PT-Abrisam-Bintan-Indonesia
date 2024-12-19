@@ -88,9 +88,9 @@
     <a href="{{ route('landingPage.layoutLandingPage') }}"
       class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-200">Beranda</a>
     <a href="{{ route('tampilProduk') }}" class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-200">Produk</a>
-    <a href="#" class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-200">Blog</a>
+    <a href="{{ route('tampilBlog')}}" class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-200">Blog</a>
     <a href="{{ route('tampilKontak') }}" class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-200">Kontak</a>
-    <a href="#" class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-200">Tentang Kami</a>
+    <a href="{{route('tampilTentangKami')}}" class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-200">Tentang Kami</a>
     <a href="{{ route('tampilFaQ') }}" class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-200">FaQ</a>
   </div>
 </nav>

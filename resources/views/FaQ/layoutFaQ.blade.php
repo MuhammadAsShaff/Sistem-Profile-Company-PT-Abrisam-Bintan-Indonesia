@@ -22,13 +22,8 @@
 
   <!-- Main Container -->
   <div class="w-screen mx-0 flex flex-col justify-between min-h-screen">
-
-    <!-- Contact Section -->
-    <div>
       <!-- Kontak berada di tengah -->
       @include('FaQ.FaQ')
-    </div>
-
     <!-- Footer Section -->
     <footer class="bg-white">
       @include('landingPage.footer')

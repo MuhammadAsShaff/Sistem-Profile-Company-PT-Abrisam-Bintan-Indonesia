@@ -1,4 +1,4 @@
-<div class="container mx-auto px-4 md:px-10 lg:px-16 py-10 bg-gray-100 rounded-bl-[6rem] rounded-tr-[6rem] mt-8 mb-8">
+<div class="justify-center container mx-auto px-4 md:px-10 lg:px-16 py-10 bg-gray-100 rounded-bl-[6rem] rounded-tr-[6rem] mt-8 mb-12">
   <div class="container mx-auto px-12 py-6">
     <!-- Header Section -->
     <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-6">
@@ -49,6 +49,7 @@
   </div>
 
   <div id="produk-container" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 py-6 justify-center">
+    
     <!-- Produk akan dimuat secara dinamis -->
   </div>
   <!-- View All Button -->
@@ -97,6 +98,7 @@
       ${prod.benefit && Array.isArray(JSON.parse(prod.benefit)) && JSON.parse(prod.benefit).length > 0
             ? `<i class="fas fa-gift" style="color: #001637;"></i> ` + JSON.parse(prod.benefit).join(', ')
             : '<span style="visibility:hidden;">No benefit</span>'}
+            
     </div>
   </ul>
   <div class="mt-auto">

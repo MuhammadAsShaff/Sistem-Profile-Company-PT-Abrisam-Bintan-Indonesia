@@ -15,11 +15,21 @@
   @include('landingPage.navbar')
 
   <div class="container mx-auto p-8 mt-20 grid grid-cols-1 md:grid-cols-3 gap-8">
-    <!-- Konten Blog diisi AJAX -->
+    <!-- Search Bar untuk Mobile -->
+    <div
+      class="block md:hidden bg-gradient-to-r from-[#001a41] to-[#0e336c] shadow-xl rounded-xl p-4 justify-center ">
+      <input type="text" id="search-input" placeholder="Cari Blog..."
+        class="w-full p-2 text-sm border rounded-md focus:outline-none focus:ring focus:border-red-300">
+    </div>
+
+    <!-- Kolom Kiri: Konten Blog -->
     @include('blog.blogContent')
-    <!-- Kolom Kanan: Search Bar dan Recent Posts -->
+
+
+    <!-- Kolom Kanan: Search Bar dan Recent Posts (Hanya Desktop) -->
     @include('blog.searchAndRecent')
   </div>
+
   <br>
   @include('landingPage.footer')
   @vite('resources/js/app.js')

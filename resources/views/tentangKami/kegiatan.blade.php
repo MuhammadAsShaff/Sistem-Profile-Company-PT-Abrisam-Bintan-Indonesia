@@ -1,9 +1,9 @@
-<div class="container mx-auto p-6 rounded-lg bg-white">
+<div class="container mx-auto rounded-lg bg-white">
   <!-- Header Section -->
   <div class="container mx-auto p-6 bg-gray-50 rounded-lg bg-white mb-[-20]">
-    <h1 class="text-3xl font-bold text-gray-800 text-left ml-6 font-telkomsel mt-20">Foto Kegiatan PT Abrisam Bintan
+    <h1 class="text-3xl font-bold text-gray-800 text-left font-telkomsel mt-20">Foto Kegiatan PT Abrisam Bintan
       Indonesia</h1>
-    <p class="ml-6">Kami membangun tim sales force yang unggul melalui pengembangan individu dan kolaborasi antar
+    <p class="">Kami membangun tim sales force yang unggul melalui pengembangan individu dan kolaborasi antar
       departemen. Berikut adalah dokumentasi foto kegiatan kami yang mencerminkan semangat dan kerja keras dalam
       mencapainya. Setiap kegiatan yang kami lakukan bertujuan untuk menciptakan atmosfer yang mendukung pertumbuhan
       pribadi dan profesional bagi seluruh anggota tim kami.</p>
@@ -35,34 +35,27 @@
     </div>
 
     <!-- Slider Controls -->
-    <button type="button"
-      class="absolute top-1/2 left-10 z-30 flex items-center justify-center h-10 w-10 transform -translate-y-1/2 px-6 cursor-pointer group focus:outline-none"
-      id="prev-btn">
-      <span
-        class="inline-flex items-center justify-center w-12 h-12 rounded-full bg-white/30 group-hover:bg-white/50 group-focus:ring-4 group-focus:ring-white">
-        <svg class="w-6 h-6 text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
-          viewBox="0 0 17 10">
-          <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-            d="M10.5 1l-6 4.5 6 4.5"></path>
+      <button type="button"
+        class="absolute top-1/2 left-4 lg:left-20 transform -translate-y-1/2 z-5 text-black bg-white rounded-full w-8 h-8 md:w-10 md:h-10 flex items-center justify-center focus:outline-none hover:bg-gray-200 transition duration-300 shadow-xl"
+        id="prev-btn">
+        <svg class="w-4 h-4 md:w-5 md:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+          xmlns="http://www.w3.org/2000/svg">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="4" d="M15 19l-7-7 7-7"></path>
         </svg>
-      </span>
-    </button>
-
-    <button type="button"
-      class="absolute top-1/2 right-10 z-30 flex items-center justify-center h-10 w-10 transform -translate-y-1/2 px-6 cursor-pointer group focus:outline-none"
-      id="next-btn">
-      <span
-        class="inline-flex items-center justify-center w-12 h-12 rounded-full bg-white/30 group-hover:bg-white/50 group-focus:ring-4 group-focus:ring-white">
-        <svg class="w-6 h-6 text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
-          viewBox="0 0 17 10">
-          <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-            d="M6.5 1l6 4.5-6 4.5"></path>
+      </button>
+      
+      <!-- Tombol Navigasi Next -->
+      <button type="button"
+        class="absolute top-1/2 right-4 lg:right-20 transform -translate-y-1/2 z-5 text-black bg-white rounded-full w-8 h-8 md:w-10 md:h-10 flex items-center justify-center focus:outline-none hover:bg-gray-200 transition duration-300 shadow-xl"
+         id="next-btn">
+        <svg class="w-4 h-4 md:w-5 md:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+          xmlns="http://www.w3.org/2000/svg">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="4" d="M9 5l7 7-7 7"></path>
         </svg>
-      </span>
-    </button>
+      </button>
   </div>
 
-  <div class="grid grid-cols-2 md:grid-cols-3 gap-4 p-10 ">
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-4 p-10 ">
     @foreach ($kegiatan->take(3) as $index => $item) <!-- Ambil hanya 3 gambar pertama -->
     <div class="relative group">
       <img id="kegiatan" class="h-56 w-full rounded-lg" src="{{ asset('uploads/kegiatan/' . $item->gambar) }}" alt="">
