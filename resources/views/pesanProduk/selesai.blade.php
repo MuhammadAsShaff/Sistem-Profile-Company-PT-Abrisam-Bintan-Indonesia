@@ -39,10 +39,10 @@
 
 <body class="bg-gray-100">
   <!-- Step Indicator -->
-  <div class="fixed w-full bg-white z-48 py-4 md:py-10 top-0 md:top-40">
+  <div class="fixed top-0 left-0 right-0 w-full bg-white z-50 py-4 md:py-10">
     <div class="container mx-auto max-w-4xl px-4">
       <!-- Step Desktop -->
-      <ol class="desktop-step-indicator hidden md:flex items-center space-x-4 rtl:space-x-reverse">
+      <ol class="desktop-step-indicator hidden md:flex items-center justify-center space-x-4 rtl:space-x-reverse">
         <li class="flex items-center text-gray-500 space-x-2 rtl:space-x-reverse">
           <span class="flex items-center justify-center w-8 h-8 border border-gray-500 rounded-full shrink-0">1</span>
           <span>
@@ -65,29 +65,29 @@
           </span>
         </li>
       </ol>
-
+  
       <!-- Step Mobile -->
       <div class="mobile-step-indicator block md:hidden flex justify-between items-center">
         <!-- Step 1 -->
         <span class="flex flex-col items-center text-gray-500">
           <div class="w-8 h-8 flex items-center justify-center border border-gray-500 rounded-full">1</div>
-          <p class="text-xs font-bold font-telkomsel">Pilih Lokasi</p>
+          <p class="text-xs font-bold font-telkomsel mt-1">Pilih Lokasi</p>
           <p class="text-[10px] text-gray-500 text-center">Lokasi dan Paket</p>
         </span>
-
+  
         <!-- Line Separator -->
         <div class="w-8 border-t-2 border-gray-300"></div>
-
+  
         <!-- Step 2 -->
         <span class="flex flex-col items-center text-gray-500">
           <div class="w-8 h-8 flex items-center justify-center border border-gray-500 rounded-full">2</div>
-          <p class="text-xs font-bold font-telkomsel">Isi Data</p>
+          <p class="text-xs font-bold font-telkomsel mt-1">Isi Data</p>
           <p class="text-[10px] text-gray-500 text-center">Konfirmasi Data</p>
         </span>
-
+  
         <!-- Line Separator -->
         <div class="w-8 border-t-2 border-gray-300"></div>
-
+  
         <!-- Step 3 -->
         <span class="flex flex-col items-center gradient-text">
           <div class="w-8 h-8 flex items-center justify-center border border-red-500 rounded-full">3</div>
@@ -97,7 +97,7 @@
       </div>
     </div>
   </div>
-<br><br class="hidden md:block"><br class="hidden md:block">
+  <br><br class="hidden md:block"><br class="hidden md:block"><br class="hidden md:block"><br class="hidden md:block">
   <!-- Card Container -->
   <div class="max-w-xl mx-auto bg-white shadow-lg rounded-lg p-8 mt-32">
 

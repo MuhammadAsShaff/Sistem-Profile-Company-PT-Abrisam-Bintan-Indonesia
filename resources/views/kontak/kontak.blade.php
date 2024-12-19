@@ -1,7 +1,7 @@
 <section class="bg-white dark:bg-gray-900">
   <div class="container px-6 py-12 mx-auto">
     <div>
-      <p class="font-medium text-red-500 dark:text-red-400">Informasi Kontak</p>
+      <p class="font-medium gradient-text dark:text-red-400">Informasi Kontak</p>
 
       <h1 class="mt-2 text-2xl font-bold font-telkomsel text-gray-800 md:text-3xl ">Hubungi Kami</h1>
 
@@ -13,7 +13,7 @@
     <div class="grid grid-cols-1 gap-12 mt-10 lg:grid-cols-3">
       <div class="grid grid-cols-1 gap-12 sm:grid-cols-2 lg:grid-cols-1">
         <div>
-          <span class="inline-block p-3 text-red-500 rounded-full bg-red-100/80 dark:bg-gray-800">
+          <span class="inline-block p-3 text-red-600 rounded-full bg-red-100/80 dark:bg-gray-800">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
               stroke="currentColor" class="w-5 h-5">
               <path stroke-linecap="round" stroke-linejoin="round"
@@ -23,7 +23,7 @@
 
           <h2 class="mt-4 text-base font-medium font-telkomsel text-gray-800"><b>Email</b></h2>
           <p class="text-sm text-gray-500 dark:text-gray-400">Anda Dapat Menghubungi Kami Melalui Email</p>
-          <p class="text-sm text-red-500 dark:text-red-400">
+          <p class="text-sm gradient-text dark:text-red-400">
             <a href="mailto:Abrisambintanindonesia@gmail.com" class="hover:underline">
               Abrisambintanindonesia@gmail.com
             </a>
@@ -31,7 +31,7 @@
         </div>
 
         <div>
-          <span class="inline-block p-3 text-red-500 rounded-full bg-red-100/80 dark:bg-gray-800">
+          <span class="inline-block p-3 text-red-600 rounded-full bg-red-100/80 dark:bg-gray-800">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
               stroke="currentColor" class="w-5 h-5">
               <path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" />
@@ -42,11 +42,11 @@
 
           <h2 class="mt-4 text-base font-medium font-telkomsel text-gray-800 dark:text-white"><b>Kantor</b></h2>
           <p class="text-sm text-gray-500 dark:text-gray-400">Anda Dapat Datang Ke Kantor Kami</p>
-          <p class="text-sm text-red-500 dark:text-red-400">JL.Lobak No.16,Pekanbaru</p>
+          <p class="text-sm gradient-text dark:text-red-400">JL.Lobak No.16,Pekanbaru</p>
         </div>
 
         <div>
-          <span class="inline-block p-3 text-red-500 rounded-full bg-red-100/80 dark:bg-gray-800">
+          <span class="inline-block p-3 text-red-600 rounded-full bg-red-100/80 dark:bg-gray-800">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
               stroke="currentColor" class="w-6 h-6">
               <path stroke-linecap="round" stroke-linejoin="round"
@@ -59,25 +59,25 @@
           <div class="flex justify-start items-center space-x-4 mt-2">
             <!-- Instagram -->
             <a href="https://www.instagram.com/indihomeabrisambintanindonesia" target="_blank" rel="noopener noreferrer"
-              class="text-gray-800 dark:text-white hover:text-red-500" aria-label="Instagram">
+              class="text-gray-800 dark:text-white hover:text-red-600" aria-label="Instagram">
               <i class="fa-brands fa-instagram fa-2x"></i>
             </a>
 
             <!-- WhatsApp -->
             <a href="https://wa.me/6281370304777" target="_blank" rel="noopener noreferrer"
-              class="text-gray-800 dark:text-white hover:text-red-500" aria-label="WhatsApp">
+              class="text-gray-800 dark:text-white hover:text-red-600" aria-label="WhatsApp">
               <i class="fa-brands fa-whatsapp fa-2x"></i>
             </a>
 
             <!-- Telegram -->
             <a href="https://t.me/6281370304777" target="_blank" rel="noopener noreferrer"
-              class="text-gray-800 dark:text-white hover:text-red-500" aria-label="Telegram">
+              class="text-gray-800 dark:text-white hover:text-red-600" aria-label="Telegram">
               <i class="fa-brands fa-telegram fa-2x"></i>
             </a>
             
             <!-- tiktok -->
             <a href="https://www.tiktok.com/@indihomeabi?_t=8qMdOV3DiGQ&_r=1" target="_blank" rel="noopener noreferrer"
-              class="text-gray-800 dark:text-white hover:text-red-500" aria-label="Telegram">
+              class="text-gray-800 dark:text-white hover:text-red-600" aria-label="Telegram">
               <i class="fa-brands fa-tiktok fa-2x"></i>
             </a>
           </div>
