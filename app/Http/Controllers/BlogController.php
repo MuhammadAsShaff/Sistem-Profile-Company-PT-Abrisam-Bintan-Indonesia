@@ -12,15 +12,28 @@ class BlogController extends Controller
   {
     $search = $request->input('search');
     $query = Blog::orderBy('created_at', 'desc');
+    $kategori = $request->input('kategori');
 
     if (!empty($search)) {
-      $query->where('judul_blog', 'like', '%' . $search . '%');
+      $query->where(function ($q) use ($search) {
+        $q->where('judul_blog', 'like', '%' . $search . '%')
+          ->orWhere('tanggal_penulisan', 'like', '%' . $search . '%')
+          ->orWhere('kategori', 'like', '%' . $search . '%');
+      });
     }
+
+    // Filter berdasarkan role (posisi admin)
+    if (!empty($kategori)) {
+      $query->where('kategori', '=', $kategori);
+    }
+
+    // Ambil posisi unik untuk dropdown
+    $kategoris = Blog::distinct()->pluck('kategori')->filter()->toArray(); // Ambil posisi unik dan hilangkan null
 
     $blogs = $query->paginate(5);
     $blogCount = Blog::count();
 
-    return view('dashboard.blog.blog', compact('blogs', 'blogCount', 'search'));
+    return view('dashboard.blog.blog', compact('blogs', 'blogCount', 'search', 'kategori', 'kategoris'));
   }
 
   public function store(Request $request)
@@ -96,7 +109,8 @@ class BlogController extends Controller
     return view('dashboard.blog.perbaruiBlog', compact('blog'));
   }
 
-  public function insert(){
+  public function insert()
+  {
     return view('dashboard.blog.insertBlog');
   }
 

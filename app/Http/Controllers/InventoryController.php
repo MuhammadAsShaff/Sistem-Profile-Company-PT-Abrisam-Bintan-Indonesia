@@ -8,10 +8,20 @@ use Illuminate\Support\Facades\Log;
 
 class InventoryController extends Controller
 {
-    public function showInventoryMasuk()
+    public function showInventoryMasuk(Request $request)
     {
+        // Ambil query pencarian
+        $search = $request->input('search');
+
         // Ambil data inventory masuk dengan relasi ke stocks dan pagination
-        $inventoryMasuk = InventoryMasuk::with('stocks')->paginate(10);
+        $query = InventoryMasuk::with('stocks');
+
+        // Filter berdasarkan kategoriProduk jika ada pencarian
+        if (!empty($search)) {
+            $query->where('kategoriProduk', 'like', '%' . $search . '%');
+        }
+
+        $inventoryMasuk = $query->paginate(7);
 
         // Hitung jumlah stok berdasarkan kategoriProduk
         $jumlahStockMasukPerKategori = Stock::select('kategoriProduk', \DB::raw('COUNT(id_inventoryMasuk) as jumlah'))
@@ -25,15 +35,26 @@ class InventoryController extends Controller
             'inventoryMasuk' => $inventoryMasuk,
             'jumlahStockMasukPerKategori' => $jumlahStockMasukPerKategori,
             'stok' => $stok,
+            'search' => $search, // Kirim variabel search ke view
         ]);
     }
 
 
-
-    public function showInventoryKeluar()
+    public function showInventoryKeluar(Request $request)
     {
+        // Ambil query pencarian
+        $search = $request->input('search');
+
+        // Ambil data inventory keluar dengan relasi ke stocks dan pagination
+        $query = InventoryKeluar::with('stocks');
+
+        // Filter berdasarkan kategoriProduk jika ada pencarian
+        if (!empty($search)) {
+            $query->where('kategoriProduk', 'like', '%' . $search . '%');
+        }
+
         // Ambil data Inventory Keluar dengan relasi ke stocks dan pagination
-        $inventoryKeluar = InventoryKeluar::with('stocks')->paginate(10);
+        $inventoryKeluar = $query->paginate(7); // Gunakan query yang sudah difilter
 
         // Hitung jumlah stok keluar berdasarkan kategoriProduk
         $jumlahStockKeluarPerKategori = Stock::select('kategoriProduk', \DB::raw('COUNT(id_inventoryKeluar) as jumlah'))
@@ -48,13 +69,9 @@ class InventoryController extends Controller
             'inventoryKeluar' => $inventoryKeluar,
             'jumlahStockKeluarPerKategori' => $jumlahStockKeluarPerKategori,
             'stok' => $stok,
+            'search' => $search,
         ]);
     }
-
-
-
-
-
     // Method untuk Insert Inventory Masuk
     public function insertInventoryMasuk(Request $request)
     {

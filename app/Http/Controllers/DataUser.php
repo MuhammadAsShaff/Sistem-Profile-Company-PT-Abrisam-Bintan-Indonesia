@@ -21,9 +21,14 @@ class DataUser extends Controller
         $query = Admin::orderByRaw("CASE WHEN status = 'Online' THEN 1 ELSE 2 END")
             ->orderBy('updated_at', 'desc');
 
-        // Filter berdasarkan pencarian nama
+        // Filter berdasarkan pencarian di semua kolom
         if (!empty($search)) {
-            $query->where('nama_admin', 'like', '%' . $search . '%');
+            $query->where(function ($q) use ($search) {
+                $q->where('email_admin', 'like', '%' . $search . '%')
+                    ->orWhere('nama_admin', 'like', '%' . $search . '%')
+                    ->orWhere('posisi', 'like', '%' . $search . '%')
+                    ->orWhere('status', 'like', '%' . $search . '%');
+            });
         }
 
         // Filter berdasarkan role (posisi admin)
@@ -31,6 +36,9 @@ class DataUser extends Controller
             $query->where('posisi', '=', $role);
         }
 
+        // Ambil posisi unik untuk dropdown
+        $roles = Admin::distinct()->pluck('posisi')->filter()->toArray(); // Ambil posisi unik dan hilangkan null
+        
         // Lakukan paginasi dengan limit 7
         $admins = $query->paginate(7);
 
@@ -40,9 +48,8 @@ class DataUser extends Controller
         $offlineCount = Admin::where('status', 'Offline')->count(); // Jumlah admin yang offline
 
         // Kirim data ke view
-        return view('dashboard.dataUser.datauser', compact('admins', 'adminCount', 'onlineCount', 'offlineCount', 'search', 'role'));
+        return view('dashboard.dataUser.datauser', compact('admins', 'adminCount', 'onlineCount', 'offlineCount', 'search', 'role', 'roles'));
     }
-
     public function update(Request $request, $id)
     {
         $admin = Admin::find($id);

@@ -10,24 +10,44 @@ class PelangganController extends Controller
 {
     public function index(Request $request)
     {
-        // Save the last URL to the session before visiting the index page
+        // Simpan URL terakhir ke session sebelum mengunjungi halaman index
         session(['previous_url' => $request->fullUrl()]);
 
-        // Get search query
+        // Ambil query pencarian
         $search = $request->input('search');
+        $status = $request->input('status');
 
-        // Base query to retrieve all customers and related products
-        $query = Customer::with('produk'); // Assuming 'produk' is the relationship name
+        // Query dasar untuk mengambil semua customer dan produk terkait
+        $query = Customer::with('produk'); // Asumsikan 'produk' adalah nama relasi
 
-        // Filter by search term (e.g., by customer name, email, etc.)
+        // Filter berdasarkan pencarian di semua kolom
         if (!empty($search)) {
-            $query->where('nama_customer', 'like', '%' . $search . '%')
-                ->orWhere('email_customer', 'like', '%' . $search . '%')
-                ->orWhere('nik', 'like', '%' . $search . '%');  // Example of additional filters
+            $query->where(function ($q) use ($search) {
+                $q->where('nik', 'like', '%' . $search . '%')
+                    ->orWhere('nama_customer', 'like', '%' . $search . '%')
+                    ->orWhere('alamat_customer', 'like', '%' . $search . '%')
+                    ->orWhere('nomor_hp_customer', 'like', '%' . $search . '%')
+                    ->orWhere('email_customer', 'like', '%' . $search . '%')
+                    ->orWhere('status_customer', 'like', '%' . $search . '%')
+                    ->orWhere('jenis_kelamin', 'like', '%' . $search . '%')
+                    ->orWhere('provinsi', 'like', '%' . $search . '%')
+                    ->orWhere('kota', 'like', '%' . $search . '%')
+                    ->orWhere('kelurahan', 'like', '%' . $search . '%')
+                    ->orWhere('kecamatan', 'like', '%' . $search . '%')
+                    ->orWhere('kode_pos', 'like', '%' . $search . '%');
+            });
         }
 
-        // Paginate results with a limit of 10 per page
-        $customers = $query->paginate(5);  // You can adjust the number here
+        // Filter berdasarkan status_customer
+        if (!empty($status)) {
+            $query->where('status_customer', '=', $status);
+        }
+
+        // Ambil status unik untuk dropdown
+        $statusCustomer = Customer::distinct()->pluck('status_customer')->filter()->toArray(); // Ambil status unik dan hilangkan null
+
+        // Lakukan paginasi dengan limit 5
+        $customers = $query->paginate(5);  // Anda dapat menyesuaikan jumlah di sini
 
         // Get the total number of customers (if needed)
         $customerCount = Customer::count();
@@ -38,8 +58,9 @@ class PelangganController extends Controller
         // Menghitung customer dengan status 'Sudah dihubungi'
         $sudahDihubungiCount = Customer::where('status_customer', 'Sudah dihubungi')->count();
 
-        // Send data to the view
-        return view('dashboard.dataPelanggan.dataPelanggan', compact('customers', 'customerCount', 'search','belumDihubungiCount','sudahDihubungiCount'));
+
+        // Kirim data ke view
+        return view('dashboard.dataPelanggan.dataPelanggan', compact('customers', 'search', 'statusCustomer', 'status','customerCount', 'belumDihubungiCount', 'sudahDihubungiCount'));
     }
 
 
