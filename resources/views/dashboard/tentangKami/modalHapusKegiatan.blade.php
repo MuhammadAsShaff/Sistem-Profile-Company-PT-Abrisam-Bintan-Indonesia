@@ -5,9 +5,9 @@
     <!-- Close Button -->
     <button type="button" onclick="closeModal('deleteModalKegiatan-{{ $item->id }}')"
       class="absolute top-3 right-3 text-gray-400 hover:text-gray-600">
-      <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
-        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-          d="M1 1l6 6m0 0l6 6M7 7L1 1m0 12L7 7m6 6L7 7" />
+      <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"
+        xmlns="http://www.w3.org/2000/svg">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"></path>
       </svg>
     </button>
 

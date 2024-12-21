@@ -35,7 +35,7 @@
     </div>
 
     <!-- Bubble Chat -->
-  <a href="https://wa.me/6281370304777" target="_blank" class="fixed bottom-5 right-10 z-50 p-2">
+  <a href="https://wa.me/6281370304777" target="_blank" class="fixed bottom-5 right-4 z-50 p-2">
     <div
       class="flex items-center justify-center w-16 h-16 bg-green-500 rounded-full shadow-lg hover:bg-green-600 transition duration-300">
       <i class="fab fa-whatsapp text-white text-3xl"></i>

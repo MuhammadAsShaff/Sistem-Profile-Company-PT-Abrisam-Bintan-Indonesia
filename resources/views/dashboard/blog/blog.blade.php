@@ -93,13 +93,14 @@
 
           <!-- Gambar Blog -->
           <td class="w-2/12 px-4 py-4 text-sm text-gray-500 dark:text-gray-300 whitespace-nowrap">
-            <div class="object-cover w-32 h-18 ">
+
+
             @if($blog->gambar_cover)
-        <img class="w-full h-full" src="{{ asset('uploads/blogs/' . $blog->gambar_cover) }}" alt="Gambar Blog">
+        <img class="w-16 h-16 object-cover rounded-lg"
+        src="{{ asset('uploads/blogs/' . $blog->gambar_cover) }}" alt="Gambar Blog">
       @else
     <span class="text-xs text-gray-400">Tidak ada gambar</span>
   @endif
-            </div>
           </td>
 
           <td class="w-2/12 px-4 py-4 text-sm text-gray-500 dark:text-gray-300 whitespace-nowrap">
