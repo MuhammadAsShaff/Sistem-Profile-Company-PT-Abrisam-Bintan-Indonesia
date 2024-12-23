@@ -15,7 +15,7 @@
             <i class="fa-brands fa-whatsapp fa-2x"></i>
           </a>
 
-          <a href="https://t.me/6281370304777" target="_blank" rel="noopener noreferrer"
+          <a href="https://t.me/+6281370304777" target="_blank" rel="noopener noreferrer"
             class="text-white dark:text-white hover:text-red-500" aria-label="Telegram">
             <i class="fa-brands fa-telegram fa-2x"></i>
           </a>

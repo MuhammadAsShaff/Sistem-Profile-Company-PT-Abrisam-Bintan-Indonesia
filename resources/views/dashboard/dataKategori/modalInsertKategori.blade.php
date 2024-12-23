@@ -32,10 +32,15 @@
         <div class="flex items-start gap-6">
           <!-- Foto Kategori -->
           <div class="flex flex-col items-center justify-center">
+            <!-- Elemen image untuk menampilkan preview gambar -->
+            <img id="preview-image" class="hidden w-32 h-auto border rounded shadow-md object-cover mt-4"
+              src="#" alt="Preview Gambar" />
             <label for="dropzone-file" class="block text-sm font-medium text-gray-700 mt-3">Unggah Gambar
               Kategori</label>
+
+            <!-- Input file untuk memilih gambar -->
             <input id="dropzone-file" type="file" name="gambar_kategori" accept="image/png, image/jpeg, image/jpg"
-              class="mt-32 ml-10">
+              class="mt-4 ml-10" onchange="previewImageKategori(event)">
           </div>
 
           <!-- Nama, Deskripsi, dan Syarat Ketentuan -->
@@ -86,6 +91,25 @@
 </dialog>
 
 <script>
+
+ function previewImageKategori(event) {
+    const input = event.target;
+    const previewImage = document.getElementById('preview-image');
+
+    if (input.files && input.files[0]) {
+      const reader = new FileReader();
+      reader.onload = function (e) {
+        previewImage.src = e.target.result; // Set the image source
+        previewImage.classList.remove('hidden'); // Show the image
+      };
+      reader.readAsDataURL(input.files[0]); // Read the file
+    } else {
+      previewImage.src = "#"; // Reset the image source
+      previewImage.classList.add('hidden'); // Hide the image
+    }
+  }
+
+
   function insertSyaratKetentuan() {
     const textarea = document.getElementById('syarat_ketentuan');
     const lines = textarea.value.split('\n'); // Pisahkan setiap baris dengan enter

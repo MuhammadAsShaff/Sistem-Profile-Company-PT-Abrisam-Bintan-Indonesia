@@ -25,7 +25,7 @@
     <div class="container mx-auto p-8 mt-20">
       <div class="blog-detail-content-area bg-gray-100 shadow-md rounded-lg overflow-hidden mb-6">
         {{-- Gambar Blog --}}
-        <img class="blog-detail-image w-full h-[300px] md:h-[500px] object-cover"
+        <img class="blog-detail-image w-full h-full object-cover"
           src="{{ asset('uploads/blogs/' . $blog->gambar_cover) }}" alt="{{ $blog->judul_blog }}">
 
         {{-- Konten Blog --}}

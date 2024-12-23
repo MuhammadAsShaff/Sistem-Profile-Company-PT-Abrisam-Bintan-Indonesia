@@ -32,13 +32,19 @@
         <div class="flex items-start gap-6">
           <!-- Gambar Kategori -->
           <div class="flex flex-col items-center justify-center">
-            <img class="w-32 h-32 object-cover rounded-lg"
+            <!-- Menampilkan gambar kategori jika ada, atau gambar default jika tidak ada -->
+            <img id="preview-image-update-{{ $kategori->id_kategori }}" class="w-32 h-32 object-cover rounded-lg"
               src="{{ $kategori->gambar_kategori ? asset('uploads/kategori/' . $kategori->gambar_kategori) : asset('images/blankImage.jpg') }}"
               alt="Gambar Kategori">
+
+            <!-- Label untuk input file gambar -->
             <label for="gambar_kategori" class="block text-sm font-medium text-gray-700 mt-3">Ubah Gambar
               Kategori</label>
-            <input id="gambar_kategori" name="gambar_kategori" type="file" accept="image/png, image/jpeg, image/jpg"
-              class="mt-10">
+
+            <!-- Input file untuk memilih gambar -->
+            <input id="gambar_kategori-{{ $kategori->id_kategori }}" name="gambar_kategori" type="file"
+              accept="image/png, image/jpeg, image/jpg" class="mt-10"
+              onchange="previewImageKategoriUpdate(event, {{ $kategori->id_kategori }})">
           </div>
 
           <div class="flex-1">
@@ -63,14 +69,14 @@
                 Syarat dan Ketentuan
               </label>
               @php
-        $syaratKetentuan = is_string($kategori->syarat_ketentuan) ? json_decode($kategori->syarat_ketentuan, true) : $kategori->syarat_ketentuan;
-        $syaratKetentuanWithNumbers = '';
-        if ($syaratKetentuan) {
-          foreach ($syaratKetentuan as $index => $syarat) {
-          $syaratKetentuanWithNumbers .= ($index + 1) . '. ' . $syarat . "\n";
-          }
-        }
-        @endphp
+$syaratKetentuan = is_string($kategori->syarat_ketentuan) ? json_decode($kategori->syarat_ketentuan, true) : $kategori->syarat_ketentuan;
+$syaratKetentuanWithNumbers = '';
+if ($syaratKetentuan) {
+  foreach ($syaratKetentuan as $index => $syarat) {
+    $syaratKetentuanWithNumbers .= ($index + 1) . '. ' . $syarat . "\n";
+  }
+}
+      @endphp
               <textarea name="syarat_ketentuan[]" id="syarat_ketentuan-{{ $kategori->id_kategori }}" rows="3"
                 class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-5/6 p-2.5"
                 placeholder="Syarat dan Ketentuan Kategori">{{ $syaratKetentuanWithNumbers }}</textarea>
@@ -91,6 +97,27 @@
 </dialog>
 
 <script>
+
+   // Fungsi untuk memperbarui preview gambar saat file dipilih
+    function previewImageKategoriUpdate(event, kategoriId) {
+      const file = event.target.files[0]; // Ambil file yang dipilih
+      const preview = document.getElementById('preview-image-update-' + kategoriId); // Ambil elemen <img> untuk preview
+
+      if (file) {
+        // Membuat URL sementara untuk file yang dipilih
+        const reader = new FileReader();
+
+        reader.onload = function (e) {
+          // Set src dari <img> ke URL sementara yang dibuat
+          preview.src = e.target.result;
+        };
+
+        reader.readAsDataURL(file); // Membaca file sebagai data URL
+      } else {
+        // Jika tidak ada file yang dipilih, set gambar default
+        preview.src = "{{ asset('images/blankImage.jpg') }}";
+      }
+    }
   // Fungsi untuk otomatis menambahkan nomor pada textarea dan menjaga kursor di posisi akhir
   function updateSyaratKetentuan(id_kategori) {
     const textarea = document.getElementById('syarat_ketentuan-' + id_kategori);

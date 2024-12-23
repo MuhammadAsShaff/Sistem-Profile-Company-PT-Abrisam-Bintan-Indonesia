@@ -1,7 +1,7 @@
 <script src="https://balkan.app/js/OrgChart.js"></script>
-<div class="container mx-auto p-6 bg-gray-50 rounded-lg bg-white mb-[-42]">
-  <h1 class="text-3xl font-bold text-gray-800 text-left font-telkomsel">Bagan Perusahaan</h1>
-  <p class=" text-justify md:text-left">Kami membangun tim sales force yang unggul melalui pengembangan individu dan kolaborasi, fokus pada
+<div class="container mx-auto p-6 bg-gray-50 rounded-lg bg-white ">
+  <h1 class="text-3xl font-bold text-gray-800 text-left font-telkomsel mb-4">Bagan Perusahaan</h1>
+  <p class=" text-justify ">Kami membangun tim sales force yang unggul melalui pengembangan individu dan kolaborasi, fokus pada
     identifikasi peluang
     pasar, pemenuhan kebutuhan pelanggan, dan pencapaian target penjualan. Dengan komitmen pada inovasi, kualitas, dan
     keunggulan layanan, kami bertekad menjadi mitra terpercaya dan pemimpin industri.</p>

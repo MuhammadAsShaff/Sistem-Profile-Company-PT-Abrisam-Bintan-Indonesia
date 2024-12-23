@@ -10,7 +10,7 @@
       <div class="blog-card flex-shrink-0 w-full md:w-1/2 lg:w-1/3 px-6 mb-6">
         <a href="{{ route('isiBlog', ['slug' => $blog->slug]) }}"
         class="block bg-white shadow-lg rounded-lg overflow-hidden hover:shadow-xl transition-shadow duration-300">
-        <div class="relative h-48 overflow-hidden">
+        <div class="relative h-64 overflow-hidden">
           @if($blog->gambar_cover)
         <img src="{{ asset('uploads/blogs/' . $blog->gambar_cover) }}" alt="{{ $blog->judul_blog }}"
         class="w-full h-full object-cover transform hover:scale-110 transition-transform duration-300">
@@ -119,16 +119,20 @@
       const maxIndex = cards.length - cardsPerView;
       if (currentIndex < maxIndex) {
         currentIndex++;
-        updateCarousel();
+      } else {
+        currentIndex = 0; // Loop back to the start
       }
+      updateCarousel();
     }
 
     // Navigasi Previous
     function navigatePrev() {
       if (currentIndex > 0) {
         currentIndex--;
-        updateCarousel();
+      } else {
+        currentIndex = cards.length - cardsPerView; // Loop back to the end
       }
+      updateCarousel();
     }
 
     // Event Listeners

@@ -79,15 +79,17 @@
     const nextBtn = document.getElementById('nextProdukBtn');
     const cards = document.querySelectorAll('.produk-card');
 
-    let currentIndex = 0;
-    let cardsPerView = 3;
+    let currentIndex = 0; // Mulai dari indeks pertama
+    let cardsPerView = 3; // Jumlah kartu per tampilan
 
+    // Fungsi untuk mendapatkan lebar kartu
     function getCardWidth() {
       return cards[0].getBoundingClientRect().width +
         parseFloat(window.getComputedStyle(cards[0]).marginLeft) +
         parseFloat(window.getComputedStyle(cards[0]).marginRight);
     }
 
+    // Fungsi untuk memperbarui jumlah kartu per tampilan
     function updateCardsPerView() {
       const windowWidth = window.innerWidth;
       if (windowWidth < 640) {
@@ -99,35 +101,45 @@
       }
     }
 
+    // Fungsi untuk memperbarui posisi carousel
     function updateCarousel() {
       const cardWidth = getCardWidth();
       const offset = -currentIndex * cardWidth;
       carousel.style.transform = `translateX(${offset}px)`;
     }
 
+    // Navigasi ke slide berikutnya
     function navigateNext() {
-      const maxIndex = cards.length - cardsPerView;
+      const maxIndex = cards.length - cardsPerView; // Indeks maksimum
       if (currentIndex < maxIndex) {
         currentIndex++;
-        updateCarousel();
+      } else {
+        currentIndex = 0; // Kembali ke awal
       }
+      updateCarousel();
     }
 
+    // Navigasi ke slide sebelumnya
     function navigatePrev() {
       if (currentIndex > 0) {
         currentIndex--;
-        updateCarousel();
+      } else {
+        currentIndex = cards.length - cardsPerView; // Kembali ke akhir
       }
+      updateCarousel();
     }
 
+    // Menambahkan event listener untuk tombol navigasi
     nextBtn.addEventListener('click', navigateNext);
     prevBtn.addEventListener('click', navigatePrev);
 
+    // Menangani perubahan ukuran jendela
     window.addEventListener('resize', () => {
       updateCardsPerView();
       updateCarousel();
     });
 
+    // Mendukung swipe/touch
     let touchStartX = 0;
     let touchEndX = 0;
 
@@ -142,7 +154,7 @@
     carousel.addEventListener('touchend', () => {
       const diffX = touchStartX - touchEndX;
 
-      if (Math.abs(diffX) > 50) {
+      if (Math.abs(diffX) > 50) { // Minimal swipe jarak 50px
         if (diffX > 0) {
           navigateNext();
         } else {
@@ -151,26 +163,8 @@
       }
     });
 
+    // Pengaturan awal
     updateCardsPerView();
     updateCarousel();
   });
-
-  function goToSlide(index) {
-      currentIndex = index;
-      updateCarousel();
-    }
-
-    // Update the updateCarousel function to highlight the active indicator
-    function updateCarousel() {
-      const cardWidth = getCardWidth();
-      const offset = -currentIndex * cardWidth;
-      carousel.style.transform = `translateX(${offset}px)`;
-
-      // Update indicators
-      const indicators = document.querySelectorAll('.flex.justify-center .bg-gray-400');
-      indicators.forEach((indicator, idx) => {
-        indicator.classList.toggle('bg-red-600', idx === currentIndex);
-        indicator.classList.toggle('bg-gray-400', idx !== currentIndex);
-      });
-    }
-</script>
+</script> 

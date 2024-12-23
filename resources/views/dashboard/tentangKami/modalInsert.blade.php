@@ -1,5 +1,5 @@
 <!-- Modal for Adding Node -->
-<dialog id="addNodeDialog" class="modal rounded-lg shadow-lg w-full max-w-md overflow-hidden modal-hide"
+<dialog id="addNodeDialog" class="modal rounded-lg shadow-lg w-full max-w-4xl overflow-hidden modal-hide"
   style="position: fixed; top: 0%; left: 0%; transform: translate(-50%, -50%);">
   <div class="relative bg-white rounded-lg shadow-lg p-6">
     <!-- Modal Header -->
@@ -18,31 +18,45 @@
     <!-- Modal Body -->
     <div class="modal-body">
       <form id="addNodeForm">
-        <div class="flex flex-col gap-4">
-          <!-- Name Input -->
-          <div class="form-group">
-            <label for="nodeName" class="block text-sm font-medium text-gray-700">Nama</label>
-            <input type="text"
-              class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-              id="nodeName" placeholder="Masukkan Nama" required>
+        <div class="flex items-start gap-6">
+          <!-- Image Preview Section -->
+          <div class="flex flex-col items-center justify-center mb-4">
+            <!-- Image Preview -->
+            <div id="preview-container" class="mt-4">
+              <img id="preview-image-insert-node" src="#" alt="Preview Gambar Node"
+                class="hidden w-64 h-auto border rounded shadow-md bg-gray-200" />
+            </div>
+
+            <label for="img_file" class="block text-sm font-medium text-gray-700 mt-3">Unggah Gambar Bagan</label>
+            <input type="file" name="img_file" id="img_file" accept="image/*" class="mt-10"
+              onchange="previewImageNode(event)" required>
           </div>
 
-          <!-- Title Input -->
-          <div class="form-group">
-            <label for="nodeTitle" class="block text-sm font-medium text-gray-700">Jabatan</label>
-            <input type="text"
-              class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-              id="nodeTitle" placeholder="Masukkan Jabatan" required>
-          </div>
+          <!-- Node Details -->
+          <div class="flex-1">
+            <p class="mb-4 text-sm text-gray-500" style="word-wrap: break-word; white-space: normal;">
+              Anda dapat menambahkan bagan baru dengan nama, jabatan, dan gambar. Pastikan untuk memasukkan
+              informasi yang akurat.
+            </p>
 
-          <!-- Image File Input -->
-          <div class="form-group">
-            <label for="img_file" class="block text-sm font-medium text-gray-700">Unggah Gambar</label>
-            <input type="file" name="img_file" id="img_file" accept="image/*"
-              class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
-          </div>
+            <!-- Node Name -->
+            <div class="mb-4">
+              <label for="nodeName" class="block mb-2 text-sm font-medium text-gray-900">Nama bagan</label>
+              <input type="text" name="nodeName" id="nodeName"
+                class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5"
+                placeholder="Nama Node" required>
+            </div>
 
-          <input type="hidden" id="parentId">
+            <!-- Node Title -->
+            <div class="mb-4">
+              <label for="nodeTitle" class="block mb-2 text-sm font-medium text-gray-900">Jabatan</label>
+              <input type="text" name="nodeTitle" id="nodeTitle"
+                class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5"
+                placeholder="Jabatan" required>
+            </div>
+
+            <input type="hidden" id="parentId">
+          </div>
         </div>
       </form>
     </div>
@@ -50,8 +64,24 @@
     <!-- Modal Footer -->
     <div class="flex justify-end p-4 border-t border-gray-200">
       <button type="button"
-        class="inline-flex justify-center px-5 py-2.5 text-sm font-medium text-white bg-red-600 border border-transparent rounded-lg shadow-sm hover:bg-red-700 focus:outline-none focus:ring-4 focus:ring-red-300"
+        class="inline-flex justify-center px-5 py-2.5 text-sm font-medium text-white bg-blue-600 border border-transparent rounded-lg shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-300"
         id="saveNodeButton">Simpan</button>
     </div>
   </div>
 </dialog>
+
+<script>
+  // Image Preview Function
+  function previewImageNode(event) {
+    const previewImage = document.getElementById('preview-image-insert-node');
+    const file = event.target.files[0];
+    const reader = new FileReader();
+    reader.onload = function () {
+      previewImage.src = reader.result;
+      previewImage.classList.remove('hidden');
+    };
+    if (file) {
+      reader.readAsDataURL(file);
+    }
+  }
+</script>

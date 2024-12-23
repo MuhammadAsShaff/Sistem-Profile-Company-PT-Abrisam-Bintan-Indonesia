@@ -33,13 +33,26 @@
         @method('PUT')
         <div class="grid grid-cols-2 gap-6">
           <!-- Foto Profile dan Teks Samping -->
-          <div class="col-span-2 flex items-center space-x-4">
-            <img class="object-cover w-16 h-16 rounded-full"
-              src="{{ $admin->foto_admin ? asset('uploads/admins/' . $admin->foto_admin) : asset('images/blankProfile.jpg') }}"
-              alt="avatar">
-            <div>
-              <h4 class="text-lg font-medium text-gray-900">Hallo, {{ $admin->nama_admin }}!</h4>
-              <p class="text-sm text-gray-600">Anda dapat mengganti dan menyesuaikan dengan kebutuhan</p>
+          <div class="col-span-2">
+            <!-- Baris pertama: Gambar dan Informasi Admin -->
+            <div class="flex items-center space-x-4">
+              <!-- Gambar Profil -->
+              <img id="preview-image-{{ $admin->id }}" class="object-cover w-16 h-16 rounded-full"
+                src="{{ $admin->foto_admin ? asset('uploads/admins/' . $admin->foto_admin) : asset('images/blankProfile.jpg') }}"
+                alt="avatar">
+              <!-- Informasi Admin -->
+              <div>
+                <h4 class="text-lg font-medium text-gray-900">Hallo, {{ $admin->nama_admin }}!</h4>
+                <p class="text-sm text-gray-600">Anda dapat mengganti dan menyesuaikan dengan kebutuhan</p>
+              </div>
+            </div>
+
+            <!-- Baris kedua: Input Gambar -->
+            <div class="mt-4">
+              <input id="foto_admin_{{ $admin->id }}" name="foto_admin" type="file"
+                accept="image/png, image/jpeg, image/jpg"
+                class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
+                onchange="previewImage('{{ $admin->id }}', event)">
             </div>
           </div>
 
@@ -86,16 +99,6 @@
               readonly>
           </div>
 
-          <!-- Foto Admin -->
-          <div class="col-span-2">
-            <label for="foto_admin" class="block text-sm font-medium text-gray-700">Foto Profil</label>
-            <div class="flex items-center justify-center w-full">
-              <label for="foto_admin"
-                class="flex flex-col items-center justify-center w-full h-32 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 hover:bg-gray-100">
-                <input id="foto_admin" name="foto_admin" type="file" accept="image/png, image/jpeg, image/jpg">
-              </label>
-            </div>
-          </div>
         </div>
 
         <!-- Modal footer -->
@@ -110,3 +113,23 @@
   </div>
 </dialog>
 
+<script>
+  function previewImage(adminId, event) {
+    const input = event.target;
+    const preview = document.getElementById(`preview-image-${adminId}`);
+
+    // Jika ada file yang dipilih
+    if (input.files && input.files[0]) {
+      const reader = new FileReader();
+
+      // Ketika file selesai dibaca
+      reader.onload = function (e) {
+        // Update src gambar pratinjau
+        preview.src = e.target.result;
+      };
+
+      // Membaca file sebagai URL data
+      reader.readAsDataURL(input.files[0]);
+    }
+  }
+</script>

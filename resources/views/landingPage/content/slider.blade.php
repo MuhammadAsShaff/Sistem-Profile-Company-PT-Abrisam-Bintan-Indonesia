@@ -67,6 +67,21 @@
 </div>
 
 <script>
+  
+    window.onload = function () {
+    // Ambil semua gambar dalam carousel
+    const images = document.querySelectorAll('#carousel-inner img');
+
+    images.forEach((img) => {
+      img.onload = function () {
+        const width = img.clientWidth; // Lebar gambar yang ditampilkan
+        const height = img.clientHeight; // Tinggi gambar yang ditampilkan
+        console.log(`Ukuran gambar: ${width}x${height} piksel`); // Tampilkan ukuran di console
+      };
+    });
+  };
+
+
   document.addEventListener('DOMContentLoaded', function () {
     const carouselInner = document.getElementById('carousel-inner');
     const slides = carouselInner.children;
@@ -148,6 +163,32 @@
         updateCarousel(currentIndex);
         stopAutoplay(); // Stop autoplay when user interacts
       });
+    });
+
+    // Touch/Swipe Support
+    let touchStartX = 0;
+    let touchEndX = 0;
+
+    carouselInner.addEventListener('touchstart', (e) => {
+      touchStartX = e.touches[0].clientX;
+    });
+
+    carouselInner.addEventListener('touchmove', (e) => {
+      touchEndX = e.touches[0].clientX;
+    });
+
+    carouselInner.addEventListener('touchend', () => {
+      const diffX = touchStartX - touchEndX;
+
+      if (Math.abs(diffX) > 50) {  // Minimal swipe jarak 50px
+        if (diffX > 0) {
+          currentIndex++;
+        } else {
+          currentIndex--;
+        }
+        updateCarousel(currentIndex);
+        stopAutoplay(); // Stop autoplay when user interacts
+      }
     });
 
     // Initialize Carousel

@@ -7,7 +7,6 @@
   </svg>
 </button>
 
-<!-- Modal -->
 <dialog id="addPromoModal" class="modal rounded-lg shadow-lg w-full max-w-4xl overflow-hidden modal-hide"
   style="position: fixed; top: 0%; left: 25%; transform: translate(-50%, -50%);">
   <div class="relative bg-white rounded-lg shadow-lg p-6">
@@ -31,10 +30,16 @@
         @csrf
         <div class="flex items-start gap-6">
           <!-- Foto Promo -->
-          <div class="flex flex-col items-center justify-center">
+          <div class="flex flex-col items-center justify-center mb-4">
+            <!-- Preview Container -->
+            <div id="preview-container" class="mt-4">
+              <img id="preview-image" src="#" alt="Preview Gambar Promo"
+                class="hidden w-64 h-auto border rounded shadow-md" />
+            </div>
+
             <label for="dropzone-file" class="block text-sm font-medium text-gray-700 mt-3">Unggah Gambar Promo</label>
-            <input id="dropzone-file" type="file" name="gambar_promo" accept="image/png, image/jpeg, image/jpg"
-              class="mt-32 ml-10">
+            <input id="dropzone-file" type="file" name="gambar_promo" accept="image/png, image/jpeg, image/jpg" class="mt-10"
+              onchange="previewImage(event)">
           </div>
 
           <!-- Nama dan Deskripsi Promo -->
@@ -73,3 +78,23 @@
     </div>
   </div>
 </dialog>
+
+<script>
+  function previewImage(event) {
+      const input = event.target;
+      const previewImage = document.getElementById('preview-image');
+
+      if (input.files && input.files[0]) {
+        const reader = new FileReader();
+        reader.onload = function (e) {
+          previewImage.src = e.target.result; // Set the image source
+          previewImage.classList.remove('hidden'); // Show the image
+        };
+        reader.readAsDataURL(input.files[0]); // Read the file
+      } else {
+        previewImage.src = "#"; // Reset the image source
+        previewImage.classList.add('hidden'); // Hide the image
+      }
+    }
+
+</script>

@@ -10,12 +10,12 @@
         <form action="{{ route('blog.store') }}" method="POST" enctype="multipart/form-data" id="blogForm">
             @csrf
             <div class="mb-4">
-                <label for="dropzone-file-cover" class="block text-sm font-medium text-gray-700">Unggah Gambar
+                <img id="cover-preview" class="mt-3 max-w-xs rounded" style="display: none;">
+                <label for="dropzone-file-cover" class="block text-sm font-medium text-gray-700 mt-4">Unggah Gambar
                     Blog</label>
                 <input id="dropzone-file-cover" type="file" name="gambar_cover"
                     accept="image/png, image/jpeg, image/jpg" class="mt-2 w-full"
                     onchange="previewImage(event, 'cover-preview')">
-                <img id="cover-preview" class="mt-3 max-w-xs rounded" style="display: none;">
             </div>
 
 

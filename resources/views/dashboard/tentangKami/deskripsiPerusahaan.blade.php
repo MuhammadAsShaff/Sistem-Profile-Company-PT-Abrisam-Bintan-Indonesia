@@ -54,10 +54,6 @@
 </form>
 
 @if(isset($tentangKami))
-  <button type="button" onclick="openModal('deleteModalDeskripsi-{{ $tentangKami->id }}')"
-    class="mt-4 bg-red-500 text-white px-4 py-2 rounded">
-    Hapus
-  </button>
   @include('dashboard.tentangKami.modalHapusDeskripsi')
 @endif
 

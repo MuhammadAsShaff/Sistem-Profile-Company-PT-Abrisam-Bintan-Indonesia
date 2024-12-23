@@ -15,10 +15,10 @@
     <!-- Close button -->
     <button type="button" onclick="closeModal('crypto_modal_delet')"
       class="absolute top-3 right-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-full text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white">
-       <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"
-            xmlns="http://www.w3.org/2000/svg">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"></path>
-          </svg>
+      <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"
+        xmlns="http://www.w3.org/2000/svg">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"></path>
+      </svg>
       <span class="sr-only">Close modal</span>
     </button>
 
@@ -29,15 +29,17 @@
         d="M10 11V6m0 8h.01M19 10a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
     </svg>
     <h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">Maaf, {{ $admin->nama_admin }} saat ini sedang
-      <b>online</b>. Anda <b>tidak dapat melakukan penghapusan data</b> pada {{ $admin->nama_admin }} yang sedang aktif.
+      <b>online</b>. <br> Anda <b>tidak dapat melakukan penghapusan data</b> pada {{ $admin->nama_admin }} yang sedang
+      aktif.
     </h3>
 
     <!-- Modal footer -->
-    <div class="flex items-center p-4 md:p-5 border-t border-gray-200 rounded-b dark:border-gray-600">
+    <div class="flex justify-end items-center p-4 md:p-5 border-t border-gray-200 rounded-b dark:border-gray-600">
       <button type="button" onclick="closeModal('crypto_modal_delet')"
-        class="text-white bg-red-500 hover:bg-red-600 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Tutup</button>
+        class="text-white bg-red-500 hover:bg-red-600 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+        Tutup
+      </button>
     </div>
+
   </div>
 </dialog>
-
-

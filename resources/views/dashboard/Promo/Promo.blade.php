@@ -69,44 +69,44 @@
             </thead>
             <tbody class="bg-white divide-y divide-gray-200 dark:divide-gray-700 dark:bg-gray-900">
               @foreach ($promos as $promo)
-          <tr>
-          <!-- Nomor Promo -->
-          <td class="px-4 py-4 text-sm font-medium text-gray-700 dark:text-white whitespace-nowrap">
-            {{ ($promos->currentPage() - 1) * $promos->perPage() + $loop->iteration }}
-          </td>
+              <tr>
+              <!-- Nomor Promo -->
+              <td class="px-4 py-4 text-sm font-medium text-gray-700 dark:text-white whitespace-nowrap">
+              {{ ($promos->currentPage() - 1) * $promos->perPage() + $loop->iteration }}
+              </td>
 
-          <!-- Nama Promo -->
-          <td class="px-12 py-4 text-sm font-medium text-gray-700 dark:text-white whitespace-nowrap">
-            {{ $promo->nama_promo }}
-          </td>
+              <!-- Nama Promo -->
+              <td class="px-12 py-4 text-sm font-medium text-gray-700 dark:text-white whitespace-nowrap">
+              {{ $promo->nama_promo }}
+              </td>
 
-          <!-- Gambar Promo -->
-          <td class="px-4 py-4 text-sm text-gray-500 dark:text-gray-300 whitespace-nowrap">
-            @if($promo->gambar_promo)
-        <img class="w-16 h-16 object-cover rounded-lg"
+              <!-- Gambar Promo -->
+              <td class="px-4 py-4 text-sm text-gray-500 dark:text-gray-300 whitespace-nowrap">
+              @if($promo->gambar_promo)
+        <img class="w-32 h-auto object-cover rounded-md"
         src="{{ asset('uploads/promos/' . $promo->gambar_promo) }}" alt="Gambar Promo">
       @else
-    <span class="text-xs text-gray-400">Tidak ada gambar</span>
-  @endif
-          </td>
+          <span class="text-xs text-gray-400">Tidak ada gambar</span>
+          @endif
+              </td>
 
-          <!-- Deskripsi Promo -->
-          <td class="px-4 py-4 text-sm text-gray-500 dark:text-gray-300 whitespace-nowrap">
-            {{ Str::limit($promo->deskripsi, 100) }}
-          </td>
+              <!-- Deskripsi Promo -->
+              <td class="px-4 py-4 text-sm text-gray-500 dark:text-gray-300 whitespace-nowrap">
+              {{ Str::limit($promo->deskripsi, 100) }}
+              </td>
 
-          <!-- Aksi -->
-          <td class="px-4 py-4 text-sm whitespace-nowrap">
-            <div class="flex items-center gap-x-6">
-            <!-- Edit Button -->
-            @include('dashboard.Promo.modalPerbaruiPromo')
+              <!-- Aksi -->
+              <td class="px-4 py-4 text-sm whitespace-nowrap">
+              <div class="flex items-center gap-x-6">
+              <!-- Edit Button -->
+              @include('dashboard.Promo.modalPerbaruiPromo')
 
-            <!-- Delete Button -->
-            @include('dashboard.Promo.modalHapusPromo')
-            </div>
-          </td>
-          </tr>
-        @endforeach
+              <!-- Delete Button -->
+              @include('dashboard.Promo.modalHapusPromo')
+              </div>
+              </td>
+              </tr>
+      @endforeach
             </tbody>
           </table>
         </div>
@@ -117,4 +117,5 @@
   <!-- Pagination -->
   @include('dashboard.Promo.pagination')
 </section>
+
 @endsection

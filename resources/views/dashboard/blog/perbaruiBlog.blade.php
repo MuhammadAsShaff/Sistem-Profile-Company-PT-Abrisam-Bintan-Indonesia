@@ -14,11 +14,11 @@
 
       <!-- Input Gambar Cover -->
       <div class="mb-4">
-        <label for="dropzone-file-cover" class="block text-sm font-medium text-gray-700">Ubah Gambar Cover</label>
-        <input id="dropzone-file-cover" type="file" name="gambar_cover" accept="image/png, image/jpeg, image/jpg"
-          class="mt-2 w-full" onchange="previewImage(event, 'cover-preview')">
         <img id="cover-preview" class="mt-3 max-w-xs rounded" src="{{ asset('uploads/blogs/' . $blog->gambar_cover) }}"
           alt="Gambar Cover">
+        <label for="dropzone-file-cover" class="block text-sm font-medium text-gray-700 mt-4">Ubah Gambar Cover</label>
+        <input id="dropzone-file-cover" type="file" name="gambar_cover" accept="image/png, image/jpeg, image/jpg"
+          class="mt-2 w-full" onchange="previewImage(event, 'cover-preview')">
       </div>
 
       <!-- Judul Blog -->
@@ -94,23 +94,23 @@
     }
 
     document.addEventListener("DOMContentLoaded", function () {
-        quill = new Quill('#editor-container', {
-          theme: 'snow',
-          modules: {
-            toolbar: [
-              [{ 'header': [1, 2, false] }],
-              ['bold', 'italic', 'underline', 'strike'],
-              [{ 'list': 'ordered' }, { 'list': 'bullet' }],
-              [{ 'indent': '-1' }, { 'indent': '+1' }], // Tambahkan indent dan outdent
-              [{ 'direction': 'rtl' }],
-              [{ 'align': [] }],
-              ['link', 'image', 'video'],
-              ['blockquote'],
-              ['clean']
-            ]
-          }
-        });
+      quill = new Quill('#editor-container', {
+        theme: 'snow',
+        modules: {
+          toolbar: [
+            [{ 'header': [1, 2, false] }],
+            ['bold', 'italic', 'underline', 'strike'],
+            [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+            [{ 'indent': '-1' }, { 'indent': '+1' }], // Tambahkan indent dan outdent
+            [{ 'direction': 'rtl' }],
+            [{ 'align': [] }],
+            ['link', 'image', 'video'],
+            ['blockquote'],
+            ['clean']
+          ]
+        }
       });
+    });
 
   </script>
 </section>

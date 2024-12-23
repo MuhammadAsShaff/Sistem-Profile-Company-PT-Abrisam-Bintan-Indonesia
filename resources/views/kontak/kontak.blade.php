@@ -54,7 +54,8 @@
             </svg>
           </span>
 
-          <h2 class="mt-4 text-base font-medium font-telkomsel text-gray-800 dark:text-white"><b>Kontak Perusahaan</b></h2>
+          <h2 class="mt-4 text-base font-medium font-telkomsel text-gray-800 dark:text-white"><b>Kontak Perusahaan</b>
+          </h2>
           <p class="text-sm text-gray-500 dark:text-gray-400">Anda Dapat Menghubungi Kami Melalui</p>
           <div class="flex justify-start items-center space-x-4 mt-2">
             <!-- Instagram -->
@@ -70,11 +71,11 @@
             </a>
 
             <!-- Telegram -->
-            <a href="https://t.me/6281370304777" target="_blank" rel="noopener noreferrer"
+            <a href="https://t.me/+6281370304777" target="_blank" rel="noopener noreferrer"
               class="text-gray-800 dark:text-white hover:text-red-600" aria-label="Telegram">
               <i class="fa-brands fa-telegram fa-2x"></i>
             </a>
-            
+
             <!-- tiktok -->
             <a href="https://www.tiktok.com/@indihomeabi?_t=8qMdOV3DiGQ&_r=1" target="_blank" rel="noopener noreferrer"
               class="text-gray-800 dark:text-white hover:text-red-600" aria-label="Telegram">

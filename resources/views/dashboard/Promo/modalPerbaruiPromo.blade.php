@@ -35,12 +35,15 @@
         <div class="flex items-start gap-6">
           <!-- Gambar promo -->
           <div class="flex flex-col items-center justify-center">
-            <img class="w-32 h-32 object-cover rounded-lg"
+            <img id="preview-image-promo-{{ $promo->id_promo }}"
+              class="w-64 h-auto border rounded shadow-md object-cover"
               src="{{ $promo->gambar_promo ? asset('uploads/promos/' . $promo->gambar_promo) : asset('images/blankImage.jpg') }}"
-              alt="Gambar promo">
-            <label for="gambar_promo" class="block text-sm font-medium text-gray-700 mt-3">Ubah Gambar
+              alt="Gambar promo" />
+            <label for="gambar_promo_{{ $promo->id_promo }}" class="block text-sm font-medium text-gray-700 mt-3">Ubah
+              Gambar
               promo</label>
-            <input id="gambar_promo" name="gambar_promo" type="file" accept="image/png, image/jpeg, image/jpg"
+            <input id="gambar_promo_{{ $promo->id_promo }}" name="gambar_promo" type="file"
+              accept="image/png, image/jpeg, image/jpg" onchange="previewImagePromo(event, {{ $promo->id_promo }})"
               class="mt-10">
           </div>
 
@@ -79,3 +82,19 @@
     </div>
   </div>
 </dialog>
+
+<script>
+    function previewImagePromo(event, promoId) {
+      const input = event.target;
+      const previewImage = document.getElementById('preview-image-promo-' + promoId);
+
+      if (input.files && input.files[0]) {
+        const reader = new FileReader();
+        reader.onload = function (e) {
+          previewImage.src = e.target.result; // Set the image source to the uploaded image
+        };
+        reader.readAsDataURL(input.files[0]); // Read the file
+      }
+    }
+
+</script>

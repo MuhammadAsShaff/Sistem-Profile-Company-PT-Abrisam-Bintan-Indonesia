@@ -1,9 +1,85 @@
+<style>
+  @media (max-width: 767px) {
+    .hide-on-mobile {
+      display: none;
+    }
+  }
+
+  .carousel-item {
+    position: relative;
+  }
+
+  .carousel-item img {
+    transition: opacity 0.3s ease-in-out;
+  }
+
+  .carousel-item .overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    /* Overlay hitam dengan transparansi */
+    opacity: 0;
+    /* Sembunyikan overlay secara default */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: opacity 0.3s ease-in-out;
+  }
+
+  .overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    /* Overlay hitam dengan transparansi */
+    opacity: 0;
+    /* Sembunyikan overlay secara default */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: opacity 0.3s ease-in-out;
+    /* Transisi untuk overlay */
+  }
+
+  .group:hover .overlay {
+    opacity: 1;
+    /* Overlay muncul ketika hover pada parent */
+  }
+
+  /* Animasi overlay */
+  .overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    /* Overlay hitam dengan transparansi */
+    opacity: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: opacity 0.3s ease-in-out;
+  }
+
+  .group:hover .overlay {
+    opacity: 1;
+    /* Overlay muncul ketika hover pada parent */
+  }
+</style>
+
 <div class="container mx-auto rounded-lg bg-white">
   <!-- Header Section -->
-  <div class="container mx-auto p-6 bg-gray-50 rounded-lg bg-white mb-[-20]">
-    <h1 class="text-3xl font-bold text-gray-800 text-left font-telkomsel mt-20">Foto Kegiatan PT Abrisam Bintan
+  <div class="container mx-auto p-6 bg-gray-50 rounded-lg bg-white">
+    <h1 class="text-3xl font-bold text-gray-800 text-left font-telkomsel mb-4">Foto Kegiatan PT Abrisam Bintan
       Indonesia</h1>
-    <p class="">Kami membangun tim sales force yang unggul melalui pengembangan individu dan kolaborasi antar
+    <p class="text-justify">Kami membangun tim sales force yang unggul melalui pengembangan individu dan kolaborasi
+      antar
       departemen. Berikut adalah dokumentasi foto kegiatan kami yang mencerminkan semangat dan kerja keras dalam
       mencapainya. Setiap kegiatan yang kami lakukan bertujuan untuk menciptakan atmosfer yang mendukung pertumbuhan
       pribadi dan profesional bagi seluruh anggota tim kami.</p>
@@ -35,140 +111,70 @@
     </div>
 
     <!-- Slider Controls -->
-      <button type="button"
-        class="absolute top-1/2 left-4 lg:left-20 transform -translate-y-1/2 z-5 text-black bg-white rounded-full w-8 h-8 md:w-10 md:h-10 flex items-center justify-center focus:outline-none hover:bg-gray-200 transition duration-300 shadow-xl"
-        id="prev-btn">
-        <svg class="w-4 h-4 md:w-5 md:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-          xmlns="http://www.w3.org/2000/svg">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="4" d="M15 19l-7-7 7-7"></path>
-        </svg>
-      </button>
-      
-      <!-- Tombol Navigasi Next -->
-      <button type="button"
-        class="absolute top-1/2 right-4 lg:right-20 transform -translate-y-1/2 z-5 text-black bg-white rounded-full w-8 h-8 md:w-10 md:h-10 flex items-center justify-center focus:outline-none hover:bg-gray-200 transition duration-300 shadow-xl"
-         id="next-btn">
-        <svg class="w-4 h-4 md:w-5 md:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-          xmlns="http://www.w3.org/2000/svg">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="4" d="M9 5l7 7-7 7"></path>
-        </svg>
-      </button>
+    <button type="button"
+      class="absolute top-1/2 left-4 lg:left-20 transform -translate-y-1/2 z-5 text-black bg-white rounded-full w-8 h-8 md:w-10 md:h-10 flex items-center justify-center focus:outline-none hover:bg-gray-200 transition duration-300 shadow-xl"
+      id="prev-btn">
+      <svg class="w-4 h-4 md:w-5 md:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+        xmlns="http://www.w3.org/2000/svg">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="4" d="M15 19l-7-7 7-7"></path>
+      </svg>
+    </button>
+
+    <!-- Tombol Navigasi Next -->
+    <button type="button"
+      class="absolute top-1/2 right-4 lg:right-20 transform -translate-y-1/2 z-5 text-black bg-white rounded-full w-8 h-8 md:w-10 md:h-10 flex items-center justify-center focus:outline-none hover:bg-gray-200 transition duration-300 shadow-xl"
+      id="next-btn">
+      <svg class="w-4 h-4 md:w-5 md:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+        xmlns="http://www.w3.org/2000/svg">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="4" d="M9 5l7 7-7 7"></path>
+      </svg>
+    </button>
   </div>
 
   <div class="grid grid-cols-1 md:grid-cols-3 gap-4 p-10 ">
     @foreach ($kegiatan->take(3) as $index => $item) <!-- Ambil hanya 3 gambar pertama -->
-    <div class="relative group">
-      <img id="kegiatan" class="h-56 w-full rounded-lg" src="{{ asset('uploads/kegiatan/' . $item->gambar) }}" alt="">
+    <div class="relative group hide-on-mobile">
+      <img id="kegiatan" class="h-64 w-full rounded-lg" src="{{ asset('uploads/kegiatan/' . $item->gambar) }}" alt="">
       <!-- Overlay hitam dan teks -->
       <div
       class="overlay absolute inset-0 bg-black bg-opacity-50 opacity-0 flex items-center justify-center text-white transition-all duration-300 ease-in-out">
       <div class="text-center px-4 py-2">
-      <h3 class="text-xl font-semibold">{{ $item->nama }}</h3>
-      <p class="mt-2">{{ $item->keterangan }}</p>
+        <h3 class="text-xl font-semibold">{{ $item->nama }}</h3>
+        <p class="mt-2">{{ $item->keterangan }}</p>
       </div>
       </div>
     </div>
-    @endforeach
+  @endforeach
   </div>
-
-  <style>
-    .carousel-item {
-      position: relative;
-    }
-
-    .carousel-item img {
-      transition: opacity 0.3s ease-in-out;
-    }
-
-    .carousel-item .overlay {
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background-color: rgba(0, 0, 0, 0.5);
-      /* Overlay hitam dengan transparansi */
-      opacity: 0;
-      /* Sembunyikan overlay secara default */
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      transition: opacity 0.3s ease-in-out;
-    }
-
-    .overlay {
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background-color: rgba(0, 0, 0, 0.5);
-      /* Overlay hitam dengan transparansi */
-      opacity: 0;
-      /* Sembunyikan overlay secara default */
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      transition: opacity 0.3s ease-in-out;
-      /* Transisi untuk overlay */
-    }
-
-    .group:hover .overlay {
-      opacity: 1;
-      /* Overlay muncul ketika hover pada parent */
-    }
-
-    /* Animasi overlay */
-    .overlay {
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background-color: rgba(0, 0, 0, 0.5);
-      /* Overlay hitam dengan transparansi */
-      opacity: 0;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      transition: opacity 0.3s ease-in-out;
-    }
-
-    .group:hover .overlay {
-      opacity: 1;
-      /* Overlay muncul ketika hover pada parent */
-    }
-  </style>
-
 </div>
 <script>
   document.addEventListener("DOMContentLoaded", function () {
-      // Ambil elemen dengan ID kegiatan
-      const kegiatanImg = document.getElementById('kegiatan');
+    // Ambil elemen dengan ID kegiatan
+    const kegiatanImg = document.getElementById('kegiatan');
 
-      // Daftar gambar yang ingin diganti (diambil dari Blade)
-      const gambarList = @json($kegiatan->pluck('gambar')); // Ambil nama gambar dari Blade
+    // Daftar gambar yang ingin diganti (diambil dari Blade)
+    const gambarList = @json($kegiatan->pluck('gambar')); // Ambil nama gambar dari Blade
 
-      let currentIndex = 0;
-      const totalImages = gambarList.length;
+    let currentIndex = 0;
+    const totalImages = gambarList.length;
 
-      // Fungsi untuk mengganti gambar
-      function changeImage() {
-        if (kegiatanImg) {
-          // Hitung indeks gambar berikutnya
-          const nextIndex = (currentIndex + 1) % totalImages;
+    // Fungsi untuk mengganti gambar
+    function changeImage() {
+      if (kegiatanImg) {
+        // Hitung indeks gambar berikutnya
+        const nextIndex = (currentIndex + 1) % totalImages;
 
-          // Update atribut src elemen gambar
-          kegiatanImg.src = `{{ asset('uploads/kegiatan/') }}/${gambarList[nextIndex]}`;
+        // Update atribut src elemen gambar
+        kegiatanImg.src = `{{ asset('uploads/kegiatan/') }}/${gambarList[nextIndex]}`;
 
-          // Update indeks saat ini
-          currentIndex = nextIndex;
-        }
+        // Update indeks saat ini
+        currentIndex = nextIndex;
       }
+    }
 
-      // Panggil fungsi changeImage setiap 5 detik
-      setInterval(changeImage, 5000);
-    });
+    // Panggil fungsi changeImage setiap 5 detik
+    setInterval(changeImage, 5000);
+  });
 
 
   document.addEventListener("DOMContentLoaded", function () {
