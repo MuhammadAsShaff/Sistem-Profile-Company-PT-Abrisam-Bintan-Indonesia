@@ -25,7 +25,7 @@ class FaQController extends Controller
         }
 
         // Lakukan paginasi dengan limit 5
-        $faqs = $query->paginate(5);
+        $faqs = $query->paginate(10);
 
         $FaQCount = FaQ::count();
 

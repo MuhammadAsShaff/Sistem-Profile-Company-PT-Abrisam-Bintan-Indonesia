@@ -51,7 +51,7 @@
             <div class="mt-4">
               <input id="foto_admin_{{ $admin->id }}" name="foto_admin" type="file"
                 accept="image/png, image/jpeg, image/jpg"
-                class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
+                class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4  file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
                 onchange="previewImage('{{ $admin->id }}', event)">
             </div>
           </div>
@@ -105,7 +105,7 @@
         <div class="flex justify-end p-4 border-t border-gray-200">
           <button type="submit"
             class="inline-flex justify-center px-5 py-2.5 text-sm font-medium text-white bg-red-500 border border-transparent rounded-lg shadow-sm hover:bg-red-600 focus:outline-none focus:ring-4 focus:ring-red-300">
-            Save all
+            Simpan
           </button>
         </div>
       </form>

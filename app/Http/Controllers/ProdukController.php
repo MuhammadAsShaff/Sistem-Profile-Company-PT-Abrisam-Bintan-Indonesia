@@ -12,18 +12,52 @@ class ProdukController extends Controller
     {
         session(['previous_url' => url()->full()]);
 
+        $kategori = $request->input('kategori');
         $search = $request->input('search');
-        $query = Produk::orderBy('updated_at', 'desc');
 
+        // Query dasar dengan eager loading relasi
+        $query = Produk::with(['kategori', 'paket'])
+            ->orderBy('updated_at', 'desc');
+
+        // Filter berdasarkan pencarian
         if (!empty($search)) {
-            $query->where('nama_produk', 'like', '%' . $search . '%');
+            $query->where(function ($q) use ($search) {
+                $q->where('nama_produk', 'like', '%' . $search . '%')
+                    ->orWhere('deskripsi', 'like', '%' . $search . '%')
+                    ->orWhereHas('kategori', function ($subQuery) use ($search) {
+                        $subQuery->where('nama_kategori', 'like', '%' . $search . '%');
+                    })
+                    ->orWhereHas('paket', function ($subQuery) use ($search) {
+                        $subQuery->where('nama_paket', 'like', '%' . $search . '%');
+                    });
+            });
         }
 
+        // Filter berdasarkan kategori
+        if (!empty($kategori)) {
+            $query->whereHas('kategori', function ($q) use ($kategori) {
+                $q->where('nama_kategori', $kategori);
+            });
+        }
+
+        // Ambil data untuk dropdown kategori
+        $kategoriSearch = Kategori::distinct()->pluck('nama_kategori')->filter()->toArray();
+
+        // Paginate hasil query
         $produks = $query->paginate(5);
+
+        // Ambil data tambahan
         $kategoris = Kategori::all();
         $pakets = Paket::all();
 
-        return view('dashboard.dataProduk.dataProduk', compact('produks', 'search', 'kategoris', 'pakets'));
+        return view('dashboard.dataProduk.dataProduk', compact(
+            'produks',
+            'search',
+            'kategoris',
+            'pakets',
+            'kategoriSearch',
+            'kategori'
+        ));
     }
 
     public function store(Request $request)
