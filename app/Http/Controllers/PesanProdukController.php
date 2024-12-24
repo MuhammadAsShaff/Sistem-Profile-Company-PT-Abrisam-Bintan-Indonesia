@@ -5,8 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\Produk;
 use App\Services\LocationService;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Cookie;
-use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Session;
 
 class PesanProdukController extends Controller

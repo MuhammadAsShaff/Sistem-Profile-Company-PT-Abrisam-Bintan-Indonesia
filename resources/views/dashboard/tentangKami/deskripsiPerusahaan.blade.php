@@ -27,10 +27,6 @@
   </div>
 
   <div class="mb-4">
-    <label for="fotoPerusahaan" class="block text-gray-700 font-medium">Foto Perusahaan</label>
-    <input type="file" name="fotoPerusahaan" id="fotoPerusahaan" class="w-full border-gray-300 rounded p-2"
-      accept="image/*" onchange="previewImage(event)" />
-
     <!-- Preview Container -->
     <div id="preview-container" class="mt-4">
       @if(isset($tentangKami) && $tentangKami->fotoPerusahaan)
@@ -43,6 +39,13 @@
       class="hidden w-64 h-auto border rounded shadow-md" />
     @endif
     </div>
+    <label for="fotoPerusahaan" class="block text-gray-700 font-medium">Foto Perusahaan</label>
+    <input type="file" name="fotoPerusahaan" id="fotoPerusahaan" class="w-full border-gray-300 rounded p-2"
+      accept="image/*" onchange="previewImage(event)" />
+    <p class="mt-2 text-xs text-red-600 w-full max-w-full break-words">
+      *Pastikan gambar yang anda upload berukuran <b>1350x1020px</b> <br> dan maksimal size <b>10mb</b>
+      bila tidak akan otomatis terpotong.
+    </p>
   </div>
   <!-- Submit and Delete Buttons -->
   <div class="flex items-center gap-4">

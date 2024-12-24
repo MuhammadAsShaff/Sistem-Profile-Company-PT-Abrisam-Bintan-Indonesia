@@ -1,17 +1,14 @@
 <?php
 
 namespace App\Http\Controllers;
-
-use Illuminate\Http\Request;
 use Carbon\Carbon;
-use App\Models\Produk;
 use App\Models\Kategori;
 use Illuminate\Support\Facades\Auth; // Import Auth
 use App\Models\Admin;
 use App\Models\Blog;
 use App\Models\Stock;
 use App\Models\Customer;
-use App\Models\Berlangganan;
+
 
 class Dashboard extends Controller
 {

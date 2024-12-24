@@ -6,6 +6,7 @@ use App\Models\BaganOrganisasi;
 use App\Models\TentangKami;
 use App\Models\Kegiatan;
 use Illuminate\Http\Request;
+use Intervention\Image\Facades\Image;
 
 class BaganOrganisasiController extends Controller
 {
@@ -46,6 +47,7 @@ class BaganOrganisasiController extends Controller
 
     public function store(Request $request)
     {
+        // Validasi input
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'title' => 'required|string|max:255',
@@ -55,17 +57,35 @@ class BaganOrganisasiController extends Controller
 
         $imgFilename = null;
 
+        // Cek apakah ada gambar yang di-upload
         if ($request->hasFile('img_file')) {
             $file = $request->file('img_file');
             $filename = time() . '_' . $file->getClientOriginalName();
-            $file->move(public_path('uploads/bagan'), $filename);
+
+            // Buat direktori jika belum ada
+            $destinationPath = public_path('uploads/bagan');
+            if (!file_exists($destinationPath)) {
+                mkdir($destinationPath, 0755, true);
+            }
+
+            // Menggunakan Intervention Image untuk resize dan crop gambar
+            $image = Image::make($file); // Membuka file gambar
+            $image->fit(1080, 1080, function ($constraint) {
+                $constraint->upsize(); // Mencegah gambar diperbesar lebih besar dari ukuran aslinya
+            });
+
+            // Simpan gambar yang sudah di-resize dan di-crop
+            $image->save($destinationPath . '/' . $filename);
+
+            // Menyimpan nama file gambar
             $imgFilename = $filename;
         }
 
+        // Simpan data ke database
         BaganOrganisasi::create([
             'name' => $validated['name'],
             'title' => $validated['title'],
-            'img_url' => $imgFilename,
+            'img_url' => $imgFilename,  // Menyimpan nama file gambar
             'parent_id' => $validated['parent_id'] ?? null,
         ]);
 
@@ -73,6 +93,7 @@ class BaganOrganisasiController extends Controller
         return redirect()->route('dashboard.tentangKami.layoutTentangKami')
             ->with('success', 'Node berhasil ditambahkan');
     }
+
 
     public function update(Request $request, $id)
     {
@@ -84,23 +105,28 @@ class BaganOrganisasiController extends Controller
 
         $position = BaganOrganisasi::findOrFail($id);
 
-        // Periksa apakah ada file gambar baru yang diunggah
+        // Cek apakah ada gambar yang di-upload
         if ($request->hasFile('img_file')) {
-            // Hapus gambar lama jika ada
-            if ($position->img_url) {
-                $oldFilePath = public_path('uploads/bagan/' . $position->img_url);
-                if (file_exists($oldFilePath)) {
-                    unlink($oldFilePath);
-                }
-            }
-
-            // Simpan gambar baru
             $file = $request->file('img_file');
             $filename = time() . '_' . $file->getClientOriginalName();
-            $file->move(public_path('uploads/bagan'), $filename);
 
-            // Perbarui URL gambar di database
-            $position->img_url = $filename;
+            // Buat direktori jika belum ada
+            $destinationPath = public_path('uploads/bagan');
+            if (!file_exists($destinationPath)) {
+                mkdir($destinationPath, 0755, true);
+            }
+
+            // Menggunakan Intervention Image untuk resize dan crop gambar
+            $image = Image::make($file); // Membuka file gambar
+            $image->fit(1080, 1080, function ($constraint) {
+                $constraint->upsize(); // Mencegah gambar diperbesar lebih besar dari ukuran aslinya
+            });
+
+            // Simpan gambar yang sudah di-resize dan di-crop
+            $image->save($destinationPath . '/' . $filename);
+
+            // Menyimpan nama file gambar
+            $imgFilename = $filename;
         }
 
         // Perbarui data teks (nama dan jabatan)

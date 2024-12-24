@@ -1,9 +1,9 @@
 <?php
 
 namespace App\Http\Controllers;
-
 use App\Models\Kategori;
 use Illuminate\Http\Request;
+use Intervention\Image\Facades\Image;
 
 class KategoriController extends Controller
 {
@@ -57,18 +57,32 @@ class KategoriController extends Controller
         if ($request->hasFile('gambar_kategori')) {
             $file = $request->file('gambar_kategori');
             $filename = time() . '_' . $file->getClientOriginalName();
-            $file->move(public_path('uploads/kategori'), $filename);
+
+            // Buat direktori jika belum ada
+            $destinationPath = public_path('uploads/kategori');
+            if (!file_exists($destinationPath)) {
+                mkdir($destinationPath, 0755, true);
+            }
+
+            // Menggunakan Intervention Image untuk resize dan crop gambar
+            $image = Image::make($file); // Membuka file gambar
+            $image->fit(1080, 1080, function ($constraint) {
+                $constraint->upsize(); // Mencegah gambar diperbesar lebih besar dari ukuran aslinya
+            });
+
+            // Simpan gambar yang sudah di-resize dan di-crop
+            $image->save($destinationPath . '/' . $filename);
+
+            // Menyimpan nama file gambar
             $kategoriData['gambar_kategori'] = $filename;
         }
 
         // Simpan kategori ke database
-        try {
-            Kategori::create($kategoriData);
-            return redirect()->route('dashboard.dataKategori.dataKategori')->with('success', 'Kategori berhasil ditambahkan');
-        } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Gagal menambahkan kategori: ' . $e->getMessage());
-        }
+        Kategori::create($kategoriData);
+
+        return redirect()->route('dashboard.dataKategori.dataKategori')->with('success', 'Kategori berhasil ditambahkan');
     }
+
 
     public function update(Request $request, $id_kategori)
     {
@@ -79,7 +93,7 @@ class KategoriController extends Controller
         $validated = $request->validate([
             'nama_kategori' => 'required|string|max:255',
             'deskripsi' => 'nullable|string',
-            'gambar_kategori' => 'nullable|mimes:jpg,jpeg,png|max:2048',
+            'gambar_kategori' => 'nullable|mimes:jpg,jpeg,png|max:10000',
             'syarat_ketentuan' => 'nullable|array', // syarat_ketentuan sebagai array
         ]);
 
@@ -91,18 +105,28 @@ class KategoriController extends Controller
         $kategori->deskripsi = $validated['deskripsi'];
         $kategori->syarat_ketentuan = $validated['syarat_ketentuan']; // Update syarat_ketentuan sebagai JSON
 
-        // Update gambar jika ada
+        // Simpan gambar jika ada
         if ($request->hasFile('gambar_kategori')) {
-            // Hapus gambar lama jika ada
-            if ($kategori->gambar_kategori && file_exists(public_path('uploads/kategori/' . $kategori->gambar_kategori))) {
-                unlink(public_path('uploads/kategori/' . $kategori->gambar_kategori));
-            }
-
-            // Simpan gambar baru
             $file = $request->file('gambar_kategori');
             $filename = time() . '_' . $file->getClientOriginalName();
-            $file->move(public_path('uploads/kategori'), $filename);
-            $kategori->gambar_kategori = $filename;
+
+            // Buat direktori jika belum ada
+            $destinationPath = public_path('uploads/kategori');
+            if (!file_exists($destinationPath)) {
+                mkdir($destinationPath, 0755, true);
+            }
+
+            // Menggunakan Intervention Image untuk resize dan crop gambar
+            $image = Image::make($file); // Membuka file gambar
+            $image->fit(1080, 1080, function ($constraint) {
+                $constraint->upsize(); // Mencegah gambar diperbesar lebih besar dari ukuran aslinya
+            });
+
+            // Simpan gambar yang sudah di-resize dan di-crop
+            $image->save($destinationPath . '/' . $filename);
+
+            // Menyimpan nama file gambar
+            $kategori['gambar_kategori'] = $filename;
         }
 
         // Simpan perubahan

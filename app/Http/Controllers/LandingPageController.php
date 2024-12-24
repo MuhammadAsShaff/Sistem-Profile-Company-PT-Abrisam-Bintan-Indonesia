@@ -1,6 +1,5 @@
 <?php
 namespace App\Http\Controllers;
-
 use App\Models\Promo;
 use App\Models\Blog;
 use App\Models\FaQ;

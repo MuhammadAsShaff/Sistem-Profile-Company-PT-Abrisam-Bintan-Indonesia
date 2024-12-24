@@ -38,8 +38,12 @@
             </div>
 
             <label for="dropzone-file" class="block text-sm font-medium text-gray-700 mt-3">Unggah Gambar Promo</label>
-            <input id="dropzone-file" type="file" name="gambar_promo" accept="image/png, image/jpeg, image/jpg" class="mt-10"
-              onchange="previewImage(event)">
+            <input id="dropzone-file" type="file" name="gambar_promo" accept="image/png, image/jpeg, image/jpg"
+              class="mt-10" onchange="previewImage(event)">
+            <p class="mt-2 text-xs text-red-600 w-full max-w-full break-words">
+              *Pastikan gambar yang anda upload berukuran <b>1400x500px</b> <br> dan maksimal size <b>10mb</b>  
+              bila tidak akan otomatis terpotong.
+            </p>
           </div>
 
           <!-- Nama dan Deskripsi Promo -->
@@ -81,20 +85,20 @@
 
 <script>
   function previewImage(event) {
-      const input = event.target;
-      const previewImage = document.getElementById('preview-image');
+    const input = event.target;
+    const previewImage = document.getElementById('preview-image');
 
-      if (input.files && input.files[0]) {
-        const reader = new FileReader();
-        reader.onload = function (e) {
-          previewImage.src = e.target.result; // Set the image source
-          previewImage.classList.remove('hidden'); // Show the image
-        };
-        reader.readAsDataURL(input.files[0]); // Read the file
-      } else {
-        previewImage.src = "#"; // Reset the image source
-        previewImage.classList.add('hidden'); // Hide the image
-      }
+    if (input.files && input.files[0]) {
+      const reader = new FileReader();
+      reader.onload = function (e) {
+        previewImage.src = e.target.result; // Set the image source
+        previewImage.classList.remove('hidden'); // Show the image
+      };
+      reader.readAsDataURL(input.files[0]); // Read the file
+    } else {
+      previewImage.src = "#"; // Reset the image source
+      previewImage.classList.add('hidden'); // Hide the image
     }
+  }
 
 </script>

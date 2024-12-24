@@ -45,6 +45,10 @@
             <input id="gambar_promo_{{ $promo->id_promo }}" name="gambar_promo" type="file"
               accept="image/png, image/jpeg, image/jpg" onchange="previewImagePromo(event, {{ $promo->id_promo }})"
               class="mt-10">
+            <p class="mt-2 text-xs text-red-600 w-full max-w-full break-words">
+              *Pastikan gambar yang anda upload berukuran <b>1400x500px</b> <br> dan maksimal size <b>10mb</b>
+              bila tidak akan otomatis terpotong.
+            </p>
           </div>
 
           <!-- Deskripsi untuk Edit -->
@@ -84,17 +88,17 @@
 </dialog>
 
 <script>
-    function previewImagePromo(event, promoId) {
-      const input = event.target;
-      const previewImage = document.getElementById('preview-image-promo-' + promoId);
+  function previewImagePromo(event, promoId) {
+    const input = event.target;
+    const previewImage = document.getElementById('preview-image-promo-' + promoId);
 
-      if (input.files && input.files[0]) {
-        const reader = new FileReader();
-        reader.onload = function (e) {
-          previewImage.src = e.target.result; // Set the image source to the uploaded image
-        };
-        reader.readAsDataURL(input.files[0]); // Read the file
-      }
+    if (input.files && input.files[0]) {
+      const reader = new FileReader();
+      reader.onload = function (e) {
+        previewImage.src = e.target.result; // Set the image source to the uploaded image
+      };
+      reader.readAsDataURL(input.files[0]); // Read the file
     }
+  }
 
 </script>

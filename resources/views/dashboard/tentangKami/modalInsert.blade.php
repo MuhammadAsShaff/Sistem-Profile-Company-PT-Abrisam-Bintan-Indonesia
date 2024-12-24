@@ -30,6 +30,10 @@
             <label for="img_file" class="block text-sm font-medium text-gray-700 mt-3">Unggah Gambar Bagan</label>
             <input type="file" name="img_file" id="img_file" accept="image/*" class="mt-10"
               onchange="previewImageNode(event)" required>
+              <p class="mt-2 text-xs text-red-600 w-full max-w-full break-words">
+                *Pastikan gambar yang anda upload berukuran <b>1080x1080px</b> <br> dan maksimal size <b>10mb</b>
+                bila tidak akan otomatis terpotong.
+              </p>
           </div>
 
           <!-- Node Details -->

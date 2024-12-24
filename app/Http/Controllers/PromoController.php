@@ -1,10 +1,9 @@
 <?php
 
 namespace App\Http\Controllers;
-
 use App\Models\Promo;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
+use Intervention\Image\Facades\Image;
 
 class PromoController extends Controller
 {
@@ -29,7 +28,7 @@ class PromoController extends Controller
         $promoCount = Promo::count();
 
         // Send data to the view
-        return view('dashboard.Promo.Promo', compact('promos', 'promoCount','search'));
+        return view('dashboard.Promo.Promo', compact('promos', 'promoCount', 'search'));
     }
 
     public function store(Request $request)
@@ -45,6 +44,7 @@ class PromoController extends Controller
             'nama_promo' => $request->input('nama_promo'),
             'deskripsi' => $request->input('deskripsi'), // Pastikan deskripsi disimpan
         ];
+
         // Jika ada file gambar diupload, simpan file
         if ($request->hasFile('gambar_promo')) {
             $file = $request->file('gambar_promo');
@@ -56,9 +56,17 @@ class PromoController extends Controller
                 mkdir($destinationPath, 0755, true);
             }
 
-            // Simpan file gambar ke direktori
-            $file->move($destinationPath, $filename);
-            $promoData['gambar_promo'] = $filename; // Menyimpan nama file gambar
+            // Menggunakan Intervention Image untuk resize dan crop gambar
+            $image = Image::make($file); // Membuka file gambar
+            $image->fit(1400, 500, function ($constraint) {
+                $constraint->upsize(); // Mencegah gambar diperbesar lebih besar dari ukuran aslinya
+            });
+
+            // Simpan gambar yang sudah di-resize dan di-crop
+            $image->save($destinationPath . '/' . $filename);
+
+            // Menyimpan nama file gambar
+            $promoData['gambar_promo'] = $filename;
         }
 
         // Simpan data promo ke database
@@ -94,8 +102,24 @@ class PromoController extends Controller
             // Upload gambar baru
             $file = $request->file('gambar_promo');
             $filename = time() . '_' . $file->getClientOriginalName();
-            $file->move(public_path('uploads/promos'), $filename);
-            $promo->gambar_promo = $filename; // Simpan nama file ke database
+
+            // Memastikan direktori tujuan ada
+            $destinationPath = public_path('uploads/promos');
+            if (!file_exists($destinationPath)) {
+                mkdir($destinationPath, 0755, true);
+            }
+
+            // Menggunakan Intervention Image untuk resize dan crop gambar
+            $image = Image::make($file); // Membuka file gambar
+            $image->fit(1400, 500, function ($constraint) {
+                $constraint->upsize(); // Mencegah gambar diperbesar lebih besar dari ukuran aslinya
+            });
+
+            // Simpan gambar yang sudah di-resize dan di-crop
+            $image->save($destinationPath . '/' . $filename);
+
+            // Menyimpan nama file gambar
+            $promo->gambar_promo = $filename;
         }
 
         // Simpan perubahan ke database
@@ -106,14 +130,15 @@ class PromoController extends Controller
     }
 
 
+
     public function destroy($id_promo)
     {
         // Find the promo by its ID
         $promo = Promo::findOrFail($id_promo);
 
-        // If there's an associated image, delete it
-        if ($promo->gambar && Storage::disk('public')->exists($promo->gambar)) {
-            Storage::disk('public')->delete($promo->gambar);
+    
+        if ($promo->gambar_promo && file_exists(public_path('uploads/promos/' . $promo->gambar_promo))) {
+            unlink(public_path('uploads/promos/' . $promo->gambar_promo));
         }
 
         // Delete the promo record from the database
@@ -123,5 +148,5 @@ class PromoController extends Controller
         return redirect()->route('dashboard.Promo.Promo')->with('success', 'Promo berhasil dihapus.');
     }
 
-    
+
 }

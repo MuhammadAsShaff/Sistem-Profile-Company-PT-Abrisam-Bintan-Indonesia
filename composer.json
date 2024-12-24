@@ -8,13 +8,11 @@
         "php": "^8.2",
         "getbrevo/brevo-php": "^2.0",
         "guzzlehttp/guzzle": "^7.9",
-        "intervention/image": "^3.10",
+        "intervention/image": "2.7",
         "laravel/framework": "^11.9",
         "laravel/tinker": "^2.9",
-        "league/oauth2-google": "^4.0",
         "maatwebsite/excel": "^3.1",
-        "phpmailer/phpmailer": "^6.9",
-        "sendgrid/sendgrid": "^8.1"
+        "phpmailer/phpmailer": "^6.9"
     },
     "require-dev": {
         "fakerphp/faker": "^1.23",
