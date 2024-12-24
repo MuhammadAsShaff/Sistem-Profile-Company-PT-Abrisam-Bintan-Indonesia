@@ -32,8 +32,6 @@
         display: flex !important;
       }
     }
-
-
   </style>
 </head>
 
@@ -97,7 +95,8 @@
       </div>
     </div>
   </div>
-<br><br><br class="hidden md:block"><br class="hidden md:block"><br class="hidden md:block"><br class="hidden md:block">
+  <br><br><br class="hidden md:block"><br class="hidden md:block"><br class="hidden md:block"><br
+    class="hidden md:block">
 
   <div class="container bg-white mx-auto max-w-md p-6 rounded-lg shadow-2xl shadow-gray-400 mt-32">
     <div class="bg-white p-8 rounded-lg relative">
@@ -108,6 +107,12 @@
         Kami telah mengirimkan kode OTP ke email <span class="font-semibold">{{ $email }}</span>.
         Silakan masukkan kode tersebut untuk melanjutkan.
       </p>
+      @error('otp')
+      <div class="text-center mb-4 text-sm text-red-600 dark:text-red-400">
+      {{ $message }}
+      </div>
+    @enderror
+
       <form action="{{route('simpanDataPemesanan')}}" method="POST">
         @csrf
         <div class="flex justify-center gap-4 mb-6">

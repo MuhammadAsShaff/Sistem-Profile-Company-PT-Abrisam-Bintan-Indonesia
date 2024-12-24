@@ -5,8 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Session;
-use SendinBlue\Client\Configuration;
-use SendinBlue\Client\Api\TransactionalEmailsApi;
+use Brevo\Client\Api\TransactionalEmailsApi;
+use Brevo\Client\Configuration;
 use GuzzleHttp\Client;
 use App\Models\Customer;
 use App\Models\Berlangganan;
@@ -131,7 +131,10 @@ class OTPController extends Controller
 
         // Verifikasi OTP yang dimasukkan dengan yang ada di session
         if ($otpEntered != $otpSession) {
-            return redirect()->route('verifikasiOTP')->withErrors('OTP yang dimasukkan salah.');
+            // Kembalikan ke halaman yang sama dengan error
+            return redirect()->back()->withErrors([
+                'otp' => 'OTP yang dimasukkan salah.'
+            ])->withInput();
         }
 
         // Proses penyimpanan data ke tabel Customer

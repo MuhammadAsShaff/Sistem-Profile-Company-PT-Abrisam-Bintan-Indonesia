@@ -7,7 +7,6 @@ use App\Http\Controllers\Dashboard;
 use App\Http\Controllers\DataUser;
 use App\Http\Controllers\KategoriController;
 use App\Http\Controllers\PaketController;
-use App\Http\Controllers\Pelanggan;
 use App\Http\Controllers\ProdukController;
 use App\Http\Controllers\ProdukLandingPage;
 use App\Http\Controllers\PromoController;
@@ -23,7 +22,6 @@ use App\Http\Controllers\KegiatanController;
 use App\Http\Controllers\PesanProdukController;
 use App\Http\Controllers\OTPController;
 use App\Http\Controllers\PelangganController;
-use App\Http\Controllers\TentangKamiLandingPage;
 use Illuminate\Support\Facades\Route;
 use App\Http\Middleware\SavePreviousUrl;
 use App\Http\Middleware\PreventBackHistory;
@@ -114,7 +112,7 @@ Route::prefix('dashboard')->middleware(['auth:admin', PreventBackHistory::class]
     Route::get('/export-customers', function () {
         return Excel::download(new CustomerExport(), 'customers.xlsx');
     })->name('customers.export');
-    
+
 
     // Route untuk FaQ
     Route::prefix('faq')->group(function () {
