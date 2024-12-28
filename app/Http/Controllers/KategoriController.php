@@ -28,7 +28,7 @@ class KategoriController extends Controller
 
         // Hitung total kategori dan produk
         $kategoriCount = Kategori::count();
-        
+
         // Kirim data ke view
         return view('dashboard.dataKategori.dataKategori', compact('kategoris', 'kategoriCount', 'search'));
     }
@@ -39,7 +39,7 @@ class KategoriController extends Controller
         $validated = $request->validate([
             'nama_kategori' => 'required|string|max:255',
             'deskripsi' => 'nullable|string',
-            'gambar_kategori' => 'nullable|mimes:jpg,jpeg,png|max:10000',
+            'gambar_kategori' => 'nullable|mimes:jpg,jpeg,png|max:2048',
             'syarat_ketentuan' => 'nullable|array', // syarat_ketentuan sebagai array
         ]);
 
@@ -93,7 +93,7 @@ class KategoriController extends Controller
         $validated = $request->validate([
             'nama_kategori' => 'required|string|max:255',
             'deskripsi' => 'nullable|string',
-            'gambar_kategori' => 'nullable|mimes:jpg,jpeg,png|max:10000',
+            'gambar_kategori' => 'nullable|mimes:jpg,jpeg,png|max:2048',
             'syarat_ketentuan' => 'nullable|array', // syarat_ketentuan sebagai array
         ]);
 
@@ -107,10 +107,16 @@ class KategoriController extends Controller
 
         // Simpan gambar jika ada
         if ($request->hasFile('gambar_kategori')) {
+            // Hapus gambar lama jika ada
+            if ($kategori['gambar_kategori'] && file_exists(public_path('uploads/kategori/' . $kategori['gambar_kategori']))) {
+                unlink(public_path('uploads/kategori/' . $kategori['gambar_kategori']));
+            }
+
+            // Upload gambar baru
             $file = $request->file('gambar_kategori');
             $filename = time() . '_' . $file->getClientOriginalName();
 
-            // Buat direktori jika belum ada
+            // Memastikan direktori tujuan ada
             $destinationPath = public_path('uploads/kategori');
             if (!file_exists($destinationPath)) {
                 mkdir($destinationPath, 0755, true);
@@ -131,6 +137,7 @@ class KategoriController extends Controller
 
         // Simpan perubahan
         $kategori->save();
+
 
         // Redirect dengan pesan sukses
         return redirect()->route('dashboard.dataKategori.dataKategori')->with('success', 'Kategori berhasil diperbarui');

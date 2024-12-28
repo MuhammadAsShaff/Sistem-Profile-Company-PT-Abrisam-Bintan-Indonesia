@@ -14,7 +14,7 @@ class TentangKamiController extends Controller
             'deskripsi_perusahaan' => 'required|string|max:1000',
             'visi' => 'required|string|max:1000',
             'misi' => 'required|string|max:1000',
-            'fotoPerusahaan' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:10000', // Validasi gambar
+            'fotoPerusahaan' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // Validasi gambar
         ]);
 
         $fotoPerusahaan = null;
@@ -66,7 +66,7 @@ class TentangKamiController extends Controller
             'deskripsi_perusahaan' => 'required|string|max:1000',
             'visi' => 'required|string|max:1000',
             'misi' => 'required|string|max:1000',
-            'fotoPerusahaan' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:10000',
+            'fotoPerusahaan' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
         // Cek jika ada file gambar yang di-upload

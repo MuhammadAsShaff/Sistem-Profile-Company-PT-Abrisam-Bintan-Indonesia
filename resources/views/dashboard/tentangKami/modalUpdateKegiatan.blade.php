@@ -39,7 +39,7 @@
             <input id="gambar-{{ $item->id }}" name="gambar" type="file" accept="image/png, image/jpeg, image/jpg"
               onchange="previewImageUpdateKegiatan(event, {{ $item->id }})" class="mt-10">
               <p class="mt-2 text-xs text-red-600 w-full max-w-full break-words">
-                *Pastikan gambar yang anda upload berukuran <b>1416x780px</b> <br> dan maksimal size <b>10mb</b>
+                *Pastikan gambar yang anda upload berukuran <b>1416x780px</b> <br> dan maksimal size <b>2mb</b>
                 bila tidak akan otomatis terpotong.
               </p>
           </div>

@@ -53,6 +53,10 @@
                 accept="image/png, image/jpeg, image/jpg"
                 class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4  file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
                 onchange="previewImage('{{ $admin->id }}', event)">
+                <p class="mt-2 text-xs text-red-600 w-full max-w-full break-words">
+                  *Pastikan gambar yang anda upload berukuran <b>1080x1080px</b> <br> dan maksimal size <b>2mb</b>
+                  bila tidak akan otomatis terpotong.
+                </p>
             </div>
           </div>
 

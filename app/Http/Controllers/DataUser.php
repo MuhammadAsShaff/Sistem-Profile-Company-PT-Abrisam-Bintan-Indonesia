@@ -62,7 +62,7 @@ class DataUser extends Controller
             'nama' => 'required|string|max:255',
             'email' => 'required|email|unique:admins,email_admin,' . $id, // Unik kecuali ID yang sedang diupdate
             'posisi' => 'required|string|max:50',
-            'foto_admin' => 'nullable|mimes:jpg,jpeg,png|max:10000',
+            'foto_admin' => 'nullable|mimes:jpg,jpeg,png|max:2048',
             'status' => 'required|in:Online,Offline',
         ]);
 

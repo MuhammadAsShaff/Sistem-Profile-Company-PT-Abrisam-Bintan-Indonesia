@@ -32,7 +32,7 @@
         <div class="grid grid-cols-2 gap-8">
           <div class="col-span-2">
             <!-- Foto Admin -->
-            <div class="flex flex-col items-center justify-center">
+            <div class="flex flex-col">
               <!-- Elemen image untuk menampilkan preview gambar -->
               <img id="preview-image-insert-user" class="hidden w-32 h-auto border rounded shadow-md object-cover " src="#"
                 alt="Preview Gambar" />
@@ -42,6 +42,10 @@
               <!-- Input file untuk memilih gambar -->
               <input id="dropzone-file" type="file" name="foto_admin" accept="image/png, image/jpeg, image/jpg"
                 class="mt-4 ml-10" onchange="previewImageUser(event)">
+                <p class="mt-2 text-xs text-red-600 w-full max-w-full break-words">
+                *Pastikan gambar yang anda upload berukuran <b>1080x1080px</b> <br> dan maksimal size <b>2mb</b>
+                bila tidak akan otomatis terpotong.
+              </p>
             </div>
           </div>
           <!-- Nama Admin -->

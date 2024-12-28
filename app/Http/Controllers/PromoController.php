@@ -36,7 +36,7 @@ class PromoController extends Controller
         $request->validate([
             'nama_promo' => 'required|string|max:255',
             'deskripsi' => 'required|string|max:1000', // Validasi deskripsi
-            'gambar_promo' => 'nullable|mimes:jpg,jpeg,png|max:10000', // Gambar opsional
+            'gambar_promo' => 'nullable|mimes:jpg,jpeg,png|max:2048', // Gambar opsional
         ]);
 
         // Persiapan data promo baru
@@ -82,7 +82,7 @@ class PromoController extends Controller
         $validatedData = $request->validate([
             'nama_promo' => 'required|string|max:255',
             'deskripsi' => 'required|string|max:1000', // Validasi deskripsi dengan batas maksimum 1000 karakter
-            'gambar_promo' => 'nullable|image|mimes:jpg,jpeg,png|max:10000', // Validasi gambar promo, maksimal 10MB
+            'gambar_promo' => 'nullable|image|mimes:jpg,jpeg,png|max:2048', // Validasi gambar promo, maksimal 10MB
         ]);
 
         // Temukan promo berdasarkan ID

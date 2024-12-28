@@ -26,10 +26,22 @@
     </div>
 
     <!-- Input Gambar (File Upload) -->
-    <div class="mb-4">
+    <div>
+    <!-- Preview Gambar -->
+    <img id="preview-image-bagan-pertama" src="#" alt="Preview Gambar"
+      class="hidden w-64 h-auto border rounded shadow-md bg-gray-200" />
+
+    <!-- Input File -->
     <label for="img_file" class="block text-gray-700 font-medium">Unggah Gambar (opsional)</label>
     <input type="file" name="img_file" id="img_file"
-      class="w-full border-gray-300 rounded p-2 @error('img_file') border-red-500 @enderror" accept="image/*">
+      class="w-full border-gray-300 rounded p-2 @error('img_file') border-red-500 @enderror" accept="image/*"
+      onchange="previewImageBaganPertama(event)">
+
+    <!-- Pesan Validasi -->
+    <p class="mt-2 text-xs text-red-600 w-full max-w-full mb-4 break-words">
+      *Pastikan gambar yang anda upload berukuran <b>1080x1080px</b><br>dan maksimal size <b>2MB</b>,
+      bila tidak akan otomatis terpotong.
+    </p>
     @error('img_file')
     <p class="text-red-500 text-sm">{{ $message }}</p>
   @enderror
@@ -38,7 +50,22 @@
     <!-- Tombol Submit -->
     <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">Tambah</button>
   </form>
+  <script>
+    function previewImageBaganPertama(event) {
+    const previewImage = document.getElementById('preview-image-bagan-pertama');
+    const file = event.target.files[0];
+    const reader = new FileReader();
 
+    reader.onload = function () {
+      previewImage.src = reader.result;
+      previewImage.classList.remove('hidden');
+    };
+
+    if (file) {
+      reader.readAsDataURL(file);
+    }
+    }
+  </script>
 @else
   <!-- Div untuk menampilkan bagan jika ada node -->
   <div id="tree"></div>
@@ -48,7 +75,9 @@
 
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script src="https://balkan.app/js/OrgChart.js"></script>
+
   <script>
+
     OrgChart.templates.olivia.nodeCircleMenuButton = {
     radius: 18,
     x: 250,

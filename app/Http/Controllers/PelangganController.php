@@ -11,7 +11,7 @@ class PelangganController extends Controller
         // Simpan URL terakhir ke session sebelum mengunjungi halaman index
         session(['previous_url' => $request->fullUrl()]);
 
-        // Ambil query pencarian
+        // Ambil query pencarian dan filter status
         $search = $request->input('search');
         $status = $request->input('status');
 
@@ -41,26 +41,31 @@ class PelangganController extends Controller
             $query->where('status_customer', '=', $status);
         }
 
+        // Urutkan berdasarkan created_at terbaru
+        $query->orderBy('created_at', 'desc');
+
         // Ambil status unik untuk dropdown
         $statusCustomer = Customer::distinct()->pluck('status_customer')->filter()->toArray(); // Ambil status unik dan hilangkan null
 
         // Lakukan paginasi dengan limit 5
         $customers = $query->paginate(5);  // Anda dapat menyesuaikan jumlah di sini
 
-        // Get the total number of customers (if needed)
-        $customerCount = Customer::count();
-
-        // Menghitung customer dengan status 'Belum dihubungi'
-        $belumDihubungiCount = Customer::where('status_customer', 'Belum dihubungi')->count();
-
-        // Menghitung customer dengan status 'Sudah dihubungi'
-        $sudahDihubungiCount = Customer::where('status_customer', 'Sudah dihubungi')->count();
-
+        // Penghitungan customer dengan berbagai status
+        $statusCounts = Customer::selectRaw("status_customer, COUNT(*) as count")
+            ->groupBy('status_customer')
+            ->pluck('count', 'status_customer');
 
         // Kirim data ke view
-        return view('dashboard.dataPelanggan.dataPelanggan', compact('customers', 'search', 'statusCustomer', 'status','customerCount', 'belumDihubungiCount', 'sudahDihubungiCount'));
+        return view('dashboard.dataPelanggan.dataPelanggan', [
+            'customers' => $customers,
+            'search' => $search,
+            'statusCustomer' => $statusCustomer,
+            'status' => $status,
+            'customerCount' => $statusCounts->sum(), // Total customer
+            'belumDihubungiCount' => $statusCounts->get('Belum dihubungi', 0),
+            'sudahDihubungiCount' => $statusCounts->get('Sudah dihubungi', 0),
+        ]);
     }
-
 
     // CustomerController.php
     public function updateStatus(Request $request, $id_customer)

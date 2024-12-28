@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use App\Models\Blog;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use Intervention\Image\Facades\Image;
 
 class BlogController extends Controller
 {
@@ -41,7 +42,7 @@ class BlogController extends Controller
       'judul_blog' => 'required|string|max:255',
       'isi_blog' => 'required|string',
       'kategori' => 'required|string|max:100',
-      'gambar_cover' => 'nullable|mimes:jpg,jpeg,png|max:10000',
+      'gambar_cover' => 'nullable|mimes:jpg,jpeg,png|max:2048',
     ]);
 
     // Buat slug awal dari judul
@@ -52,9 +53,26 @@ class BlogController extends Controller
     ]);
 
     if ($request->hasFile('gambar_cover')) {
-      $coverFilename = time() . '_cover_' . $request->file('gambar_cover')->getClientOriginalName();
-      $request->file('gambar_cover')->move(public_path('uploads/blogs'), $coverFilename);
-      $blogData['gambar_cover'] = $coverFilename;
+      $file = $request->file('gambar_cover');
+      $filename = time() . '_' . $file->getClientOriginalName();
+
+      // Memastikan direktori tujuan ada
+      $destinationPath = public_path('uploads/blogs');
+      if (!file_exists($destinationPath)) {
+        mkdir($destinationPath, 0755, true);
+      }
+
+      // Menggunakan Intervention Image untuk resize dan crop gambar
+      $image = Image::make($file); // Membuka file gambar
+      $image->fit(1080, 640, function ($constraint) {
+        $constraint->upsize(); // Mencegah gambar diperbesar lebih besar dari ukuran aslinya
+      });
+
+      // Simpan gambar yang sudah di-resize dan di-crop
+      $image->save($destinationPath . '/' . $filename);
+
+      // Menyimpan nama file gambar
+      $blogData['gambar_cover'] = $filename;
     }
 
     // Simpan blog terlebih dahulu untuk mendapatkan id_blog
@@ -67,6 +85,7 @@ class BlogController extends Controller
     return redirect()->route('dashboard.blog.blog')->with('success', 'Blog berhasil ditambahkan');
   }
 
+
   public function update(Request $request, $id_blog)
   {
     $blog = Blog::findOrFail($id_blog);
@@ -75,10 +94,8 @@ class BlogController extends Controller
       'judul_blog' => 'required|string|max:255',
       'isi_blog' => 'required|string',
       'kategori' => 'required|string|max:100',
-      'gambar_cover' => 'nullable|mimes:jpg,jpeg,png|max:10000',
+      'gambar_cover' => 'nullable|mimes:jpg,jpeg,png|max:2048',
     ]);
-
-    $blog->fill($validated);
 
     // Perbarui slug jika judul berubah
     if ($blog->isDirty('judul_blog')) {
@@ -86,20 +103,41 @@ class BlogController extends Controller
       $blog->slug = $slug;
     }
 
+    // Jika ada file gambar baru diunggah
     if ($request->hasFile('gambar_cover')) {
-      if ($blog->gambar_cover && file_exists(public_path('uploads/blogs/' . $blog->gambar_cover))) {
+      // Hapus gambar lama jika ada
+      if (!empty($blog->gambar_cover) && file_exists(public_path('uploads/blogs/' . $blog->gambar_cover))) {
         unlink(public_path('uploads/blogs/' . $blog->gambar_cover));
       }
 
-      $filename = time() . '_' . $request->file('gambar_cover')->getClientOriginalName();
-      $request->file('gambar_cover')->move(public_path('uploads/blogs'), $filename);
+      // Proses file baru
+      $file = $request->file('gambar_cover');
+      $filename = time() . '_' . $file->getClientOriginalName();
+
+      // Pastikan direktori tujuan ada
+      $destinationPath = public_path('uploads/blogs');
+      if (!file_exists($destinationPath)) {
+        mkdir($destinationPath, 0755, true);
+      }
+
+      // Resize dan simpan gambar baru
+      $image = Image::make($file);
+      $image->fit(1080, 640, function ($constraint) {
+        $constraint->upsize();
+      });
+      $image->save($destinationPath . '/' . $filename);
+
+      // Update nama file gambar
       $blog->gambar_cover = $filename;
     }
 
+    // Simpan perubahan ke database
     $blog->save();
 
     return redirect()->route('dashboard.blog.blog')->with('success', 'Blog berhasil diupdate');
   }
+
+
 
   public function edit($id_blog)
   {

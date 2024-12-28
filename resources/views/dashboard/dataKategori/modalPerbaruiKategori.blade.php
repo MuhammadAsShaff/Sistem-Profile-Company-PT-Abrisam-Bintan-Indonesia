@@ -46,7 +46,7 @@
               accept="image/png, image/jpeg, image/jpg" class="mt-10"
               onchange="previewImageKategoriUpdate(event, {{ $kategori->id_kategori }})">
               <p class="mt-2 text-xs text-red-600 w-full max-w-full break-words">
-                *Pastikan gambar yang anda upload berukuran <b>1080x1080px</b> <br> dan maksimal size <b>10mb</b>
+                *Pastikan gambar yang anda upload berukuran <b>1080x1080px</b> <br> dan maksimal size <b>2mb</b>
                 bila tidak akan otomatis terpotong.
               </p>
           </div>

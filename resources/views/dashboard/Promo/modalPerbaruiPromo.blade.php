@@ -46,7 +46,7 @@
               accept="image/png, image/jpeg, image/jpg" onchange="previewImagePromo(event, {{ $promo->id_promo }})"
               class="mt-10">
             <p class="mt-2 text-xs text-red-600 w-full max-w-full break-words">
-              *Pastikan gambar yang anda upload berukuran <b>1400x500px</b> <br> dan maksimal size <b>10mb</b>
+              *Pastikan gambar yang anda upload berukuran <b>1400x500px</b> <br> dan maksimal size <b>2mb</b>
               bila tidak akan otomatis terpotong.
             </p>
           </div>

@@ -51,7 +51,7 @@ class BaganOrganisasiController extends Controller
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'title' => 'required|string|max:255',
-            'img_file' => 'nullable|mimes:jpg,jpeg,png|max:10000',
+            'img_file' => 'nullable|mimes:jpg,jpeg,png|max:2048',
             'parent_id' => 'nullable|exists:bagan,id'
         ]);
 
@@ -100,7 +100,7 @@ class BaganOrganisasiController extends Controller
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'title' => 'required|string|max:255',
-            'img_file' => 'nullable|mimes:jpg,jpeg,png|max:10000' // Tambahkan validasi gambar
+            'img_file' => 'nullable|mimes:jpg,jpeg,png|max:2048' // Tambahkan validasi gambar
         ]);
 
         $position = BaganOrganisasi::findOrFail($id);
@@ -116,6 +116,11 @@ class BaganOrganisasiController extends Controller
                 mkdir($destinationPath, 0755, true);
             }
 
+            // Hapus gambar lama jika ada
+            if ($position->img_url && file_exists(public_path('uploads/bagan/' . $position->img_url))) {
+                unlink(public_path('uploads/bagan/' . $position->img_url));
+            }
+
             // Menggunakan Intervention Image untuk resize dan crop gambar
             $image = Image::make($file); // Membuka file gambar
             $image->fit(1080, 1080, function ($constraint) {
@@ -126,27 +131,50 @@ class BaganOrganisasiController extends Controller
             $image->save($destinationPath . '/' . $filename);
 
             // Menyimpan nama file gambar
-            $imgFilename = $filename;
+            $validated['img_url'] = $filename;
         }
 
         // Perbarui data teks (nama dan jabatan)
         $position->update([
             'name' => $validated['name'],
             'title' => $validated['title'],
-            'img_url' => $position->img_url
+            'img_url' => $validated['img_url'] ?? $position->img_url // Simpan gambar baru jika ada, atau tetap gunakan gambar lama
         ]);
 
         return response()->json([
-            'message' => 'Node berhasil diperbarui',
+            'message' => 'Bagan berhasil diperbarui',
             'redirect' => route('dashboard.tentangKami.layoutTentangKami')
         ]);
     }
 
-
-
     public function destroy($id)
     {
         $position = BaganOrganisasi::findOrFail($id);
+
+        // Jika parent_id kosong, hapus semua data di tabel
+        if (is_null($position->parent_id)) {
+            $allPositions = BaganOrganisasi::all();
+
+            foreach ($allPositions as $pos) {
+                // Hapus file gambar jika ada
+                if (!empty($pos->img_url)) {  // Memastikan img_url tidak kosong
+                    $filePath = public_path('uploads/bagan/' . $pos->img_url);
+
+                    // Periksa apakah file benar-benar ada sebelum menghapusnya
+                    if (file_exists($filePath)) {
+                        unlink($filePath); // Menghapus file gambar
+                    }
+                }
+            }
+
+            // Hapus semua data di tabel
+            BaganOrganisasi::truncate();
+
+            return response()->json([
+                'message' => 'Semua data berhasil dihapus',
+                'redirect' => route('dashboard.tentangKami.layoutTentangKami')
+            ]);
+        }
 
         // Hapus file gambar jika ada
         if (!empty($position->img_url)) {  // Memastikan img_url tidak kosong

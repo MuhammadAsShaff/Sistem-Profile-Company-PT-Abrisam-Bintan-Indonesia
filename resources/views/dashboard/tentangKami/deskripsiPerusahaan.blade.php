@@ -43,7 +43,7 @@
     <input type="file" name="fotoPerusahaan" id="fotoPerusahaan" class="w-full border-gray-300 rounded p-2"
       accept="image/*" onchange="previewImage(event)" />
     <p class="mt-2 text-xs text-red-600 w-full max-w-full break-words">
-      *Pastikan gambar yang anda upload berukuran <b>1350x1020px</b> <br> dan maksimal size <b>10mb</b>
+      *Pastikan gambar yang anda upload berukuran <b>1350x1020px</b> <br> dan maksimal size <b>2mb</b>
       bila tidak akan otomatis terpotong.
     </p>
   </div>

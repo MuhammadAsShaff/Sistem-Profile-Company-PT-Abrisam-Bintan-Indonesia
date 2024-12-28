@@ -35,7 +35,7 @@
             <input type="file" name="gambar" id="gambar" accept="image/*" class="mt-10"
               onchange="previewImageKegiatan(event)" required>
               <p class="mt-2 text-xs text-red-600 w-full max-w-full break-words">
-                *Pastikan gambar yang anda upload berukuran <b>1416x780px</b> <br> dan maksimal size <b>10mb</b>
+                *Pastikan gambar yang anda upload berukuran <b>1416x780px</b> <br> dan maksimal size <b>2mb</b>
                 bila tidak akan otomatis terpotong.
               </p>
           </div>

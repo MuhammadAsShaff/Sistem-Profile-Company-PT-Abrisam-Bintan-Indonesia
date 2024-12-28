@@ -19,6 +19,10 @@
         <label for="dropzone-file-cover" class="block text-sm font-medium text-gray-700 mt-4">Ubah Gambar Cover</label>
         <input id="dropzone-file-cover" type="file" name="gambar_cover" accept="image/png, image/jpeg, image/jpg"
           class="mt-2 w-full" onchange="previewImage(event, 'cover-preview')">
+        <p class="mt-2 text-xs text-red-600 w-full max-w-full break-words">
+          *Pastikan gambar yang anda upload berukuran <b>1080x640px</b> <br> dan maksimal size <b>2mb</b>
+          bila tidak akan otomatis terpotong.
+        </p>
       </div>
 
       <!-- Judul Blog -->
