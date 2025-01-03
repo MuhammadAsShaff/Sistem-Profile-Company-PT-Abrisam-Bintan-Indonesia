@@ -33,19 +33,22 @@
           </tr>
         </thead>
         <tbody class="bg-white divide-y divide-gray-200">
-        @php
+          @php
       // Cek apakah syarat_ketentuan masih berupa string JSON
       $syaratKetentuan = is_string($kategori->syarat_ketentuan) ? json_decode($kategori->syarat_ketentuan, true) : $kategori->syarat_ketentuan;
     @endphp
-        
-        @if (isset($syaratKetentuan) && is_array($syaratKetentuan) && count($syaratKetentuan) > 0)
-      @foreach ($syaratKetentuan as $index => $syarat)
+
+          @if (isset($syaratKetentuan) && is_array($syaratKetentuan) && count($syaratKetentuan) > 0)
+        @foreach ($syaratKetentuan as $index => $syarat)
       <tr>
       <td class="px-4 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{ $index + 1 }}</td>
-      <td class="px-4 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{ $syarat }}</td>
+      <td class="px-4 py-4 whitespace-normal text-sm font-medium text-gray-900">
+        {{ $syarat }}
+      </td>
+
       </tr>
     @endforeach
-    @endif
+      @endif
 
         </tbody>
       </table>

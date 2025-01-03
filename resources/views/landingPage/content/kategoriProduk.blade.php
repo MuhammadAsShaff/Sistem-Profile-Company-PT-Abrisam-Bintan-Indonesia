@@ -11,39 +11,50 @@
         @foreach($kategori as $index => $item)
           <div class="produk-card flex-shrink-0 w-full sm:w-1/2 md:w-1/3 px-6 mb-6">
             <div class="bg-white rounded-lg shadow-lg p-6 sm:p-8 flex flex-col h-full">
-              <div class="flex items-start sm:items-center space-x-4 sm:space-x-6 mb-4">
-                <img alt="{{ $item->nama_kategori }}" class="w-20 h-20 sm:w-32 sm:h-32 object-cover rounded-lg"
-                  src="{{ asset('uploads/kategori/' . $item->gambar_kategori) }}" />
-                <div>
-                  <h3 class="text-xl sm:text-2xl font-bold font-telkomsel text-red-600 mb-1 sm:mb-2">
-                    {{ $item->nama_kategori }}
-                  </h3>
-                  <p class="text-gray-600 text-sm sm:text-base mb-2">
-                    {{ Str::limit($item->deskripsi, 100) }}
-                  </p>
-                </div>
+            <div class="flex items-start sm:items-center space-x-4 sm:space-x-6 mb-4">
+              <img alt="{{ $item->nama_kategori }}" class="w-20 h-20 sm:w-32 sm:h-32 object-cover rounded-lg"
+              src="{{ asset('uploads/kategori/' . $item->gambar_kategori) }}" />
+              <div>
+              <h3 class="text-xl sm:text-2xl font-bold font-telkomsel text-red-600 mb-1 sm:mb-2">
+                {{ $item->nama_kategori }}
+              </h3>
+              <p class="text-gray-600 text-sm sm:text-base mb-2">
+                {{ Str::limit($item->deskripsi, 100) }}
+              </p>
               </div>
-              @php
-  $syaratKetentuan = is_string($item->syarat_ketentuan)
-    ? json_decode($item->syarat_ketentuan, true)
-    : $item->syarat_ketentuan;
-              @endphp
-              @if(!empty($syaratKetentuan) && is_array($syaratKetentuan))
-                <div class="mt-auto">
-                  <h4 class="font-bold text-sm sm:text-lg font-telkomsel mb-1 sm:mb-2">Syarat dan Ketentuan:</h4>
-                  <ul class="list-disc pl-4 space-y-1 text-xs sm:text-sm text-gray-700">
-                    @foreach(array_slice($syaratKetentuan, 0, 2) as $syarat)
-                      <li>{{ $syarat }}</li>
-                    @endforeach
-                  </ul>
-                  @if(count($syaratKetentuan) > 2)
-                    @include('landingPage.content.modalSelengkapnyaProduk')
-                  @endif
-                </div>
-              @endif
+            </div>
+            @php
+        $syaratKetentuan = is_string($item->syarat_ketentuan)
+        ? json_decode($item->syarat_ketentuan, true)
+        : $item->syarat_ketentuan;
+        @endphp
+            @if(!empty($syaratKetentuan) && is_array($syaratKetentuan))
+          <div class="mt-auto">
+            <h4 class="font-bold text-sm sm:text-lg font-telkomsel mb-1 sm:mb-2">Syarat dan Ketentuan:</h4>
+            <ul class="list-disc pl-4 space-y-1 text-xs sm:text-sm text-gray-700">
+            @foreach(array_slice($syaratKetentuan, 0, 2) as $syarat)
+          @php
+        // Memecah kalimat menjadi array kata
+        $words = explode(' ', $syarat);
+        // Mengambil 10 kata pertama
+        $first10Words = implode(' ', array_slice($words, 0, 5));
+        // Jika ada lebih dari 10 kata, tambahkan '...'
+        if (count($words) > 10) {
+        $first10Words .= '...';
+        }
+    @endphp
+          <li>{{ $first10Words }}</li>
+      @endforeach
+            </ul>
+
+            @if(count($syaratKetentuan) > 2)
+        @include('landingPage.content.modalSelengkapnyaProduk')
+      @endif
+          </div>
+      @endif
             </div>
           </div>
-        @endforeach
+    @endforeach
       </div>
 
       <!-- Tombol Navigasi -->
@@ -55,7 +66,7 @@
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="4" d="M15 19l-7-7 7-7"></path>
         </svg>
       </button>
-      
+
       <!-- Tombol Navigasi Next -->
       <button type="button"
         class="absolute top-1/2 right-0 lg:right-0 transform -translate-y-1/2 z-5 text-black bg-white rounded-full w-8 h-8 md:w-10 md:h-10 flex items-center justify-center focus:outline-none hover:bg-gray-200 transition duration-300 shadow-xl"
@@ -167,4 +178,4 @@
     updateCardsPerView();
     updateCarousel();
   });
-</script> 
+</script>

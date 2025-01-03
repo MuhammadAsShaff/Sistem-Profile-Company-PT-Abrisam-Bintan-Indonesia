@@ -5,99 +5,176 @@
 </button>
 
 <!-- Modal Dialog -->
-<dialog id="modalSelengkapnya-{{ $item->id_kategori }}" class="modal p-0 rounded-lg shadow-xl backdrop:bg-black/50">
-    <div class="bg-white rounded-lg shadow-lg max-w-md w-full">
-        <div
-            class="bg-gradient-to-r from-red-500 to-pink-500 text-white p-4 rounded-t-lg flex justify-between items-center">
-            <div>
-                <h1 id="modal-nama-kategori" class="text-lg font-bold">{{ $item->nama_kategori }}</h1>
-            </div>
-            <button onclick="closeModal('modalSelengkapnya-{{ $item->id_kategori }}')"
-                class="text-white text-2xl font-bold">&times;
+<dialog id="modalSelengkapnya-{{ $item->id_kategori }}"
+    class="modal custom-modal rounded-lg shadow-lg w-full max-w-4xl overflow-hidden modal-hide"
+    style="position: fixed; top: 0%; left: 0%; transform: translate(-50%, -50%); height: 80vh;">
+    <div class="relative bg-white rounded-lg shadow-lg p-6 h-full w-full" id="modalContent" style="overflow-y: auto;">
+        <!-- Modal header -->
+        <div class="flex items-start justify-between p-5 border-b border-gray-200 rounded-t mb-6">
+            <h3 class="text-lg font-semibold text-gray-900">{{ $item->nama_kategori }}</h3>
+            <button type="button"
+                class="text-gray-400 hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 inline-flex items-center"
+                onclick="closeModal('modalSelengkapnya-{{ $item->id_kategori }}')">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
             </button>
         </div>
 
-        <div class="bg-white p-4">
-            <div class="mb-4">
-                <img id="modal-gambar-kategori" src="{{ asset('uploads/kategori/' . $item->gambar_kategori) }}"
-                    alt="Gambar Kategori" class="w-full h-48 object-cover rounded-lg mb-4">
-
-                <div class="bg-gray-100 rounded-lg p-4 mb-4">
-                    <h2 class="text-lg font-bold text-red-600 mb-2">Deskripsi</h2>
-                    <p id="modal-deskripsi-lengkap" class="text-gray-700">
-                        {{ $item->deskripsi }}
-                    </p>
-                </div>
+        <!-- Modal body -->
+        <div class="modal-body" style="max-height: 60vh; overflow-y: auto;">
+            <!-- Gambar -->
+            <div class="flex flex-col items-center justify-start mb-4 md:flex-row md:items-start">
+                <img src="{{ asset('uploads/kategori/' . $item->gambar_kategori) }}" alt="Gambar Kategori"
+                    class="w-48 h-48 object-cover rounded-lg mb-4 md:mb-0 md:mr-4">
             </div>
 
-            <div class="border-t border-gray-200 pt-4">
+            <!-- Deskripsi -->
+            <div class="mb-4">
+                <h2 class="text-lg font-bold text-red-600 mb-2">Deskripsi</h2>
+                <p class="text-gray-700">{{ $item->deskripsi }}</p>
+            </div>
+
+            <!-- Syarat dan Ketentuan -->
+            <div class="mb-4">
+                <h2 class="text-lg font-bold text-red-600 mb-3">Syarat dan Ketentuan</h2>
+
                 @php
-                    // Cek apakah syarat_ketentuan masih berupa string JSON
-                    $syaratKetentuan = is_string($item->syarat_ketentuan)
-                        ? json_decode($item->syarat_ketentuan, true)
-                        : $item->syarat_ketentuan;
+                    $syaratKetentuan = is_string($item->syarat_ketentuan) ? json_decode($item->syarat_ketentuan, true) : $item->syarat_ketentuan;
                 @endphp
 
-                <h3 class="text-lg font-bold text-red-600 mb-3">Syarat dan Ketentuan</h3>
-
                 @if (isset($syaratKetentuan) && is_array($syaratKetentuan) && count($syaratKetentuan) > 0)
-                    <div class="grid grid-cols-1 gap-3">
-                        @foreach ($syaratKetentuan as $index => $syarat)
-                            <div class="bg-gray-50 p-3 rounded-lg shadow-sm">
-                                <div class="flex items-start">
-                                    <span
-                                        class="bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center mr-3 flex-shrink-0">
-                                        {{ $index + 1 }}
-                                    </span>
-                                    <p class="text-gray-700 flex-grow px-2">
-                                        {{ $syarat }}
-                                    </p>
-                                </div>
-                            </div>
+                    <ul class="list-decimal list-inside space-y-2 text-gray-700">
+                        @foreach ($syaratKetentuan as $syarat)
+                            <li class="pl-2">{{ $syarat }}</li>
                         @endforeach
-                    </div>
+                    </ul>
                 @else
-                    <p class="text-gray-500 italic">Tidak ada syarat dan ketentuan yang tersedia.</p>
+                    <p class="text-gray-500 text-center">Tidak ada syarat dan ketentuan yang tersedia.</p>
                 @endif
             </div>
-        </div>
-
-        <div class="bg-gray-100 p-4 rounded-b-lg flex justify-between items-center">
-            <button class="bg-red-500 text-white font-bold py-2 px-6 rounded-full hover:bg-red-600 transition">
-                Konsultasi Sekarang
-            </button>
         </div>
     </div>
 </dialog>
 
+<style>
+    /* Efek animasi masuk */
+    @keyframes modalIn {
+        from {
+            opacity: 0;
+            transform: scale(0.9);
+        }
+
+        to {
+            opacity: 1;
+            transform: scale(1);
+        }
+    }
+
+    /* Efek animasi keluar */
+    @keyframes modalOut {
+        from {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        to {
+            opacity: 0;
+            transform: scale(0.9);
+        }
+    }
+
+    /* Modal muncul dengan animasi */
+    .modal-show {
+        animation: modalIn 0.3s forwards;
+    }
+
+    /* Modal menghilang dengan animasi */
+    .modal-hide {
+        animation: modalOut 0.3s forwards;
+    }
+
+    /* Style khusus untuk modal */
+    .custom-modal ol,
+    .custom-modal ul {
+        list-style-position: outside;
+        margin-left: 1.5em;
+        color: #000;
+        padding-left: 0;
+        margin-bottom: 1em;
+    }
+
+    .custom-modal ol {
+        list-style-type: decimal;
+    }
+
+    .custom-modal ul {
+        list-style-type: disc;
+    }
+
+    .custom-modal li {
+        margin-bottom: 0.5em;
+        line-height: 1.5;
+    }
+</style>
+
 <script>
-    // Fungsi untuk membuka modal
+    // Fungsi untuk membuka modal dengan animasi
     function openModal(modalId) {
         const modal = document.getElementById(modalId);
-        if (modal) {
-            modal.showModal();
-        }
-    }
 
-    // Fungsi untuk menutup modal
-    function closeModal(modalId) {
-        const modal = document.getElementById(modalId);
         if (modal) {
-            modal.close();
-        }
-    }
-
-    // Event listener untuk menutup modal saat mengklik di luar area
-    document.addEventListener('DOMContentLoaded', function () {
-        const modals = document.querySelectorAll('dialog');
-        modals.forEach(modal => {
+            // Tambahkan event listener untuk mencegah penutupan
             modal.addEventListener('click', function (event) {
-                // Pastikan klik di luar area modal
-                if (event.target === this) {
-                    this.close();
+                if (event.target === modal) {
+                    event.preventDefault();
+                    event.stopPropagation();
                 }
             });
-        });
+
+            // Buka modal
+            modal.showModal();
+
+            // Hapus kelas modal-hide jika ada
+            modal.classList.remove('modal-hide');
+
+            // Tambahkan kelas modal-show
+            modal.classList.add('modal-show');
+
+            // Nonaktifkan scroll body
+            document.body.style.overflow = 'hidden';
+        }
+    }
+
+    // Fungsi untuk menutup modal dengan animasi
+    function closeModal(modalId) {
+        const modal = document.getElementById(modalId);
+
+        if (modal) {
+            // Hapus kelas modal-show
+            modal.classList.remove('modal-show');
+
+            // Tambahkan kelas modal-hide
+            modal.classList.add('modal-hide');
+
+            // Tunggu hingga animasi selesai, lalu tutup modal
+            setTimeout(() => {
+                modal.close();
+
+                // Aktifkan kembali scroll body
+                document.body.style.overflow = 'auto';
+            }, 300);
+        }
+    }
+
+    // Event listener untuk tombol ESC
+    document.addEventListener('keydown', function (event) {
+        if (event.key === 'Escape') {
+            const openModals = document.querySelectorAll('dialog[open]');
+            openModals.forEach(modal => {
+                closeModal(modal.id);
+            });
+        }
     });
 </script>
-

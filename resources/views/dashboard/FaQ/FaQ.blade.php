@@ -10,7 +10,8 @@
   <!-- Penjelasan Singkat -->
   <div class="mb-6">
     <p class="text-sm text-gray-600 dark:text-gray-300">
-      Halaman ini menampilkan <b>Informasi FAQ</b> yang tersedia di sistem. Anda dapat menambah, memperbarui, atau menghapus FAQ sesuai kebutuhan.
+      Halaman ini menampilkan <b>Informasi FAQ</b> yang tersedia di sistem. Anda dapat menambah, memperbarui, atau
+      menghapus FAQ sesuai kebutuhan.
     </p>
   </div>
 
@@ -47,31 +48,32 @@
             </thead>
             <tbody class="bg-white divide-y divide-gray-200 dark:divide-gray-700 dark:bg-gray-900">
               @foreach ($faqs as $faq)
-              <tr>
-                <!-- Nomor -->
-                <td class="px-4 py-4 text-sm font-medium text-gray-700 dark:text-white">
-                  {{ ($faqs->currentPage() - 1) * $faqs->perPage() + $loop->iteration }}
-                </td>
+          <tr>
+          <!-- Nomor -->
+          <td class="px-4 py-4 text-sm font-medium text-gray-700 dark:text-white">
+            {{ ($faqs->currentPage() - 1) * $faqs->perPage() + $loop->iteration }}
+          </td>
 
-                <!-- Judul FAQ -->
-                <td class="px-12 py-4 text-sm font-medium text-gray-700 dark:text-white whitespace-nowrap">
-                  {{ $faq->judul_faq }}
-                </td>
+          <!-- Judul FAQ -->
+          <td class="px-12 py-4 text-sm font-medium text-gray-700 dark:text-white break-words">
+            {{ $faq->judul_faq }}
+          </td>
 
-                <!-- Isi FAQ -->
-                <td class="px-4 py-4 text-sm text-gray-500 dark:text-gray-300 whitespace-nowrap">
-                  {{ \Illuminate\Support\Str::limit($faq->isi_faq, 100) }}
-                </td>
 
-                <!-- Aksi -->
-                <td class="px-4 py-4 text-sm whitespace-nowrap">
-                  <div class="flex items-center gap-x-6">
-                    @include('dashboard.FaQ.modalPerbaruiFaQ', ['faq' => $faq])
-                    @include('dashboard.FaQ.modalHapusFaQ', ['faq' => $faq])
-                  </div>
-                </td>
-              </tr>
-              @endforeach
+          <!-- Isi FAQ -->
+          <td class="px-4 py-4 text-sm text-gray-500 dark:text-gray-300 whitespace-nowrap">
+            {{ \Illuminate\Support\Str::limit($faq->isi_faq, 100) }}
+          </td>
+
+          <!-- Aksi -->
+          <td class="px-4 py-4 text-sm whitespace-nowrap">
+            <div class="flex items-center gap-x-6">
+            @include('dashboard.FaQ.modalPerbaruiFaQ', ['faq' => $faq])
+            @include('dashboard.FaQ.modalHapusFaQ', ['faq' => $faq])
+            </div>
+          </td>
+          </tr>
+        @endforeach
             </tbody>
           </table>
         </div>

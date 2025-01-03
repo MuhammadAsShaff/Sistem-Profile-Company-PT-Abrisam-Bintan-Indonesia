@@ -20,11 +20,14 @@
 </div>
 
 <script>
+  // Menentukan nilai scale berdasarkan ukuran layar
+  var scaleValue = window.innerWidth <= 768 ? 0.5 : 0.75; // 0.5 untuk mobile, 0.75 untuk desktop
+
   // Inisialisasi OrgChart dengan node yang sudah dikustomisasi
   var chart = new OrgChart(document.getElementById("tree"), {
     mouseScrool: OrgChart.action.none,
     layout: OrgChart.layout.tree, // Coba layout "tree" untuk memperbaiki tampilan
-    scaleInitial: 0.75,
+    scaleInitial: scaleValue, // Menggunakan nilai scale yang telah ditentukan
     enableSearch: false,
     template: "ana",
     nodeBinding: {

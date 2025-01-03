@@ -8,11 +8,6 @@
              hidden md:block z-0" style="background-image: url('/images/indihome-maps-banner.png');">
     </div>
 
-    <!-- Gambar latar belakang untuk mobile -->
-    <div class="absolute inset-0 bg-no-repeat bg-cover opacity-5 
-                 md:hidden z-0" style="background-image: url('/images/indihome-maps-banner.png');">
-    </div>
-
     <!-- Main Text -->
     <div class="relative z-10 w-full text-center md:text-left">
       <h3 class="text-lg sm:text-xl md:text-2xl lg:text-3xl 
