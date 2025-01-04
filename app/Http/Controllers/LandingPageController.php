@@ -15,59 +15,54 @@ class LandingPageController extends Controller
 {
     public function index(Request $request)
     {
-        // Ambil semua paket dan kategori
         $paket = Paket::all();
         $kategori = Kategori::all();
         $blogs = Blog::latest()->take(9)->get();
-        // Ambil semua promo
         $promos = Promo::all();
 
-        // Inisialisasi produk sebagai semua produk
-        $produk = Produk::with('paket')->get(); // Menampilkan semua produk awalnya
+        $produk = Produk::with(['paket', 'kategori'])->get(); // Default produk
 
-        // Jika hanya paket dipilih tanpa kategori
+        // Filter berdasarkan paket
         if ($request->has('paket') && !empty($request->input('paket')) && empty($request->input('kategori'))) {
             $paketDipilih = $request->input('paket');
-            $produk = Produk::where('id_paket', $paketDipilih) // Filter produk hanya berdasarkan paket
-                ->with('paket')
+            $produk = Produk::where('id_paket', $paketDipilih)
+                ->with(['paket', 'kategori'])
                 ->get();
         }
 
-        // Filter berdasarkan kategori jika ada
+        // Filter berdasarkan kategori
         if ($request->has('kategori') && !empty($request->input('kategori'))) {
             $kategoriDipilih = $request->input('kategori');
             $produk = Produk::where('id_kategori', $kategoriDipilih)
-                ->with('paket')
+                ->with(['paket', 'kategori'])
                 ->get();
 
-            // Ambil paket yang memiliki produk pada kategori yang dipilih
             $paket = Paket::whereHas('produk', function ($query) use ($kategoriDipilih) {
                 $query->where('id_kategori', $kategoriDipilih);
             })->get();
         }
 
-        // Filter berdasarkan paket jika kategori juga dipilih
+        // Filter berdasarkan paket dan kategori
         if ($request->has('paket') && !empty($request->input('paket')) && !empty($request->input('kategori'))) {
             $paketDipilih = $request->input('paket');
-            $produk = Produk::where('id_kategori', $request->input('kategori'))
-                ->where('id_paket', $paketDipilih) // Ditambah filter paket
-                ->with('paket')
+            $kategoriDipilih = $request->input('kategori');
+            $produk = Produk::where('id_kategori', $kategoriDipilih)
+                ->where('id_paket', $paketDipilih)
+                ->with(['paket', 'kategori'])
                 ->get();
         }
 
-        // Jika request via AJAX, kirim data produk dan paket sebagai JSON
+        // Jika request via AJAX
         if ($request->ajax()) {
             return response()->json([
                 'produk' => $produk,
-                'paket' => $paket, // Kirim paket yang sesuai
+                'paket' => $paket,
             ]);
         }
 
-
-
-        // Return ke view dengan data kategori, produk, promos, dan paket
-        return view('landingPage.layoutLandingPage', compact('kategori', 'produk', 'promos', 'paket','blogs'));
+        return view('landingPage.layoutLandingPage', compact('kategori', 'produk', 'promos', 'paket', 'blogs'));
     }
+
 
     public function tampilKontak()
     {

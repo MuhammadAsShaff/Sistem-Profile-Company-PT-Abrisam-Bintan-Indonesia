@@ -17,7 +17,8 @@
   @endif
 
     <!-- Nama Produk -->
-    <h3 class="font-bold font-telkomsel text-xl md:text-2xl lg:text-3xl mb-2 mt-4 text-left">{{ $prod->nama_produk }}
+    <p class="font-bold text-red-600 font-telkomsel  text-left">{{ $prod->kategori->nama_kategori}}</p>
+    <h3 class="font-bold font-telkomsel text-xl md:text-2xl lg:text-3xl mb-2 text-left">{{ $prod->nama_produk }}
     </h3>
 
     @php
@@ -25,7 +26,7 @@
       $hargaFormatted = number_format($hargaDiskon, 0, ',', '.');
       $hargaAsli = number_format($prod->harga_produk, 0, ',', '.');
       $biayaPasang = number_format($prod->biaya_pasang, 0, ',', '.');
-    @endphp
+  @endphp
 
     <!-- Harga -->
     @if($prod->diskon > 0)

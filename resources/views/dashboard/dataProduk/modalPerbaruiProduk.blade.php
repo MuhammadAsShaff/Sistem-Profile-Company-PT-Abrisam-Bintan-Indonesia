@@ -123,18 +123,18 @@
 
           <div class="col-span-1">
             @php
-// Menambahkan nomor ke setiap baris benefit
-$benefitList = is_string($produk->benefit) ? json_decode($produk->benefit, true) : $produk->benefit;
-$benefitWithNumbers = '';
-if ($benefitList) {
-  foreach ($benefitList as $index => $benefit) {
-    $benefitWithNumbers .= ($index + 1) . '. ' . $benefit . "\n";
-  }
-}
-        @endphp
+        // Menambahkan nomor ke setiap baris benefit
+        $benefitList = is_string($produk->benefit) ? json_decode($produk->benefit, true) : $produk->benefit;
+        $benefitWithNumbers = '';
+        if ($benefitList) {
+          foreach ($benefitList as $index => $benefit) {
+          $benefitWithNumbers .= ($index + 1) . '. ' . $benefit . "\n";
+          }
+        }
+      @endphp
             <label for="benefit-{{ $produk->id_produk }}"
               class="block text-sm font-medium text-gray-700">Benefit</label>
-            <textarea name="benefit" id="benefit-{{ $produk->id_produk }}" rows="3" required
+            <textarea name="benefit" id="benefit-{{ $produk->id_produk }}" rows="3"
               class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
               placeholder="Masukkan Benefit">{{ $benefitWithNumbers }}</textarea>
             <p class="mt-2 text-xs text-red-600">* Biarkan kosong jika tidak ada benefit.</p>

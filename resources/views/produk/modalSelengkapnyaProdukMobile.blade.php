@@ -1,6 +1,6 @@
 <!-- Button untuk membuka modal -->
 <button onclick="openModal('paketModalMobile-{{ $prod->id_produk }}')"
-    class="text-sm font-bold text-red-600 mt-2 font-telkomsel cursor-pointer hover:underline">
+    class=" font-bold text-red-600 mt-2 font-telkomsel cursor-pointer hover:underline">
     Informasi Selengkapnya...
 </button>
 
@@ -20,7 +20,7 @@
                         <h1 class="text-3xl font-bold font-telkomsel mr-4">{{ $prod->nama_produk }}</h1>
 
                         @if($prod->diskon > 0)
-                            <span class="bg-white text-red-600 px-2 py-1 rounded-full text-sm font-bold">
+                            <span class="bg-white text-red-600 px-2 py-1 text-center rounded-full text-sm font-bold">
                                 Diskon {{ $prod->diskon }}%
                             </span>
                         @endif

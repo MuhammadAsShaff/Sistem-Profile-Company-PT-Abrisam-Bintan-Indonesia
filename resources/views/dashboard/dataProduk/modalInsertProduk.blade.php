@@ -130,7 +130,7 @@
             <label for="benefit" class="block text-sm font-medium text-gray-700">Benefit</label>
             <textarea name="benefit" id="benefit" rows="3"
               class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
-              placeholder="Masukkan Benefit (Pisahkan dengan enter)" oninput="insertBenefit()" required></textarea>
+              placeholder="Masukkan Benefit (Pisahkan dengan enter)" oninput="insertBenefit()" ></textarea>
               <p class="mt-2 text-xs text-red-600 mb-[-20px]">* Biarkan kosong jika tidak ada Aplikasi Streaming.</p>
           </div>
         </div>

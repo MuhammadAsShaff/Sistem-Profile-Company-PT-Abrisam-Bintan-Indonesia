@@ -1,6 +1,6 @@
 <!-- Button untuk membuka modal -->
 <button onclick="openModal('paketModal-{{ $prod->id_produk }}')"
-    class="text-sm font-bold text-red-600 mt-2 font-telkomsel cursor-pointer hover:underline">
+    class=" font-bold text-red-600 mt-2 font-telkomsel cursor-pointer hover:underline">
     Informasi Selengkapnya...
 </button>
 
