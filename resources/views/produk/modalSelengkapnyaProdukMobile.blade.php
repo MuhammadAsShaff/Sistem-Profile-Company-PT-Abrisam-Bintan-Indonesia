@@ -1,15 +1,15 @@
 <!-- Button untuk membuka modal -->
-<button onclick="openModal('paketModal-{{ $prod->id_produk }}')"
+<button onclick="openModal('paketModalMobile-{{ $prod->id_produk }}')"
     class="text-sm font-bold text-red-600 mt-2 font-telkomsel cursor-pointer hover:underline">
     Informasi Selengkapnya...
 </button>
 
 <!-- Modal Dialog -->
-<dialog id="paketModal-{{ $prod->id_produk }}" class="modal p-0 rounded-lg shadow-xl"
+<dialog id="paketModalMobile-{{ $prod->id_produk }}" class="modal p-0 rounded-lg shadow-xl"
     style="max-width: 50rem; width: 90%; height: 60vh; overflow: hidden;">
     <div class="bg-white rounded-lg shadow-lg w-full h-full flex flex-col">
         <div class="bg-gradient-to-r from-[#D10A3C] to-[#FF0038] text-white rounded-t-lg relative p-6 flex-shrink-0">
-            <button onclick="closeModal('paketModal-{{ $prod->id_produk }}')"
+            <button onclick="closeModal('paketModalMobile-{{ $prod->id_produk }}')"
                 class="absolute top-2 right-2 text-white text-2xl font-bold hover:bg-white/20 rounded-full w-10 h-10 flex items-center justify-center">
                 &times;
             </button>

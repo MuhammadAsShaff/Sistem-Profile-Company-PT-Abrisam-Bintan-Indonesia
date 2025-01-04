@@ -69,6 +69,7 @@
       <span style="visibility:hidden;">No benefit</span>
       <!-- Gunakan visibility:hidden untuk menjaga ketinggian card tetap konsisten -->
     @endif
+      @include('produk.modalSelengkapnyaProdukMobile')
       </li>
       </ul>
 
