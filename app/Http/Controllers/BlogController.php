@@ -97,47 +97,44 @@ class BlogController extends Controller
       'gambar_cover' => 'nullable|mimes:jpg,jpeg,png|max:2048',
     ]);
 
+    // Update data
+    $blog->judul_blog = $validated['judul_blog'];
+    $blog->isi_blog = $validated['isi_blog'];
+    $blog->kategori = $validated['kategori'];
+
     // Perbarui slug jika judul berubah
-    if ($blog->isDirty('judul_blog')) {
-      $slug = Str::slug($validated['judul_blog']) . '-' . $blog->id_blog;
-      $blog->slug = $slug;
+    if ($validated['judul_blog'] !== $blog->judul_blog) {
+      $blog->slug = Str::slug($validated['judul_blog']) . '-' . $blog->id_blog;
     }
 
-    // Jika ada file gambar baru diunggah
+    // Update gambar jika ada
     if ($request->hasFile('gambar_cover')) {
-      // Hapus gambar lama jika ada
       if (!empty($blog->gambar_cover) && file_exists(public_path('uploads/blogs/' . $blog->gambar_cover))) {
         unlink(public_path('uploads/blogs/' . $blog->gambar_cover));
       }
 
-      // Proses file baru
       $file = $request->file('gambar_cover');
       $filename = time() . '_' . $file->getClientOriginalName();
 
-      // Pastikan direktori tujuan ada
       $destinationPath = public_path('uploads/blogs');
       if (!file_exists($destinationPath)) {
         mkdir($destinationPath, 0755, true);
       }
 
-      // Resize dan simpan gambar baru
       $image = Image::make($file);
       $image->fit(1080, 640, function ($constraint) {
         $constraint->upsize();
       });
       $image->save($destinationPath . '/' . $filename);
 
-      // Update nama file gambar
       $blog->gambar_cover = $filename;
     }
 
-    // Simpan perubahan ke database
+    // Simpan data
     $blog->save();
 
-    return redirect()->route('dashboard.blog.blog')->with('success', 'Blog berhasil diupdate');
+    return redirect()->route('dashboard.blog.blog')->with('success', 'Blog berhasil diperbarui');
   }
-
-
 
   public function edit($id_blog)
   {

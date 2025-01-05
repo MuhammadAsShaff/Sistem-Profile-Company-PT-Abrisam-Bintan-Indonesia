@@ -68,7 +68,7 @@
               </tr>
             </thead>
             <tbody class="bg-white divide-y divide-gray-200 dark:divide-gray-700 dark:bg-gray-900">
-              @foreach ($promos as $promo)
+              @forelse ($promos as $promo)
               <tr>
               <!-- Nomor Promo -->
               <td class="px-4 py-4 text-sm font-medium text-gray-700 dark:text-white whitespace-nowrap">
@@ -106,7 +106,13 @@
               </div>
               </td>
               </tr>
-      @endforeach
+      @empty
+        <tr>
+        <td colspan="12" class="px-4 py-4 text-center text-sm text-gray-500 dark:text-gray-300">
+          Tidak ada data Promo.
+        </td>
+        </tr>
+      @endforelse
             </tbody>
           </table>
         </div>

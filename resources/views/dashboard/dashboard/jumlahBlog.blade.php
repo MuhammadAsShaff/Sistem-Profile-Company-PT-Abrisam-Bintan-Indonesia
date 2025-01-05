@@ -8,7 +8,7 @@
   <!-- Teks -->
   <div>
     <h5 class="text-xl font-bold tracking-tight text-gray-900 dark:text-white">Jumlah Blog</h5>
-    @if ($blogCount)
+    @if ($blogCount !== null)
     <span class="px-3 py-1 text-xs text-black bg-gray-200 rounded-full dark:bg-gray-800 dark:text-red-400">Blog Yang Diupload
     <b>{{$blogCount}}</b></span>
     @endif

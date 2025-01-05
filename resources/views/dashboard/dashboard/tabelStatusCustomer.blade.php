@@ -13,7 +13,7 @@
             </tr>
         </thead>
         <tbody>
-            @foreach($customers as $customer)
+            @forelse($customers as $customer)
             <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
                 <td scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                    {{ $customer->nama_customer }}
@@ -22,7 +22,13 @@
                     {{ $customer->status_customer }}
                 </td>
             </tr>
-            @endforeach
+               @empty
+        <tr>
+        <td colspan="2" class="px-4 py-4 text-center text-sm text-gray-500 dark:text-gray-300">
+          Tidak ada data Customer.
+        </td>
+        </tr>
+      @endforelse
         </tbody>
     </table>
 </div>

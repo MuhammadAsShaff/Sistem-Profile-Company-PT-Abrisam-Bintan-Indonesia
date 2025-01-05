@@ -61,7 +61,7 @@
                                 <th scope="col"
                                     class="py-3.5 px-4 text-sm font-normal text-left text-gray-500 dark:text-gray-400 w-1/6">
                                     <div class="flex items-center gap-x-3">
-                                        
+
                                         <span>Name</span>
                                     </div>
                                 </th>
@@ -87,88 +87,94 @@
                             </tr>
                         </thead>
                         <tbody class="bg-white divide-y divide-gray-200 dark:divide-gray-700 dark:bg-gray-900">
-                            @foreach ($admins as $admin)
-                                <tr>
-                                    <td class="px-4 py-4 text-sm font-medium text-gray-700 whitespace-nowrap">
-                                        <div class="inline-flex items-center gap-x-3">
-                                            
-                                            <div class="flex items-center gap-x-2">
-                                                <img class="object-cover w-10 h-10 rounded-full"
-                                                    src="{{ $admin->foto_admin ? asset('uploads/admins/' . $admin->foto_admin) : asset('images/blankProfile.jpg') }}"
-                                                    alt="Avatar">
+                            @forelse ($admins as $admin)
+                            <tr>
+                                <td class="px-4 py-4 text-sm font-medium text-gray-700 whitespace-nowrap">
+                                    <div class="inline-flex items-center gap-x-3">
 
-                                                <div>
-                                                    <h2 class="font-medium text-gray-800 dark:text-white">
-                                                        {{ $admin->nama_admin }}
-                                                    </h2>
-                                                    <p class="text-sm font-normal text-gray-600 dark:text-gray-400">
-                                                        {{ $admin->email_admin }}
-                                                    </p>
-                                                </div>
+                                        <div class="flex items-center gap-x-2">
+                                            <img class="object-cover w-10 h-10 rounded-full"
+                                                src="{{ $admin->foto_admin ? asset('uploads/admins/' . $admin->foto_admin) : asset('images/blankProfile.jpg') }}"
+                                                alt="Avatar">
+
+                                            <div>
+                                                <h2 class="font-medium text-gray-800 dark:text-white">
+                                                    {{ $admin->nama_admin }}
+                                                </h2>
+                                                <p class="text-sm font-normal text-gray-600 dark:text-gray-400">
+                                                    {{ $admin->email_admin }}
+                                                </p>
                                             </div>
                                         </div>
-                                    </td>
-                                    <td class="px-12 py-4 text-sm font-medium text-gray-700 whitespace-nowrap">
-                                        <div
-                                            class="inline-flex items-center px-3 py-1 rounded-full gap-x-2 
+                                    </div>
+                                </td>
+                                <td class="px-12 py-4 text-sm font-medium text-gray-700 whitespace-nowrap">
+                                    <div
+                                        class="inline-flex items-center px-3 py-1 rounded-full gap-x-2 
                                                                                                                                                                         @if($admin->status == 'Online') bg-emerald-100/60 dark:bg-gray-800 @else bg-red-100/60 dark:bg-gray-800 @endif">
-                                            <span
-                                                class="h-1.5 w-1.5 rounded-full 
+                                        <span
+                                            class="h-1.5 w-1.5 rounded-full 
                                                                                                                                                                         @if($admin->status == 'Online') bg-emerald-500 @else bg-red-500 @endif">
-                                            </span>
-                                            <h2
-                                                class="text-sm font-normal 
+                                        </span>
+                                        <h2
+                                            class="text-sm font-normal 
                                                                                                                                                                         @if($admin->status == 'Online') text-emerald-500 @else text-red-500 @endif">
-                                                {{ $admin->status == 'Online' ? 'Online' : 'Offline' }}
-                                            </h2>
-                                        </div>
+                                            {{ $admin->status == 'Online' ? 'Online' : 'Offline' }}
+                                        </h2>
+                                    </div>
 
 
-                                    </td>
-                                    <td class="px-4 py-4 text-sm text-gray-500 dark:text-gray-300 whitespace-nowrap">
-                                        {{ $admin->posisi }}
-                                    </td>
-                                    <td class="px-4 py-4 text-sm text-gray-500 dark:text-gray-300 whitespace-nowrap">
-                                        {{ $admin->email_admin }}
-                                    </td>
-                                    <td class="px-4 py-4 text-sm whitespace-nowrap">
+                                </td>
+                                <td class="px-4 py-4 text-sm text-gray-500 dark:text-gray-300 whitespace-nowrap">
+                                    {{ $admin->posisi }}
+                                </td>
+                                <td class="px-4 py-4 text-sm text-gray-500 dark:text-gray-300 whitespace-nowrap">
+                                    {{ $admin->email_admin }}
+                                </td>
+                                <td class="px-4 py-4 text-sm whitespace-nowrap">
 
-                                        <div class="inline-flex items-center px-3 py-1 rounded-full gap-x-2">
-                                            <!-- Menampilkan "Sedang online" jika status adalah Online -->
-                                            @if($admin->status == 'Online')
-                                                <span
-                                                    class="ml-2 px-3 py-1 text-xs text-green-600 bg-green-100 rounded-full dark:bg-gray-800 dark:text-green-400">
-                                                    Sedang online
-                                                </span>
-                                            @else
-                                                <!-- Menampilkan Last seen jika status bukan Online -->
-                                                <span
-                                                    class="ml-2 px-3 py-1 text-xs text-red-600 bg-red-100 rounded-full dark:bg-gray-800 dark:text-red-400">
-                                                    Terakhir Terlihat :
-                                                    @if($admin->updated_at->isToday())
-                                                        {{ 'Hari ini' }} {{ $admin->updated_at->format('H:i') }}
-                                                    @else
-                                                        {{ $admin->updated_at->format('d M Y, H:i') }}
-                                                    @endif
-                                                </span>
-                                            @endif
-                                        </div>
+                                    <div class="inline-flex items-center px-3 py-1 rounded-full gap-x-2">
+                                        <!-- Menampilkan "Sedang online" jika status adalah Online -->
+                                        @if($admin->status == 'Online')
+                                            <span
+                                                class="ml-2 px-3 py-1 text-xs text-green-600 bg-green-100 rounded-full dark:bg-gray-800 dark:text-green-400">
+                                                Sedang online
+                                            </span>
+                                        @else
+                                            <!-- Menampilkan Last seen jika status bukan Online -->
+                                            <span
+                                                class="ml-2 px-3 py-1 text-xs text-red-600 bg-red-100 rounded-full dark:bg-gray-800 dark:text-red-400">
+                                                Terakhir Terlihat :
+                                                @if($admin->updated_at->isToday())
+                                                    {{ 'Hari ini' }} {{ $admin->updated_at->format('H:i') }}
+                                                @else
+                                                    {{ $admin->updated_at->format('d M Y, H:i') }}
+                                                @endif
+                                            </span>
+                                        @endif
+                                    </div>
 
-                                    </td>
-                                    <td class="px-4 py-4 text-sm whitespace-nowrap">
-                                        <div class="flex items-center gap-x-6">
-                                            @if ($admin->status == 'Offline')
-                                                @include('dashboard.dataUser.modalPerbaruiData')
-                                                @include('dashboard.dataUser.modalHapusData')
-                                            @else
-                                                @include('dashboard.dataUser.alertedit')
-                                                @include('dashboard.dataUser.alertdelet')
-                                            @endif
+                                </td>
+                                <td class="px-4 py-4 text-sm whitespace-nowrap">
+                                    <div class="flex items-center gap-x-6">
+                                        @if ($admin->status == 'Offline')
+                                            @include('dashboard.dataUser.modalPerbaruiData')
+                                            @include('dashboard.dataUser.modalHapusData')
+                                        @else
+                                            @include('dashboard.dataUser.alertedit')
+                                            @include('dashboard.dataUser.alertdelet')
+                                        @endif
 
-                                        </div>
-                                    </td>
-                                </tr>
-                            @endforeach
+                                    </div>
+                                </td>
+                            </tr>
+                            @empty
+                            <tr>
+                                <td colspan="12" class="px-4 py-4 text-center text-sm text-gray-500 dark:text-gray-300">
+                                    Tidak ada data User.
+                                </td>
+                            </tr>
+                            @endforelse
                             <!-- Tambahkan baris lain seperti di atas -->
                         </tbody>
                     </table>

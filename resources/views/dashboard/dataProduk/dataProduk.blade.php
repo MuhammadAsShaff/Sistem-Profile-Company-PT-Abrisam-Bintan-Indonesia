@@ -82,8 +82,8 @@
             </thead>
 
             <tbody class="bg-white divide-y divide-gray-200 dark:divide-gray-700 dark:bg-gray-900">
-              @foreach ($produks as $produk)
-                <tr>
+              @forelse ($produks as $produk)
+              <tr>
                 <td class="px-4 py-4 text-sm text-gray-500 dark:text-gray-300">
                   {{ ($produks->currentPage() - 1) * $produks->perPage() + $loop->iteration }}
                 </td>
@@ -125,12 +125,18 @@
                 <td class="px-4 py-4 text-sm text-gray-500 dark:text-gray-300">{{ $produk->paket->nama_paket }}</td>
                 <td class="px-4 py-4 text-sm whitespace-nowrap">
                   <div class="flex items-center gap-x-6">
-                  @include('dashboard.dataProduk.modalPerbaruiProduk')
-                  @include('dashboard.dataProduk.modalHapusProduk')
+                    @include('dashboard.dataProduk.modalPerbaruiProduk')
+                    @include('dashboard.dataProduk.modalHapusProduk')
                   </div>
                 </td>
-                </tr>
-        @endforeach
+              </tr>
+              @empty
+              <tr>
+                <td colspan="12" class="px-4 py-4 text-center text-sm text-gray-500 dark:text-gray-300">
+                  Tidak ada data Produk.
+                </td>
+              </tr>
+              @endforelse
             </tbody>
           </table>
         </div>

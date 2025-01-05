@@ -48,17 +48,18 @@ body {
 
 @font-face {
     font-family: 'TelkomselBatikSans';
-    src: url('/fonts/TelkomselBatikSans-Bold.ttf') format('truetype');
+    src: url('/fonts/TelkomselBatikSans-Bold.woff') format('woff');
     font-weight: bold;
     font-style: normal;
 }
 
 @font-face {
     font-family: 'TelkomselBatikSans';
-    src: url('/fonts/TelkomselBatikSans-Regular.ttf') format('truetype');
+    src: url('/fonts/TelkomselBatikSans-Regular.woff') format('woff');
     font-weight: normal;
     font-style: normal;
 }
+
   .gradient-text {
     background: linear-gradient(to right, #D10A3C, #FF0038);
     /* Gradien warna */

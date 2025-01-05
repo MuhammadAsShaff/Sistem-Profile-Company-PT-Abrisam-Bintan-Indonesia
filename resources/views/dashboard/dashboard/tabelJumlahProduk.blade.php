@@ -12,16 +12,22 @@
             </tr>
         </thead>
         <tbody>
-            @foreach ($produks as $produk)
+            @forelse ($produks as $produk)
                 <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
                     <td scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                         {{$produk->nama_kategori}}
                     </td>
                     <td class="px-6 py-4">
-                    {{$produk->produk_count}} Produk
+                        {{$produk->produk_count}} Produk
                     </td>
                 </tr>
-            @endforeach
+            @empty
+                <tr>
+                    <td colspan="2" class="px-4 py-4 text-center text-sm text-gray-500 dark:text-gray-300">
+                        Tidak ada data Produk.
+                    </td>
+                </tr>
+            @endforelse
         </tbody>
     </table>
 </div>

@@ -75,7 +75,7 @@
             </thead>
             <tbody class="bg-white divide-y divide-gray-200 dark:divide-gray-700 dark:bg-gray-900">
               <tr>
-                @foreach ($customers as $customer)
+                @forelse ($customers as $customer)
             <tr>
             <td class="px-6 py-4 text-sm text-gray-700 dark:text-white">{{ $customer->nik }}</td>
             <td class="px-6 py-4 text-sm text-gray-700 dark:text-white">{{ $customer->nama_customer }}</td>
@@ -84,7 +84,8 @@
         @endforeach
             </td>
             <td class="px-6 py-4 text-sm text-gray-500 dark:text-gray-300">
-              {{ \Carbon\Carbon::parse($customer->created_at)->translatedFormat('j F Y') }}</td>
+              {{ \Carbon\Carbon::parse($customer->created_at)->translatedFormat('j F Y') }}
+            </td>
             <td class="px-6 py-4 text-sm text-gray-500 dark:text-gray-300">{{ $customer->alamat_customer }}</td>
             <td class="px-6 py-4 text-sm text-gray-500 dark:text-gray-300"><a
               href="https://wa.me/{{ '62' . substr($customer->nomor_hp_customer, 1) }}" target="_blank"
@@ -122,7 +123,13 @@
               @include('dashboard.dataPelanggan.modalHapusPelanggan')
             </td>
             </tr>
-          @endforeach
+          @empty
+        <tr>
+        <td colspan="12" class="px-4 py-4 text-center text-sm text-gray-500 dark:text-gray-300">
+          Tidak ada data Pelanggan.
+        </td>
+        </tr>
+      @endforelse
               </tr>
             </tbody>
           </table>

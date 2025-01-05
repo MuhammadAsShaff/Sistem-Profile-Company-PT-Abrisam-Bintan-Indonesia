@@ -10,9 +10,12 @@
   <!-- Teks -->
   <div>
     <h5 class="text-xl font-bold tracking-tight text-gray-900 dark:text-white">Inventory Masuk</h5>
-    @if ($totalInventoryMasuk)
-    <span class="px-3 py-1 text-xs text-black bg-gray-200 rounded-full dark:bg-gray-800 dark:text-red-400">Produk Yang Tersedia <b>{{$totalInventoryMasuk}}</b></span>
+    @if ($totalInventoryMasuk !== null)
+    <span class="px-3 py-1 text-xs text-black bg-gray-200 rounded-full dark:bg-gray-800 dark:text-red-400">
+      Produk Yang Tersedia <b>{{ $totalInventoryMasuk }}</b>
+    </span>
   @endif
-    
+
+
   </div>
 </a>

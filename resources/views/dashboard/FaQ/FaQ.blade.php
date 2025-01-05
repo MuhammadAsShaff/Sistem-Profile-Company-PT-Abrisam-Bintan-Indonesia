@@ -47,7 +47,7 @@
               </tr>
             </thead>
             <tbody class="bg-white divide-y divide-gray-200 dark:divide-gray-700 dark:bg-gray-900">
-              @foreach ($faqs as $faq)
+              @forelse ($faqs as $faq)
           <tr>
           <!-- Nomor -->
           <td class="px-4 py-4 text-sm font-medium text-gray-700 dark:text-white">
@@ -73,7 +73,13 @@
             </div>
           </td>
           </tr>
-        @endforeach
+        @empty
+        <tr>
+        <td colspan="12" class="px-4 py-4 text-center text-sm text-gray-500 dark:text-gray-300">
+          Tidak ada data FAQ.
+        </td>
+        </tr>
+      @endforelse
             </tbody>
           </table>
         </div>

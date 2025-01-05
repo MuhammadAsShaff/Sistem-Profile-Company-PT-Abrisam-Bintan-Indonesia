@@ -23,7 +23,7 @@
   <!-- Main Container -->
   <div class="w-screen mx-0 flex flex-col justify-between min-h-screen">
     <div class="container mx-auto p-8 mt-20">
-      <div class="blog-detail-content-area bg-gray-100 shadow-md rounded-lg overflow-hidden mb-6">
+      <div class="blog-detail-content-area  shadow-md rounded-lg overflow-hidden mb-6">
         {{-- Gambar Blog --}}
         <img class="blog-detail-image w-full h-full object-cover"
           src="{{ asset('uploads/blogs/' . $blog->gambar_cover) }}" alt="{{ $blog->judul_blog }}">
@@ -65,7 +65,7 @@
           <div id="related-blog-carousel" class="flex transition-transform duration-500 ease-in-out">
             @foreach ($relatedBlogs as $related)
         <div class="blog-card flex-shrink-0 w-full px-4">
-          <div class="bg-gray-100 shadow-xl rounded-lg overflow-hidden mb-6">
+          <div class=" shadow-xl rounded-lg overflow-hidden mb-6">
           <a href="{{ route('isiBlog', ['slug' => $related->slug]) }}">
             <img src="{{ asset('uploads/blogs/' . $related->gambar_cover) }}" alt="{{ $related->judul_blog }}"
             class="w-full h-48 object-cover">
@@ -105,7 +105,7 @@
         <!-- Grid untuk Desktop -->
         <div class="hidden md:grid grid-cols-1 md:grid-cols-3 gap-6">
           @foreach ($relatedBlogs as $related)
-        <div class="bg-gray-100 shadow-md rounded-lg overflow-hidden">
+        <div class=" shadow-md rounded-lg overflow-hidden">
         <a href="{{ route('isiBlog', ['slug' => $related->slug]) }}">
           <img src="{{ asset('uploads/blogs/' . $related->gambar_cover) }}" alt="{{ $related->judul_blog }}"
           class="w-full h-48 object-cover">
@@ -283,7 +283,7 @@
     }
 
     .blog-detail-content-text p {
-      color: #000;
+      color: #000000;
       font-size: 1em;
       line-height: 1.6;
       text-align: justify;

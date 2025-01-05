@@ -67,7 +67,7 @@
               </tr>
             </thead>
             <tbody class="bg-white divide-y divide-gray-200 dark:divide-gray-700 dark:bg-gray-900">
-              @foreach ($pakets as $paket)
+              @forelse ($pakets as $paket)
           <tr>
           <!-- Nomor Urutan -->
           <td class="w-1/12 px-4 py-4 text-sm font-medium text-gray-700 dark:text-white whitespace-nowrap">
@@ -104,7 +104,13 @@
             </div>
           </td>
           </tr>
-        @endforeach
+        @empty
+        <tr>
+        <td colspan="12" class="px-4 py-4 text-center text-sm text-gray-500 dark:text-gray-300">
+          Tidak ada data Paket.
+        </td>
+        </tr>
+      @endforelse
             </tbody>
           </table>
         </div>
