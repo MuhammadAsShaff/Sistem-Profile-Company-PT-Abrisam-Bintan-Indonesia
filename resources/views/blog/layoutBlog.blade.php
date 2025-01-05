@@ -12,6 +12,7 @@
 </head>
 
 <body class="font-poppins bg-white text-gray-900 flex flex-col min-h-screen overflow-x-hidden">
+  @include('loading')
   @include('landingPage.navbar')
 
   <div class="container mx-auto p-8 mt-20 grid grid-cols-1 md:grid-cols-3 gap-8">

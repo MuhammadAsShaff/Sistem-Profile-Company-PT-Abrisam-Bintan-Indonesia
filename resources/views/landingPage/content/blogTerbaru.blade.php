@@ -7,18 +7,18 @@
     <div class="blog-carousel-container overflow-hidden relative">
       <div id="blog-carousel" class="flex transition-transform duration-500 ease-in-out">
         @foreach($blogs as $blog)
-      <div class="blog-card flex-shrink-0 w-full md:w-1/2 lg:w-1/3 px-6 mb-6">
+        <div class="blog-card flex-shrink-0 w-full md:w-1/2 lg:w-1/3 px-6 mb-6">
         <a href="{{ route('isiBlog', ['slug' => $blog->slug]) }}"
         class="block bg-white shadow-lg rounded-lg overflow-hidden hover:shadow-xl transition-shadow duration-300">
         <div class="relative h-64 overflow-hidden">
           @if($blog->gambar_cover)
         <img src="{{ asset('uploads/blogs/' . $blog->gambar_cover) }}" alt="{{ $blog->judul_blog }}"
         class="w-full h-full object-cover transform hover:scale-110 transition-transform duration-300">
-      @else
-      <div class="w-full h-full bg-gray-200 flex items-center justify-center text-gray-500">
-      Tidak ada gambar
-      </div>
-    @endif
+        @else
+        <div class="w-full h-full bg-gray-200 flex items-center justify-center text-gray-500">
+        Tidak ada gambar
+        </div>
+      @endif
         </div>
 
         <div class="p-5">
@@ -27,19 +27,19 @@
           {{ Str::limit(strip_tags($blog->judul_blog), 40) }}
           </h3>
           <p class="text-gray-600 text-sm mb-4 line-clamp-3">
-          {{ Str::limit(strip_tags($blog->isi_blog), 40) }}
+          {{ Str::limit(str_replace(['&nbsp;', '&#160;'], ' ', strip_tags($blog->isi_blog)), 40) }}
           </p>
           <div class="flex justify-between items-center">
           <span class="text-xs text-gray-500">
-            {{ \Carbon\Carbon::parse($blog->created_at)->format('d F Y') }}
+          {{ \Carbon\Carbon::parse($blog->created_at)->format('d F Y') }}
           </span>
           <span class="text-red-500 font-telkomsel hover:underline text-sm">
-            Baca Selengkapnya
+          Baca Selengkapnya
           </span>
           </div>
         </div>
         </a>
-      </div>
+        </div>
     @endforeach
       </div>
     </div>

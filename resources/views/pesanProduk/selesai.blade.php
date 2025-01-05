@@ -38,6 +38,7 @@
 
 
 <body class="bg-gray-100">
+  @include('loading')
   <!-- Step Indicator -->
   <div class="fixed top-0 left-0 right-0 w-full bg-white z-50 py-4 md:py-10">
     <div class="container mx-auto max-w-4xl px-4">

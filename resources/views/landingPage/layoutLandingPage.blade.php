@@ -16,6 +16,7 @@
 </head>
 
 <body class="font-poppins bg-white text-gray-900 overflow-x-hidden">
+  @include('loading')
   <!-- Navbar -->
   @include('landingPage.navbar')
 

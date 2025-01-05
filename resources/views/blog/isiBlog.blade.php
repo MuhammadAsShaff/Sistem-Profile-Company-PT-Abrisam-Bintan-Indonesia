@@ -17,6 +17,7 @@
 </head>
 
 <body class="font-poppins bg-white text-gray-900 overflow-x-hidden">
+  @include('loading')
   <!-- Navbar Section -->
   @include('landingPage.navbar')
 
@@ -67,22 +68,22 @@
         <div class="blog-card flex-shrink-0 w-full px-4">
           <div class=" shadow-xl rounded-lg overflow-hidden mb-6">
           <a href="{{ route('isiBlog', ['slug' => $related->slug]) }}">
-            <img src="{{ asset('uploads/blogs/' . $related->gambar_cover) }}" alt="{{ $related->judul_blog }}"
-            class="w-full h-48 object-cover">
-            <div class="p-4">
-            <h3 class="text-red-500 text-xs font-bold uppercase">{{ strtoupper($related->kategori) }}</h3>
-            <h2 class="text-lg font-bold font-telkomsel mb-1">
-              {{ Str::limit(strip_tags($related->judul_blog), 30) }}
-            </h2>
-            <p class="text-gray-700 text-sm mb-2">{{ Str::limit(strip_tags($related->isi_blog), 40) }}</p>
-            <span class="text-gray-500 text-xs">
-              {{ \Carbon\Carbon::parse($related->created_at)->format('d M Y') }}
-            </span>
-            </div>
+          <img src="{{ asset('uploads/blogs/' . $related->gambar_cover) }}" alt="{{ $related->judul_blog }}"
+          class="w-full h-48 object-cover">
+          <div class="p-4">
+          <h3 class="text-red-500 text-xs font-bold uppercase">{{ strtoupper($related->kategori) }}</h3>
+          <h2 class="text-lg font-bold font-telkomsel mb-1">
+            {{ Str::limit(strip_tags($related->judul_blog), 30) }}
+          </h2>
+          <p class="text-gray-700 text-sm mb-2">{{ Str::limit(str_replace('&nbsp;', ' ', strip_tags($related->isi_blog)), 40) }}</p>
+          <span class="text-gray-500 text-xs">
+            {{ \Carbon\Carbon::parse($related->created_at)->format('d M Y') }}
+          </span>
+          </div>
           </a>
           </div>
         </div>
-      @endforeach
+        @endforeach
           </div>
 
           <!-- Navigasi Carousel -->
@@ -107,16 +108,17 @@
           @foreach ($relatedBlogs as $related)
         <div class=" shadow-md rounded-lg overflow-hidden">
         <a href="{{ route('isiBlog', ['slug' => $related->slug]) }}">
-          <img src="{{ asset('uploads/blogs/' . $related->gambar_cover) }}" alt="{{ $related->judul_blog }}"
-          class="w-full h-48 object-cover">
-          <div class="p-4">
-          <h3 class="text-red-500 text-xs font-bold uppercase">{{ strtoupper($related->kategori) }}</h3>
-          <h2 class="text-lg font-bold font-telkomsel mb-1">{{ $related->judul_blog }}</h2>
-          <p class="text-gray-700 text-sm mb-2">{{ Str::limit(strip_tags($related->isi_blog), 60) }}</p>
-          <span class="text-gray-500 text-xs">
-            {{ \Carbon\Carbon::parse($related->created_at)->format('d M Y') }}
-          </span>
-          </div>
+        <img src="{{ asset('uploads/blogs/' . $related->gambar_cover) }}" alt="{{ $related->judul_blog }}"
+        class="w-full h-48 object-cover">
+        <div class="p-4">
+        <h3 class="text-red-500 text-xs font-bold uppercase">{{ strtoupper($related->kategori) }}</h3>
+        <h2 class="text-lg font-bold font-telkomsel mb-1">{{ $related->judul_blog }}</h2>
+        <p class="text-gray-700 text-sm mb-2"> {{ Str::limit(str_replace('&nbsp;', ' ', strip_tags($related->isi_blog)), 60) }}</p>
+
+        <span class="text-gray-500 text-xs">
+        {{ \Carbon\Carbon::parse($related->created_at)->format('d M Y') }}
+        </span>
+        </div>
         </a>
         </div>
       @endforeach
