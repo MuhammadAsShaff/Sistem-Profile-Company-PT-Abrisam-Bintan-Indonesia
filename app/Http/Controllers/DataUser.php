@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 use App\Models\Admin;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash; // Tambahkan ini untuk hash password
-
+use Intervention\Image\Facades\Image;
 class DataUser extends Controller
 {
     public function index(Request $request)
@@ -49,6 +49,7 @@ class DataUser extends Controller
         // Kirim data ke view
         return view('dashboard.dataUser.datauser', compact('admins', 'adminCount', 'onlineCount', 'offlineCount', 'search', 'role', 'roles'));
     }
+
     public function update(Request $request, $id)
     {
         $admin = Admin::find($id);
@@ -57,7 +58,7 @@ class DataUser extends Controller
             return redirect()->back()->with('error', 'Admin tidak ditemukan.');
         }
 
-        // Validasi input untuk update admin (kecuali password)
+        // Validasi input untuk update admin
         $request->validate([
             'nama' => 'required|string|max:255',
             'email' => 'required|email|unique:admins,email_admin,' . $id, // Unik kecuali ID yang sedang diupdate
@@ -66,26 +67,48 @@ class DataUser extends Controller
             'status' => 'required|in:Online,Offline',
         ]);
 
+        // Update data admin
         $admin->nama_admin = $request->input('nama');
         $admin->email_admin = $request->input('email');
         $admin->posisi = $request->input('posisi');
         $admin->status = $request->input('status');
 
-        // Jika ada file foto diupload, simpan file baru
+        // Jika ada file foto baru yang diunggah
         if ($request->hasFile('foto_admin')) {
+            // Hapus file lama jika ada
             if ($admin->foto_admin && file_exists(public_path('uploads/admins/' . $admin->foto_admin))) {
                 unlink(public_path('uploads/admins/' . $admin->foto_admin));
             }
+
+            // File baru
             $file = $request->file('foto_admin');
             $filename = time() . '_' . $file->getClientOriginalName();
-            $file->move(public_path('uploads/admins'), $filename);
+
+            // Direktori tujuan
+            $destinationPath = public_path('uploads/admins');
+            if (!file_exists($destinationPath)) {
+                mkdir($destinationPath, 0755, true);
+            }
+
+            // Menggunakan Intervention Image untuk resize dan crop gambar
+            $image = Image::make($file); // Membuka file gambar
+            $image->fit(300, 300, function ($constraint) {
+                $constraint->upsize(); // Mencegah gambar diperbesar
+            });
+
+            // Simpan gambar yang telah diubah
+            $image->save($destinationPath . '/' . $filename);
+
+            // Simpan nama file baru ke database
             $admin->foto_admin = $filename;
         }
 
+        // Simpan perubahan ke database
         $admin->save();
 
         return redirect()->back()->with('success', 'Admin berhasil diupdate.');
     }
+
 
     public function destroy($id)
     {
@@ -127,32 +150,40 @@ class DataUser extends Controller
         // Persiapan data admin baru
         $adminData = [
             'nama_admin' => $request->input('nama'),
-            'email_admin' => $request->input('email_admin'), // Gunakan 'email_admin'
+            'email_admin' => $request->input('email_admin'),
             'posisi' => $request->input('posisi'),
             'status' => 'Offline', // Status default
-            'password' => Hash::make($request->input('password')), // Gunakan Hash::make untuk hashing password
+            'password' => Hash::make($request->input('password')), // Hash password
         ];
 
-        // Jika ada file foto diupload, simpan file
+        // Jika ada file foto yang diupload
         if ($request->hasFile('foto_admin')) {
             $file = $request->file('foto_admin');
             $filename = time() . '_' . $file->getClientOriginalName();
 
-            // Memastikan direktori tujuan ada
+            // Direktori tujuan
             $destinationPath = public_path('uploads/admins');
             if (!file_exists($destinationPath)) {
                 mkdir($destinationPath, 0755, true);
             }
 
-            // Simpan file foto ke direktori
-            $file->move($destinationPath, $filename);
-            $adminData['foto_admin'] = $filename; // Menyimpan nama file foto
+            // Menggunakan Intervention Image untuk resize dan crop gambar
+            $image = Image::make($file); // Membuka file gambar
+            $image->fit(1080, 1080, function ($constraint) {
+                $constraint->upsize(); // Mencegah gambar diperbesar
+            });
+
+            // Simpan gambar yang telah diubah
+            $image->save($destinationPath . '/' . $filename);
+
+            // Menyimpan nama file ke dalam data admin
+            $adminData['foto_admin'] = $filename;
         }
 
         // Simpan data admin ke database
         Admin::create($adminData);
 
-        // Flash message sukses
+        // Redirect dengan pesan sukses
         return redirect()->route('dashboard.dataUser.datauser')->with('success', 'Admin berhasil ditambahkan');
     }
 

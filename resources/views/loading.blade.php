@@ -57,14 +57,6 @@
     }
   }
 
-  /* Teks pesan */
-  #loading-screen p {
-    color: black;
-    font-size: 18px;
-    font-weight: bold;
-    margin-top: 15px;
-    text-align: center;
-  }
 </style>
 
 <div id="loading-screen" class="fixed inset-0 bg-black bg-opacity-15 z-50 flex items-center justify-center">
@@ -75,10 +67,7 @@
       <div></div>
       <div></div>
     </div>
-    <!-- Pesan Teks -->
-    <!-- <p class="text-black text-lg bg-opacity-70 font-semibold bg-white rounded-xl p-2 mx-4 sm:mx-6 md:mx-8">
-    Mohon bersabar ya, halaman sedang memuat...
-</p> -->
+  ]
   </div>
 </div>
 
