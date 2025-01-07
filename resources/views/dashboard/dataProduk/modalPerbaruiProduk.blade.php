@@ -123,14 +123,14 @@
 
           <div class="col-span-1">
             @php
-        // Menambahkan nomor ke setiap baris benefit
-        $benefitList = is_string($produk->benefit) ? json_decode($produk->benefit, true) : $produk->benefit;
-        $benefitWithNumbers = '';
-        if ($benefitList) {
-          foreach ($benefitList as $index => $benefit) {
-          $benefitWithNumbers .= ($index + 1) . '. ' . $benefit . "\n";
-          }
-        }
+// Menambahkan nomor ke setiap baris benefit
+$benefitList = is_string($produk->benefit) ? json_decode($produk->benefit, true) : $produk->benefit;
+$benefitWithNumbers = '';
+if ($benefitList) {
+  foreach ($benefitList as $index => $benefit) {
+    $benefitWithNumbers .= ($index + 1) . '. ' . $benefit . "\n";
+  }
+}
       @endphp
             <label for="benefit-{{ $produk->id_produk }}"
               class="block text-sm font-medium text-gray-700">Benefit</label>
@@ -153,6 +153,7 @@
   </div>
 </dialog>
 <script>
+
   // Fungsi untuk otomatis menambahkan nomor pada setiap baris teks
   function updateBenefit(id_produk) {
     const textarea = document.getElementById('benefit-' + id_produk);

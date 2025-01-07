@@ -62,26 +62,20 @@ class ProdukController extends Controller
 
     public function store(Request $request)
     {
-        // Remove thousand separators from 'harga_produk' and 'biaya_pasang' inputs for validation
-        $hargaProduk = str_replace('.', '', $request->input('harga_produk'));
-        $biayaPasang = str_replace('.', '', $request->input('biaya_pasang'));
+        // Remove non-numeric characters
+        $hargaProduk = preg_replace('/[^0-9]/', '', $request->input('harga_produk'));
+        $biayaPasang = preg_replace('/[^0-9]/', '', $request->input('biaya_pasang') ?: '0');
 
-        // Set default for 'biaya_pasang' if empty
-        if (empty($biayaPasang)) {
-            $biayaPasang = 0;
-        }
-
-        // Merge processed values back into the request
         $request->merge([
             'harga_produk' => $hargaProduk,
-            'biaya_pasang' => $biayaPasang
+            'biaya_pasang' => $biayaPasang,
         ]);
 
-        // Validasi input termasuk benefit
+        // Validasi input
         $validated = $request->validate([
             'nama_produk' => 'required|string|max:255',
             'harga_produk' => 'required|numeric|min:0',
-            'benefit' => 'nullable|array', // Benefit sebagai array
+            'benefit' => 'nullable|array',
             'kecepatan' => 'required|integer',
             'deskripsi' => 'required|string',
             'diskon' => 'nullable|numeric|min:0|max:100',
@@ -91,24 +85,21 @@ class ProdukController extends Controller
             'id_paket' => 'required|exists:paket,id_paket',
         ]);
 
-        // Proses 'benefit' menjadi array JSON
         $benefitJson = !empty($validated['benefit']) ? json_encode($validated['benefit']) : null;
 
-        // Data produk yang akan disimpan
         $produkData = [
             'nama_produk' => $validated['nama_produk'],
             'harga_produk' => $validated['harga_produk'],
-            'benefit' => $benefitJson, // Simpan 'benefit' sebagai JSON
+            'benefit' => $benefitJson,
             'kecepatan' => $validated['kecepatan'],
             'deskripsi' => $validated['deskripsi'],
-            'diskon' => $validated['diskon'] ?? 0, // Default ke 0 jika tidak diberikan
-            'biaya_pasang' => $biayaPasang, // Sudah di-set ke 0 jika kosong
-            'kuota' => $validated['kuota'] ?? null, // Default ke null jika tidak diberikan
+            'diskon' => $validated['diskon'] ?? 0,
+            'biaya_pasang' => $biayaPasang,
+            'kuota' => $validated['kuota'] ?? null,
             'id_kategori' => $validated['id_kategori'],
             'id_paket' => $validated['id_paket'],
         ];
 
-        // Simpan produk ke database
         try {
             Produk::create($produkData);
             return redirect()->route('dashboard.dataProduk.dataProduk')->with('success', 'Produk berhasil ditambahkan');
@@ -117,12 +108,19 @@ class ProdukController extends Controller
         }
     }
 
+
     public function update(Request $request, $id_produk)
     {
         // Temukan produk berdasarkan ID
         $produk = Produk::findOrFail($id_produk);
 
-        // Validasi input termasuk benefit
+        // Hapus semua karakter non-numeric dari input harga_produk dan biaya_pasang
+        $request->merge([
+            'harga_produk' => preg_replace('/[^0-9]/', '', $request->input('harga_produk')),
+            'biaya_pasang' => preg_replace('/[^0-9]/', '', $request->input('biaya_pasang') ?: '0'),
+        ]);
+
+        // Validasi input
         $validated = $request->validate([
             'nama_produk' => 'required|string|max:255',
             'harga_produk' => 'required|numeric|min:0',
@@ -136,23 +134,21 @@ class ProdukController extends Controller
             'id_paket' => 'required|exists:paket,id_paket',
         ]);
 
-        // Proses input benefit: menghapus angka yang ada pada setiap baris
+        // Proses benefit: Hapus nomor di awal setiap baris dan encode sebagai JSON
         $benefitArray = !empty($validated['benefit'])
-            ? preg_replace('/^\d+\.\s*/m', '', explode("\n", $validated['benefit'])) // Menghapus angka di awal baris
+            ? preg_replace('/^\d+\.\s*/m', '', explode("\n", $validated['benefit'])) // Hapus angka di awal baris
             : [];
-
-        // Encode sebagai JSON
         $validated['benefit'] = json_encode($benefitArray);
 
         // Update data produk
         $produk->update([
             'nama_produk' => $validated['nama_produk'],
-            'harga_produk' => $validated['harga_produk'],
-            'benefit' => $validated['benefit'], // Simpan benefit tanpa angka
+            'harga_produk' => $validated['harga_produk'], // Simpan harga sebagai angka
+            'benefit' => $validated['benefit'], // Simpan benefit sebagai JSON
             'kecepatan' => $validated['kecepatan'],
             'deskripsi' => $validated['deskripsi'],
             'diskon' => $validated['diskon'],
-            'biaya_pasang' => $validated['biaya_pasang'],
+            'biaya_pasang' => $validated['biaya_pasang'], // Simpan biaya pasang sebagai angka
             'kuota' => $validated['kuota'],
             'id_kategori' => $validated['id_kategori'],
             'id_paket' => $validated['id_paket'],
@@ -161,9 +157,6 @@ class ProdukController extends Controller
         // Redirect ke halaman produk dengan pesan sukses
         return redirect()->route('dashboard.dataProduk.dataProduk')->with('success', 'Produk berhasil diperbarui');
     }
-
-
-
 
     public function destroy($id)
     {
