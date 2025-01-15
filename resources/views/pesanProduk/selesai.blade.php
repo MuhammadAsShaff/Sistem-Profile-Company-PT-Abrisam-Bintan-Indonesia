@@ -157,7 +157,6 @@
         Kembali ke Home
       </a>
     </div>
-
   </div>
 
 
@@ -165,8 +164,14 @@
   <!-- Fixed Bottom Bar -->
   <div class="fixed bottom-0 left-0 w-full bg-white border-t border-gray-200 shadow-lg z-50">
     <div class="container mx-auto max-w-4xl flex items-center justify-between p-4">
-      <div class="h-24">
-      </div>
+        <!-- Versi Mobile -->
+        <div class="block md:hidden h-4 bg-gray-200">
+        </div>
+        
+        <!-- Versi Desktop -->
+        <div class="hidden md:block h-24 bg-gray-300">
+        </div>
+
     </div>
   </div>
   <script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.js"></script>

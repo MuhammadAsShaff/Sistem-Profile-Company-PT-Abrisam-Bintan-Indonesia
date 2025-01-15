@@ -130,13 +130,15 @@
       <div class="mb-4">
         <label for="nik" class="block text-sm font-semibold text-gray-700">NIK</label>
         <input type="number" id="nik" name="nik" required placeholder="Masukkan NIK Anda"
-          class="w-full mt-2 p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500">
+          class="w-full mt-2 p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500"
+          oninput="limitInputLength(this, 16)">
       </div>
 
       <!-- Nama Lengkap -->
       <div class="mb-4">
         <label for="namaLengkap" class="block text-sm font-semibold text-gray-700">Nama Lengkap</label>
         <input type="text" id="namaLengkap" name="namaLengkap" required placeholder="Masukkan nama lengkap Anda"
+          oninput="limitInputLength(this, 255)"
           class="w-full mt-2 p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500">
       </div>
 
@@ -155,13 +157,14 @@
       <div class="mb-4">
         <label for="email" class="block text-sm font-semibold text-gray-700">E-mail</label>
         <input type="email" id="email" name="email" required placeholder="Masukkan email Anda"
+          oninput="limitInputLength(this, 255)"
           class="w-full mt-2 p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500">
       </div>
 
       <!-- Nomor Handphone -->
       <div class="mb-4">
         <label for="nomorHandphone" class="block text-sm font-semibold text-gray-700">Nomor Handphone</label>
-        <input type="number" id="nomorHandphone" name="nomorHandphone" required
+        <input type="number" id="nomorHandphone" name="nomorHandphone" required oninput="limitInputLength(this, 255)"
           placeholder="Masukkan nomor handphone Anda"
           class="w-full mt-2 p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500">
       </div>
@@ -174,7 +177,7 @@
       <div class="mb-4">
         <label for="provinsi" class="block text-sm font-semibold text-gray-700">Provinsi</label>
         <input type="text" id="provinsi" name="provinsi" required placeholder="Masukkan provinsi Anda"
-          value="{{ $state }}"
+          oninput="limitInputLength(this, 100)" value="{{ $state }}"
           class="w-full mt-2 p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500">
       </div>
 
@@ -182,6 +185,7 @@
       <div class="mb-4">
         <label for="kota" class="block text-sm font-semibold text-gray-700">Kota</label>
         <input type="text" id="kota" name="kota" required placeholder="Masukkan kota Anda" value="{{ $city }}"
+          oninput="limitInputLength(this, 100)"
           class="w-full mt-2 p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500">
       </div>
 
@@ -189,7 +193,7 @@
       <div class="mb-4">
         <label for="kecamatan" class="block text-sm font-semibold text-gray-700">Kecamatan</label>
         <input type="text" id="kecamatan" name="kecamatan" required placeholder="Masukkan kecamatan Anda"
-          value="{{ $district }}"
+          oninput="limitInputLength(this, 100)" value="{{ $district }}"
           class="w-full mt-2 p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500">
       </div>
 
@@ -197,7 +201,7 @@
       <div class="mb-4">
         <label for="kelurahan" class="block text-sm font-semibold text-gray-700">Kelurahan</label>
         <input type="text" id="kelurahan" name="kelurahan" required placeholder="Masukkan kelurahan Anda"
-          value="{{ $village }}"
+          oninput="limitInputLength(this, 100)" value="{{ $village }}"
           class="w-full mt-2 p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500">
       </div>
 
@@ -205,7 +209,7 @@
       <div class="mb-4">
         <label for="kodepos" class="block text-sm font-semibold text-gray-700">Kode Post</label>
         <input type="text" id="kodepos" name="kodepos" required placeholder="Masukkan kode pos Anda"
-          value="{{ $postcode }}"
+          oninput="limitInputLength(this, 100)" value="{{ $postcode }}"
           class="w-full mt-2 p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500">
       </div>
 
@@ -219,6 +223,7 @@
 
         <label for="alamat" class="block text-sm font-semibold text-gray-700">Alamat</label>
         <textarea id="alamat" name="alamat" rows="4" required placeholder="Masukkan alamat lengkap Anda"
+          oninput="limitInputLength(this, 255"
           class="w-full mt-2 p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500"
           style="box-sizing: border-box;">
             {{ $alamat }}
@@ -248,28 +253,31 @@
     @endif
         </div>
         <div class="ml-4">
-          <!-- Menampilkan Nama dan Harga Produk -->
           @if(isset($produk) && !empty($produk))
-        <!-- Nama Produk -->
-        <h4 class="text-lg font-bold font-telkomsel">{{ $produk['nama_produk'] }}</h4>
-
-        <!-- Menampilkan Harga Produk Asli dan Harga Setelah Diskon -->
-        <div class="flex justify-between items-center">
-        <p class="text-gray-400 text-sm font-telkomsel">
-          <span class="line-through">Rp{{ $produk['harga_produk'] }}</span> (Harga Asli)
-        </p>
-
-        <!-- Diskon -->
-        <p class="text-sm text-red-600 font-semibold font-telkomsel">
-          {{ $produk['diskon'] }}% Diskon
-        </p>
-        </div>
-
-        <p class="text-red-600 font-semibold font-telkomsel">
-        Rp{{ number_format($produk['harga_produk'] - ($produk['harga_produk'] * $produk['diskon'] / 100), 0, ',', '.') }}
-        (Harga Setelah Diskon)
-        </p>
+        @if($produk['diskon'] > 0)
+      <!-- Produk dengan Diskon -->
+      <h4 class="text-lg font-bold font-telkomsel">{{ $produk['nama_produk'] }}</h4>
+      <div class="flex justify-between items-center">
+      <p class="text-gray-400 text-sm font-telkomsel">
+        <span class="line-through">Rp{{ number_format($produk['harga_produk'], 0, ',', '.') }}</span> (Harga Asli)
+      </p>
+      <p class="text-sm text-red-600 font-semibold font-telkomsel">
+        {{ $produk['diskon'] }}% Diskon
+      </p>
+      </div>
+      <p class="text-red-600 font-semibold font-telkomsel">
+      Rp{{ number_format($produk['harga_produk'] - ($produk['harga_produk'] * $produk['diskon'] / 100), 0, ',', '.') }}
+      (Harga Setelah Diskon)
+      </p>
+    @else
+    <!-- Produk Tanpa Diskon -->
+    <h4 class="text-lg font-bold font-telkomsel">{{ $produk['nama_produk'] }}</h4>
+    <p class="text-red-600 font-semibold font-telkomsel">
+    Rp{{ number_format($produk['harga_produk'], 0, ',', '.') }}
+    </p>
+  @endif
       @else
+      <!-- Produk Belum Dipilih -->
       <h4 class="text-lg font-bold font-telkomsel">Produk Belum Dipilih</h4>
     @endif
         </div>
@@ -321,105 +329,111 @@
 
   <br><br><br><br><br>
   <script>
+    function limitInputLength(input, maxLength) {
+      if (input.value.length > maxLength) {
+        input.value = input.value.slice(0, maxLength); // Batasi panjang input
+      }
+    }
+
     // Fungsi untuk mengirimkan form
-      function submitForm(event) {
-        event.preventDefault(); // Mencegah default action dari link (misalnya redirect)
+    function submitForm(event) {
+      event.preventDefault(); // Mencegah default action dari link (misalnya redirect)
 
-        // Ambil form
-        const form = document.getElementById('formDataDiri');
+      // Ambil form
+      const form = document.getElementById('formDataDiri');
 
-        // Cek apakah tombol desktop atau mobile yang aktif
-        const desktopBtn = document.getElementById('simpanDataDiri');
-        const mobileBtn = document.getElementById('simpanDataDiriMobile');
+      // Cek apakah tombol desktop atau mobile yang aktif
+      const desktopBtn = document.getElementById('simpanDataDiri');
+      const mobileBtn = document.getElementById('simpanDataDiriMobile');
 
-        // Jika salah satu tombol dalam keadaan aktif, submit form
-        if ((desktopBtn && !desktopBtn.hasAttribute("disabled")) ||
-          (mobileBtn && !mobileBtn.hasAttribute("disabled"))) {
-          form.submit(); // Mengirim form
-        }
+      // Jika salah satu tombol dalam keadaan aktif, submit form
+      if ((desktopBtn && !desktopBtn.hasAttribute("disabled")) ||
+        (mobileBtn && !mobileBtn.hasAttribute("disabled"))) {
+        form.submit(); // Mengirim form
       }
+    }
 
-      // Fungsi untuk mengecek apakah semua input terisi
-      function validateForm() {
-        const form = document.getElementById('formDataDiri');
-        const desktopBtn = document.getElementById('simpanDataDiri');
-        const mobileBtn = document.getElementById('simpanDataDiriMobile');
-        const inputs = form.querySelectorAll('input, select');
+    // Fungsi untuk mengecek apakah semua input terisi
+    function validateForm() {
+      const form = document.getElementById('formDataDiri');
+      const desktopBtn = document.getElementById('simpanDataDiri');
+      const mobileBtn = document.getElementById('simpanDataDiriMobile');
+      const inputs = form.querySelectorAll('input, select');
 
-        // Cek apakah semua input sudah terisi
-        let allFilled = true;
-        inputs.forEach(input => {
-          if (!input.value.trim()) {
-            allFilled = false;
-          }
-        });
-
-        // Aktifkan tombol jika semua input terisi
-        if (allFilled) {
-          enableLocationBtn();
-        } else {
-          disableLocationBtn();
+      // Cek apakah semua input sudah terisi
+      let allFilled = true;
+      inputs.forEach(input => {
+        if (!input.value.trim()) {
+          allFilled = false;
         }
-      }
-
-      // Fungsi untuk mengaktifkan tombol
-      function enableLocationBtn(type = 'both') {
-        if (type === 'desktop' || type === 'both') {
-          const desktopBtn = document.getElementById('simpanDataDiri');
-          if (desktopBtn) {
-            desktopBtn.removeAttribute("disabled");
-            desktopBtn.classList.remove("bg-gray-500", "cursor-not-allowed");
-            desktopBtn.classList.add("bg-gradient-to-r", "from-[#D10A3C]", "to-[#FF0038]", "hover:opacity-90");
-          }
-        }
-
-        if (type === 'mobile' || type === 'both') {
-          const mobileBtn = document.getElementById('simpanDataDiriMobile');
-          if (mobileBtn) {
-            mobileBtn.removeAttribute("disabled");
-            mobileBtn.classList.remove("bg-gray-500", "cursor-not-allowed");
-            mobileBtn.classList.add("bg-gradient-to-r", "from-[#D10A3C]", "to-[#FF0038]", "hover:opacity-90");
-          }
-        }
-      }
-
-      // Fungsi untuk menonaktifkan tombol
-      function disableLocationBtn(type = 'both') {
-        if (type === 'desktop' || type === 'both') {
-          const desktopBtn = document.getElementById('simpanDataDiri');
-          if (desktopBtn) {
-            desktopBtn.setAttribute("disabled", true);
-            desktopBtn.classList.add("bg-gray-500", "cursor-not-allowed");
-            desktopBtn.classList.remove("bg-gradient-to-r", "from-[#D10A3C]", "to-[#FF0038]", "hover:opacity-90");
-          }
-        }
-
-        if (type === 'mobile' || type === 'both') {
-          const mobileBtn = document.getElementById('simpanDataDiriMobile');
-          if (mobileBtn) {
-            mobileBtn.setAttribute("disabled", true);
-            mobileBtn.classList.add("bg-gray-500", "cursor-not-allowed");
-            mobileBtn.classList.remove("bg-gradient-to-r", "from-[#D10A3C]", "to-[#FF0038]", "hover:opacity-90");
-          }
-        }
-      }
-
-      // Fungsi inisialisasi event listener
-      function initFormValidation() {
-        // Menambahkan event listener untuk setiap input untuk memeriksa validitas
-        const inputs = document.querySelectorAll('#formDataDiri input, #formDataDiri select');
-        inputs.forEach(input => {
-          input.addEventListener('input', validateForm);
-        });
-
-        // Panggil fungsi validateForm saat pertama kali load halaman untuk memeriksa status awal
-        validateForm();
-      }
-
-      // Pastikan DOM sudah selesai dimuat sebelum menjalankan script
-      document.addEventListener('DOMContentLoaded', function () {
-        initFormValidation();
       });
+
+      // Aktifkan tombol jika semua input terisi
+      if (allFilled) {
+        enableLocationBtn();
+      } else {
+        disableLocationBtn();
+      }
+    }
+
+    // Fungsi untuk mengaktifkan tombol
+    function enableLocationBtn(type = 'both') {
+      if (type === 'desktop' || type === 'both') {
+        const desktopBtn = document.getElementById('simpanDataDiri');
+        if (desktopBtn) {
+          desktopBtn.removeAttribute("disabled");
+          desktopBtn.classList.remove("bg-gray-500", "cursor-not-allowed");
+          desktopBtn.classList.add("bg-gradient-to-r", "from-[#D10A3C]", "to-[#FF0038]", "hover:opacity-90");
+        }
+      }
+
+      if (type === 'mobile' || type === 'both') {
+        const mobileBtn = document.getElementById('simpanDataDiriMobile');
+        if (mobileBtn) {
+          mobileBtn.removeAttribute("disabled");
+          mobileBtn.classList.remove("bg-gray-500", "cursor-not-allowed");
+          mobileBtn.classList.add("bg-gradient-to-r", "from-[#D10A3C]", "to-[#FF0038]", "hover:opacity-90");
+        }
+      }
+    }
+
+    // Fungsi untuk menonaktifkan tombol
+    function disableLocationBtn(type = 'both') {
+      if (type === 'desktop' || type === 'both') {
+        const desktopBtn = document.getElementById('simpanDataDiri');
+        if (desktopBtn) {
+          desktopBtn.setAttribute("disabled", true);
+          desktopBtn.classList.add("bg-gray-500", "cursor-not-allowed");
+          desktopBtn.classList.remove("bg-gradient-to-r", "from-[#D10A3C]", "to-[#FF0038]", "hover:opacity-90");
+        }
+      }
+
+      if (type === 'mobile' || type === 'both') {
+        const mobileBtn = document.getElementById('simpanDataDiriMobile');
+        if (mobileBtn) {
+          mobileBtn.setAttribute("disabled", true);
+          mobileBtn.classList.add("bg-gray-500", "cursor-not-allowed");
+          mobileBtn.classList.remove("bg-gradient-to-r", "from-[#D10A3C]", "to-[#FF0038]", "hover:opacity-90");
+        }
+      }
+    }
+
+    // Fungsi inisialisasi event listener
+    function initFormValidation() {
+      // Menambahkan event listener untuk setiap input untuk memeriksa validitas
+      const inputs = document.querySelectorAll('#formDataDiri input, #formDataDiri select');
+      inputs.forEach(input => {
+        input.addEventListener('input', validateForm);
+      });
+
+      // Panggil fungsi validateForm saat pertama kali load halaman untuk memeriksa status awal
+      validateForm();
+    }
+
+    // Pastikan DOM sudah selesai dimuat sebelum menjalankan script
+    document.addEventListener('DOMContentLoaded', function () {
+      initFormValidation();
+    });
   </script>
 </body>
 

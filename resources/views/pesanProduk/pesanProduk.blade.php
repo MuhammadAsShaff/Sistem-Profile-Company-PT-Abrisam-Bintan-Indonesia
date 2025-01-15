@@ -36,12 +36,12 @@
       }
     }
 
-       @media (max-width: 767px) {
+    @media (max-width: 767px) {
       .desktop-view {
         display: none !important;
       }
     }
-  
+
     @media (min-width: 768px) {
       .mobile-view {
         display: none !important;
@@ -115,7 +115,7 @@
       </div>
     </div>
   </div>
-  <br><br><br><br class="hidden md:block">
+  <br><br class="hidden md:block"><br class="hidden md:block"><br class="hidden md:block">
 
   <!-- Form & Peta -->
   <div class="container mx-auto max-w-4xl mt-20 md:mt-20 p-4 md:p-5 bg-white shadow-2xl rounded-lg">
@@ -190,7 +190,7 @@
 
     </div>
   </div>
-  
+
   <!-- Versi Desktop -->
   <div class="desktop-view fixed bottom-0 left-0 w-full bg-white border-t border-gray-200 shadow-lg z-50">
     <div class="container mx-auto max-w-4xl flex items-center justify-between p-4">
@@ -205,32 +205,48 @@
     @endif
         </div>
         <div class="ml-4">
-          <!-- Menampilkan Nama dan Harga Produk -->
           @if(isset($produk) && !empty($produk))
-        <!-- Nama Produk -->
-        <h4 class="text-lg font-bold font-telkomsel">{{ $produk['nama_produk'] }}</h4>
+        <!-- Produk dengan Diskon -->
+        @if($produk['diskon'] > 0)
+      <!-- Nama Produk -->
+      <h4 class="text-lg font-bold font-telkomsel">{{ $produk['nama_produk'] }}</h4>
 
-        <!-- Menampilkan Harga Produk Asli dan Harga Setelah Diskon -->
-        <div class="flex justify-between items-center">
-        <p class="text-gray-400 text-sm font-telkomsel">
-          <span class="line-through">Rp{{ $produk['harga_produk'] }}</span> (Harga Asli)
-        </p>
+      <!-- Menampilkan Harga Produk Asli dan Harga Setelah Diskon -->
+      <div class="flex justify-between items-center">
+      <p class="text-gray-400 text-sm font-telkomsel">
+        <span class="line-through">Rp{{ number_format($produk['harga_produk'], 0, ',', '.') }}</span> (Harga Asli)
+      </p>
 
-        <!-- Diskon -->
-        <p class="text-sm text-red-600 font-semibold font-telkomsel">
-          {{ $produk['diskon'] }}% Diskon
-        </p>
-        </div>
+      <!-- Diskon -->
+      <p class="text-sm text-red-600 font-semibold font-telkomsel">
+        {{ $produk['diskon'] }}% Diskon
+      </p>
+      </div>
 
-        <p class="text-red-600 font-semibold font-telkomsel">
-        Rp{{ number_format($produk['harga_produk'] - ($produk['harga_produk'] * $produk['diskon'] / 100), 0, ',', '.') }}
-        (Harga Setelah Diskon)
-        </p>
+      <!-- Harga Setelah Diskon -->
+      <p class="text-red-600 font-semibold font-telkomsel">
+      Rp{{ number_format($produk['harga_produk'] - ($produk['harga_produk'] * $produk['diskon'] / 100), 0, ',', '.') }}
+      (Harga Setelah Diskon)
+      </p>
+
+      <!-- Produk Tanpa Diskon -->
+    @else
+    <!-- Nama Produk -->
+    <h4 class="text-lg font-bold font-telkomsel">{{ $produk['nama_produk'] }}</h4>
+
+    <!-- Menampilkan Harga Produk Asli Saja -->
+    <p class="text-red-600 font-semibold font-telkomsel">
+    Rp{{ number_format($produk['harga_produk'], 0, ',', '.') }}
+    </p>
+  @endif
       @else
+      <!-- Produk Belum Dipilih -->
       <h4 class="text-lg font-bold font-telkomsel">Produk Belum Dipilih</h4>
     @endif
         </div>
       </div>
+
+      <!-- Tombol Lanjut -->
       <div class="flex">
         <a id="selectLocationBtn" href="#" class="w-full p-3 bg-gray-500 text-white rounded-lg cursor-not-allowed"
           onclick="submitForm(event)">
@@ -239,10 +255,11 @@
       </div>
     </div>
   </div>
-  
+
+
   <!-- Versi Mobile -->
   <div class="mobile-view fixed bottom-0 left-0 w-full bg-white border-t border-gray-200 shadow-lg z-50">
-    <div class="container mx-auto max-w-4xl flex items-center justify-between p-4">
+    <div class="container mx-auto max-w-4xl flex items-center justify-between p-2">
       <div class="flex items-center">
         <div
           class="flex items-center justify-center w-10 h-10 bg-gradient-to-r from-[#D10A3C] to-[#FF0038] text-white font-bold rounded-lg mr-4 p-6">
@@ -339,7 +356,7 @@
         });
     }
 
-   // Fungsi untuk mengaktifkan tombol
+    // Fungsi untuk mengaktifkan tombol
     function enableLocationBtn() {
       // Tombol Desktop
       const btnDesktop = document.getElementById('selectLocationBtn');
